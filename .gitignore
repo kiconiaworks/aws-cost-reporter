@@ -3,6 +3,7 @@
 accountid_mapping.json
 zappa_settings.json
 output.png
+billing-cost-explorer-policy.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
