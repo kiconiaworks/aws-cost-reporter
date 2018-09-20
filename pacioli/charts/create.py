@@ -7,6 +7,11 @@ from bokeh.palettes import brewer
 
 
 def create_daily_chart_image(current_month_df: pd.DataFrame, accountid_mapping: dict=None) -> figure:
+    # get max record date (assumes values will NOT decrease)
+    accountids = [i for i in current_month_df.columns if i.isdigit()]
+    sample_accountid = accountids[0]
+    last_available_date = current_month_df[current_month_df[sample_accountid] == current_month_df[sample_accountid].max()].index.date[0]
+
     source = ColumnDataSource(current_month_df)
 
     today = datetime.datetime.utcnow()
@@ -44,13 +49,11 @@ def create_daily_chart_image(current_month_df: pd.DataFrame, accountid_mapping: 
          current_month_previous_removed.index)
     )
 
-    last_available_date = pd.to_datetime(previous_day)
-    print(current_month_df[current_month_df.index == last_available_date])
-    current_month_label_values = current_month_df[current_month_df.index == last_available_date].groupby(level=0).sum()
+    current_month_label_values = current_month_df[current_month_df.index == pd.to_datetime(last_available_date)].groupby(level=0).sum()
     names = []
     values = []
     dates = []
-    print(current_month_label_values)
+
     current_month_labels = list(sorted([(v.iloc[0], k, previous_day) for k, v in current_month_label_values.items()]))
     current_month_total = sum(v for v, account, date in current_month_labels if account.isdigit())
     current_month_labels.append((current_month_total, 'current_month_total', previous_day))
