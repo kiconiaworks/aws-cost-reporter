@@ -1,4 +1,5 @@
 import datetime
+from calendar import monthrange
 from collections import defaultdict, Counter
 
 import pandas as pd
@@ -22,7 +23,15 @@ def datestr2datetime(date_str):
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
 
 
-def format_to_dataframe(aws_cost_explorer_data):
+def format_to_dataframe(aws_cost_explorer_data, target_month_start: datetime.date=None):
+    if not target_month_start:
+        target_month_start = datetime.datetime.utcnow().replace(day=1)
+
+    assert target_month_start.day == 1
+    previous_month_start = (target_month_start - datetime.timedelta(days=1)).replace(day=1)
+    last_day_of_month = monthrange(target_month_start.year, target_month_start.month)[-1]
+    target_month_end = target_month_start.replace(day=last_day_of_month)
+
     # create monthly
     monthly_account_daily_cost_data = defaultdict(list)
 
@@ -50,11 +59,11 @@ def format_to_dataframe(aws_cost_explorer_data):
     df = df.set_index('date')
     df.sort_index(inplace=True)
     df = df.fillna(0.0)
-    ix = pd.DatetimeIndex(start=datetime.date(2018, 8, 1), end=datetime.date(2018, 9, 30), freq='D')
+    ix = pd.DatetimeIndex(start=previous_month_start.date(), end=target_month_end.date(), freq='D')
     df = df.reindex(ix)
 
-    df[df.index < pd.to_datetime('2018-09-01')].sum(axis=1)
-    previous_month_df = df[df.index < pd.to_datetime('2018-09-01')].sum(axis=1)
+    df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
+    previous_month_df = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
     previous_month_df.index = previous_month_df.index + pd.DateOffset(months=1)
     previous_month_df = previous_month_df.rename('previous_month_cost')
 
@@ -73,13 +82,12 @@ def prepare_daily_chart_figure(current_datetime: datetime.datetime=None, account
     current_month_start = datetime.date(end.year, end.month, 1)
     previous_month_start = (current_month_start.replace(day=1) - datetime.timedelta(days=1)).replace(day=1)
 
-    manager = CostManager()
-
     # get full data from previous month in order to compare current with previous
+    manager = CostManager()
     result = manager.collect(previous_month_start, end)
     df = format_to_dataframe(result)
     current_month_df = df[df.index >= pd.to_datetime(current_month_start)]
-    chart_figure = create_daily_chart_image(current_month_df)
+    chart_figure = create_daily_chart_image(current_month_df, accountid_mapping)
     return chart_figure
 
 
