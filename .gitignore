@@ -2,6 +2,7 @@
 .idea/
 accountid_mapping.json
 zappa_settings.json
+output.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
