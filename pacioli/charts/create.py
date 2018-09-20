@@ -99,12 +99,17 @@ def create_daily_chart_image(current_month_df: pd.DataFrame, accountid_mapping: 
         'dates': dates
     })
 
+    # adjust x offset
+    x_offset = 5
+    if last_available_date.day >= 18:
+        x_offset = -150
+
     labels = LabelSet(
         x='dates',
         y='values',
         text='names',
         level='glyph',
-        x_offset=5,
+        x_offset=x_offset,
         y_offset=5,
         source=labels_source,
         render_mode='canvas',
