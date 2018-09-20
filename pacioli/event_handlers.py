@@ -1,3 +1,4 @@
+import sys
 import logging
 import datetime
 import json
@@ -7,6 +8,13 @@ from .post import SlackPostManager
 
 DEFAULT_ACCOUNTID_MAPPING_FILENAME = 'accountid_mapping.json'
 DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
+
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] (%(name)s) %(funcName)s: %(message)s'
+)
 
 logger = logging.getLogger(__name__)
 
