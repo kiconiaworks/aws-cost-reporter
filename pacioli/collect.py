@@ -17,21 +17,3 @@ class CostManager:
                                                      ],
                                                      Metrics=["BlendedCost", "UnblendedCost", "UsageQuantity"])
         return response
-
-
-if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser(description=__doc__)
-    args = parser.parse_args()
-
-    end = datetime.datetime.now().date()
-    current_month_start = datetime.date(end.year, end.month, 1)
-    previous_month_start = (current_month_start.replace(day=1) - datetime.timedelta(days=1)).replace(day=1)
-    manager = CostManager()
-    print(f'Collected data for: {previous_month_start} - {end}')
-    r = manager.collect(previous_month_start, end)
-    filename = f'cost-manager-collect.{end.strftime("%Y%m%d%H")}.json'
-    print(f'Writing ({filename})...')
-    with open(filename, 'w', encoding='utf8') as json_out:
-        json_out.write(json.dumps(r, indent=4))
-    print('Done!')

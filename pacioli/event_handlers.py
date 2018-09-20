@@ -30,13 +30,14 @@ def post_daily_chart(event, context) -> None:
     logger.info('creating daily chart...')
     chart_figure = prepare_daily_chart_figure(now, accountid_mapping)
     logger.info('converting chart to image (png)...')
-    output_filepath = generate_daily_chart_image(chart_figure)
+    image_object = generate_daily_chart_image(chart_figure)
+
 
     logger.info('posting image to slack...')
     slack = SlackPostManager()
     slack.post_image_to_channel(
         channel_name='cost_management',
         title=f'AWS Cost {now.month}/{now.day}',
-        filepath=output_filepath
+        image_object=image_object
     )
     logger.info('posted!')

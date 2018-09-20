@@ -48,15 +48,15 @@ class SlackPostManager:
             text=message
         )
 
-    def post_image_to_channel(self, channel_name, filepath, title='Test Upload'):
+    def post_image_to_channel(self, channel_name, image_object, title='Test Upload'):
         channel_id = self._get_channel_id(channel_name)
-        with open(filepath, 'rb') as file_content:
-            self.sc.api_call(
-                "files.upload",
-                channels=channel_id,
-                file=file_content,
-                title=title,
-            )
+
+        self.sc.api_call(
+            "files.upload",
+            channels=channel_id,
+            file=image_object.read(),
+            title=title,
+        )
 
 
 if __name__ == '__main__':

@@ -1,9 +1,10 @@
 import datetime
+from io import BytesIO
 from calendar import monthrange
 from collections import defaultdict, Counter
 
 import pandas as pd
-from bokeh.io import export_png, export_svgs
+from bokeh.io import export_png
 
 from .collect import CostManager
 from .charts.create import create_daily_chart_image
@@ -11,7 +12,6 @@ from .charts.create import create_daily_chart_image
 
 SUPPORTED_IMAGE_FORMATS = (
     '.png',
-    '.svg',
 )
 
 
@@ -98,12 +98,15 @@ def generate_daily_chart_image(chart_figure, filename=None, image_format: str='.
     if not filename:
         filename = 'output.png'
 
+    buffer = BytesIO()
     if image_format == '.png':
-        export_png(chart_figure, filename)
-    elif image_format == '.svg':
-        export_svgs(chart_figure, filename)
-    return filename
+        image = export_png(chart_figure, filename, as_fileobj=True)
+        image.save(buffer, format='png')
+        buffer.seek(0)
+    return buffer
 
 
+def healthcheck():
+    return True
 
 
