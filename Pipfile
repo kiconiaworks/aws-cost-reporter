@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"boto3" = "*"
 pytz = "*"
 slackclient = "*"
 bokeh = "*"
 selenium = "*"
 pandas = "*"
 pillow = "*"
+zappa = "*"
 
 [dev-packages]
 
