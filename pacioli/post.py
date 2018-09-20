@@ -8,8 +8,15 @@ SLACK_BOT_ICONURL = os.getenv('SLACK_BOT_ICONURL', 'http://images.sciencelibrary
 DEFAULT_TEST_MESSAGE = ":fire: :heavy_dollar_sign::heavy_dollar_sign: :fire: Accounting Rules :fire: :heavy_dollar_sign::heavy_dollar_sign: :fire:"
 
 
+class SlackError(Exception):
+    pass
+
 class SlackChannelError(Exception):
     pass
+
+
+if not SLACK_TOKEN:
+    raise SlackError('"SLACK_API_TOKEN" environment variable not set!')
 
 
 class SlackPostManager:
