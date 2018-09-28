@@ -1,4 +1,4 @@
-# aws-cost-reporter
+# aws-cost-reporter (pacioli)
 
 This project provides a simple SLACK bot to generate AWS cost daily charts and sends to slack.
 
@@ -6,11 +6,18 @@ This project provides a simple SLACK bot to generate AWS cost daily charts and s
 ## Prerequisites
 
 - python 3.6
+- pipenv installed and used
 - AWS Account 
     - Must have access to billing
     
     > User billing access must be turned on via the root account
      
+## Prepare pipenv environment
+
+```
+# Installs the 'frozen' libraires known to work
+pipenv sync
+```     
 
 ## AWS Configuration
 
@@ -43,6 +50,22 @@ In order to allow the lambda function to access the billing information the foll
 aws iam attach-role-policy --role-name aws-cost-report-dev-ZappaLambdaExecutionRole --policy-arn $(aws iam list-policies --scope Local --query "Policies[?PolicyName=='cost-reporter-ce-policy'].Arn" --output text)
 ```
 
+### Create AccountId Mapping
+
+Optionally the `accountid_mapping.json` file can be prepared to provide a more easily understandable display of accounts.
+
+The file should be created in the repository root and consist of the following:
+
+> NOTE: multple {AWS ACCOUNT ID} entries are supported
+
+```
+{
+  "{AWS ACCOUNT ID}": "Identity Account (root)",
+  "previous_month_total": "Previous Month (Total)",
+  "current_month_total": "Current Month (Total)"
+}
+```
+
 ## Slack Bot Setup
 
 For your workspace login and 'install' the app to create a bot following the instructions at the link below:
@@ -70,7 +93,7 @@ Zappa provides a simple framework enabling you to easily setup and run python ap
         },
         "events": [{
            "function": "pacioli.event_handlers.post_daily_chart",
-           "expression": "cron(0 0 ? * MON,WED,FRI *)"
+           "expression": "cron(0 50,53 ? * MON,WED,FRI *)"
         }]
     }
 }
@@ -93,3 +116,18 @@ The location of `phantomjs` can be specified via the `BOKEH_PHANTOMJS_PATH` envi
 > NOTE: If you used the sample `zappa_settings.json` template above you should be set to run the function.
 
 
+## Testing
+
+To test locally, set the following ENVIRONMENT VARIABLES:
+
+- SLACK_API_TOKEN
+- BOKEH_PHANTOMJS_PATH
+
+Once setup and environment variables set, `pacioli` can be tested locally using the following command:
+
+> NOTE: the command below assumes that pipenv is used and sync'd and you are already in the shell
+
+
+```
+python -m pacioli.cli
+```
