@@ -32,7 +32,6 @@ def post_daily_chart(event, context) -> None:
     logger.info('converting chart to image (png)...')
     image_object = generate_daily_chart_image(chart_figure)
 
-
     logger.info('posting image to slack...')
     slack = SlackPostManager()
     slack.post_image_to_channel(
