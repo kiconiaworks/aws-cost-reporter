@@ -4,7 +4,7 @@ from calendar import monthrange
 from collections import defaultdict, Counter
 
 import pandas as pd
-from bokeh.io import export_png
+from bokeh.io.export import get_screenshot_as_png
 
 from .collect import CostManager
 from .charts.create import create_daily_chart_image
@@ -91,22 +91,13 @@ def prepare_daily_chart_figure(current_datetime: datetime.datetime=None, account
     return chart_figure
 
 
-def generate_daily_chart_image(chart_figure, filename=None, image_format: str='.png'):
+def generate_daily_chart_image(chart_figure, image_format: str='.png'):
     if image_format not in SUPPORTED_IMAGE_FORMATS:
         raise ImageFormatError(f'"{image_format}" not in SUPPORTED_IMAGE_FORMATS: {SUPPORTED_IMAGE_FORMATS}')
 
-    if not filename:
-        filename = 'output.png'
-
     buffer = BytesIO()
     if image_format == '.png':
-        image = export_png(chart_figure, filename, as_fileobj=True)
+        image = get_screenshot_as_png(chart_figure)
         image.save(buffer, format='png')
         buffer.seek(0)
     return buffer
-
-
-def healthcheck():
-    return True
-
-
