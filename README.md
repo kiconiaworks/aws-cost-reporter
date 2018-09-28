@@ -1,7 +1,16 @@
 # aws-cost-reporter
 
-Generates cost daily charts and sends to slack.
+This project provides a simple SLACK bot to generate AWS cost daily charts and sends to slack.
 
+
+## Prerequisites
+
+- python 3.6
+- AWS Account 
+    - Must have access to billing
+    
+    > User billing access must be turned on via the root account
+     
 
 ## AWS Configuration
 
@@ -34,96 +43,53 @@ In order to allow the lambda function to access the billing information the foll
 aws iam attach-role-policy --role-name aws-cost-report-dev-ZappaLambdaExecutionRole --policy-arn $(aws iam list-policies --scope Local --query "Policies[?PolicyName=='cost-reporter-ce-policy'].Arn" --output text)
 ```
 
-## bokeh update
+## Slack Bot Setup
 
-Note, this requires that `bokeh` needs to be udpated in order to properly find the `phantomjs` binary dependency:
+For your workspace login and 'install' the app to create a bot following the instructions at the link below:
 
-The following file is updated to include `` as the *phantomjs_path*:
-```python
-def detect_phantomjs(version='2.1'):
-    ''' Detect if PhantomJS is avaiable in PATH, at a minimum version.
+https://api.slack.com/bot-users#creating-bot-user
 
-    Args:
-        version (str, optional) :
-            Required minimum version for PhantomJS (mostly for testing)
 
-    Returns:
-        str, path to PhantomJS
+## zappa (lambda) Setup
 
-    '''
-    if settings.phantomjs_path() is not None:
-        phantomjs_path = settings.phantomjs_path()
-    else:
-        if os.path.exists('/var/task/bin/phantomjs'):
-            phantomjs_path = '/var/task/bin/phantomjs'
-        elif hasattr(shutil, "which"):
-            phantomjs_path = shutil.which("phantomjs") or "phantomjs"
-        else:
-            # Python 2 relies on Environment variable in PATH - attempt to use as follows
-            phantomjs_path = "phantomjs"
+Zappa provides a simple framework enabling you to easily setup and run python applications using AWS Lambda (function as a service).
 
-    try:
-        proc = Popen([phantomjs_path, "--version"], stdout=PIPE, stderr=PIPE)
-        proc.wait()
-        out = proc.communicate()
-
-        if len(out[1]) > 0:
-            raise RuntimeError('Error encountered in PhantomJS detection: %r' % out[1].decode('utf8'))
-
-        required = V(version)
-        installed = V(out[0].decode('utf8'))
-        if installed < required:
-            raise RuntimeError('PhantomJS version to old. Version>=%s required, installed: %s' % (required, installed))
-
-    except OSError:
-        raise RuntimeError('PhantomJS is not present in PATH. Try "conda install phantomjs" or \
-            "npm install -g phantomjs-prebuilt"')
-
-    return phantomjs_path
+```json
+{
+    "dev": {
+        "aws_region": "us-west-2",
+        "profile_name": "default",
+        "project_name": "aws-cost-report",
+        "runtime": "python3.6",
+        "s3_bucket": "pacioli-zappa-jklalkjdf92923923",
+        "apigateway_enabled": false,
+        "keep_warm": false,
+        "environment_variables": {
+            "SLACK_API_TOKEN": "{INSERT YOUR SLACK BOT TOKEN}",
+            "BOKEH_PHANTOMJS_PATH": "/var/task/bin/phantomjs"
+        },
+        "events": [{
+           "function": "pacioli.event_handlers.post_daily_chart",
+           "expression": "cron(0 0 ? * MON,WED,FRI *)"
+        }]
+    }
+}
 ```
 
-The following `bokeh/io/export.py` was updated:
+> NOTE: Slack bot tokens are prefixed with "xoxb-"
 
-```python
-def export_png(obj, filename=None, height=None, width=None, webdriver=None, as_fileobj=False):
-    ''' Export the LayoutDOM object or document as a PNG.
+## bokeh setting
 
-    If the filename is not given, it is derived from the script name
-    (e.g. ``/foo/myplot.py`` will create ``/foo/myplot.png``)
+In order to export PNG bokeh requires that [phantomjs](http://phantomjs.org/download.html) be available.
+The location of `phantomjs` can be specified via the `BOKEH_PHANTOMJS_PATH` environment variable._
 
-    Args:
-        obj (LayoutDOM or Document) : a Layout (Row/Column), Plot or Widget
-            object or Document to export.
 
-        filename (str, optional) : filename to save document under (default: None)
-            If None, infer from the filename.
+### Prepare phantomjs
 
-        height (int) : the desired height of the exported layout obj only if
-            it's a Plot instance. Otherwise the height kwarg is ignored.
+1. Download the linux phantomjs binary from (http://phantomjs.org/download.html)
 
-        width (int) : the desired width of the exported layout obj only if
-            it's a Plot instance. Otherwise the width kwarg is ignored.
+2. Place binary in `REPOSITORY_ROOT/bin`
 
-        webdriver (selenium.webdriver) : a selenium webdriver instance to use
-            to export the image.
+> NOTE: If you used the sample `zappa_settings.json` template above you should be set to run the function.
 
-    Returns:
-        filename (str) : the filename where the static file is saved.
 
-    .. warning::
-        Responsive sizing_modes may generate layouts with unexpected size and
-        aspect ratios. It is recommended to use the default ``fixed`` sizing mode.
-
-    '''
-
-    image = get_screenshot_as_png(obj, height=height, width=width, driver=webdriver)
-
-    if filename is None:
-        filename = default_filename("png")
-    if as_fileobj:
-        return image
-    else:
-        image.save(filename)
-        return abspath(filename)
-
-```
