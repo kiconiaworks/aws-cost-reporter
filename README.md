@@ -1,5 +1,7 @@
 # aws-cost-reporter (pacioli)
 
+[![CircleCI](https://circleci.com/gh/kiconiaworks/aws-cost-reporter.svg?style=svg)](https://circleci.com/gh/kiconiaworks/aws-cost-reporter)
+
 This project provides a simple SLACK bot to generate AWS cost charts and sends to a defined slack slack channel.
 
 
