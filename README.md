@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/kiconiaworks/aws-cost-reporter.svg?style=svg)](https://circleci.com/gh/kiconiaworks/aws-cost-reporter)
 
-This project provides a simple SLACK bot to generate AWS cost charts and sends to a defined slack slack channel.
+The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS account(s) monthly cost and posts the resulting chart image to the defined slack channel (`SLACK_CHANNEL_NAME`).
 
 
 ## Prerequisites
