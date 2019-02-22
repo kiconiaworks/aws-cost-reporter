@@ -88,7 +88,7 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
 ## bokeh setting
 
 In order to export PNG bokeh requires that [phantomjs](http://phantomjs.org/download.html) be available.
-The location of `phantomjs` can be specified via the `BOKEH_PHANTOMJS_PATH` environment variable._
+The location of `phantomjs` can be specified via the `BOKEH_PHANTOMJS_PATH` environment variable.
 
 The `get_phantomjs.py` script will attempt to download the latest `phantomjs` linux binary and place it in the `{REPOSITORY_ROOT}/bin` directory:
 
@@ -100,7 +100,14 @@ If the script doesn't work follow the steps in the section below.
 
 ### Prepare phantomjs
 
-1. Download the linux phantomjs binary from (http://phantomjs.org/download.html)
+1. Download the linux phantomjs binary from (http://phantomjs.org/download.html):
+
+    ```bash
+    export PHANTOMJS_VERSION=phantomjs-2.1.1-linux-x86_64
+    wget https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS_VERSION}.tar.bz2
+    tar xvjf ${PHANTOMJS_VERSION}.tar.bz2
+    sudo mv ${PHANTOMJS_VERSION}/bin/phantomjs bin/  
+    ```
 
 2. Place binary in `REPOSITORY_ROOT/bin`
 
