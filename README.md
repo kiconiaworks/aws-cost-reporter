@@ -118,6 +118,23 @@ If the script doesn't work follow the steps in the section below.
 
 In order to allow the lambda function to access the billing information the following configuration needs to be performed.
 
+Requires:
+- awscli
+- envsubst
+    - macos install:
+    
+        ```bash
+        brew install gettext
+        brew link --force gettext   
+        ```
+    - ubuntu install:
+    
+        ```bash
+        sudo apt install gettext-base
+        ```
+    
+    
+
 1. Deploy as zappa application:
     
     > This process creates the related roles for the lambda operation
