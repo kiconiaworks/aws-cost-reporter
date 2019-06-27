@@ -44,8 +44,6 @@ if __name__ == '__main__':
         cost_manager_collect_result = test_collect_account_basic_account_metrics()
         print(json.dumps(cost_manager_collect_result, indent=4))
 
-
-
         test_chart_filename = 'test-image.png'
         print(f'writing ({test_chart_filename}) ...')
         with open(test_chart_filename, 'wb') as image_out:

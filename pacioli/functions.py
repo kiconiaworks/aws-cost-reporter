@@ -72,9 +72,6 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
     df = df.fillna(0.0)
 
     ix = pd.date_range(start=previous_month_start.date(), end=target_month_end.date(), freq='D')
-    print(f'pre-reindex: {df}')
-    print(f'ix: {ix}')
-    #df = df.reindex(ix)
     df.index.name = 'date'
 
     previous_month_series = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
