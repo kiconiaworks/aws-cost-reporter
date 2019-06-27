@@ -70,8 +70,6 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
     df.sort_index(inplace=True)
     df.index = pd.to_datetime(df.index, '%Y-%m-%d')
     df = df.fillna(0.0)
-
-    ix = pd.date_range(start=previous_month_start.date(), end=target_month_end.date(), freq='D')
     df.index.name = 'date'
 
     previous_month_series = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
@@ -99,7 +97,9 @@ def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> T
     return end_date, current_month_start, previous_month_start
 
 
-def prepare_daily_chart_figure(current_datetime: Optional[datetime.datetime] = None, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
+def prepare_daily_chart_figure(
+        current_datetime: Optional[datetime.datetime] = None,
+        accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
     Gathers required Cost Data, and builds chart figure
 

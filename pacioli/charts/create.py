@@ -28,7 +28,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
 
     current_cost = float(current_month_df[accountids].max().sum())
     previous_cost = float(current_month_df.loc[last_available_date]['previous_month_total'])
-    percentage_change = round((current_cost/previous_cost - 1.0) * 100, 1)
+    percentage_change = round((current_cost / previous_cost - 1.0) * 100, 1)
 
     source = ColumnDataSource(current_month_df)
 
