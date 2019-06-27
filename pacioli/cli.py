@@ -3,6 +3,7 @@ CLI for testing manually
 """
 import json
 import datetime
+from io import BytesIO
 
 from .event_handlers import post_daily_chart
 from .functions import _get_month_starts, prepare_daily_chart_figure, generate_daily_chart_image
@@ -24,7 +25,10 @@ def test_collect_account_basic_account_metrics() -> dict:
     return result
 
 
-def test_graph_image_creation():
+def test_graph_image_creation() -> BytesIO:
+    """
+    Run graph image creation for the current date
+    """
     now = datetime.datetime.now()
     chart_figure = prepare_daily_chart_figure(now)
     image_bytes = generate_daily_chart_image(chart_figure)
