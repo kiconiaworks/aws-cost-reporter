@@ -32,6 +32,7 @@ class CostManager:
         )
         all_results['ResultsByTime'].extend(response['ResultsByTime'])
 
+        # handle paged responses
         while 'NextPageToken' in response and response['NextPageToken']:
             response = self.ce_client.get_cost_and_usage(
                 TimePeriod={"Start": start.isoformat(), "End": end.isoformat()},

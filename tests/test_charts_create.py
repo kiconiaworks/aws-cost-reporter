@@ -15,7 +15,7 @@ def test_format_to_dataframe():
     with COST_JSON_FILEPATH.open('r', encoding='utf8') as sample_data_json:
         sample_data = json.loads(sample_data_json.read())
         df = format_to_dataframe(sample_data)
-    figure = create_daily_chart_figure(df)
+    figure, current_cost, previous_cost = create_daily_chart_figure(df)
     assert figure
 
 
@@ -24,7 +24,7 @@ def test_generate_daily_chart_image():
     with COST_JSON_FILEPATH.open('r', encoding='utf8') as sample_data_json:
         sample_data = json.loads(sample_data_json.read())
         df = format_to_dataframe(sample_data)
-    figure = create_daily_chart_figure(df)
+    figure, current_cost, previous_cost = create_daily_chart_figure(df)
     image_buffer = generate_daily_chart_image(figure)
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(image_buffer.read())

@@ -17,6 +17,7 @@ def test_format_to_dataframe():
     assert not df.empty
     assert all(header in df.columns.values for header in ('000000000001', '000000000002', 'previous_month_total'))
 
+    # provides the cumulative sum for each day (including the previous)
     expected_000000000001_cumsum = 8504.0
     expected_000000000002_cumsum = 9878.0
 
