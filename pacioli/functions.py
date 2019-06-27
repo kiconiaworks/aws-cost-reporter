@@ -29,7 +29,7 @@ def datestr2datetime(date_str) -> datetime.datetime:
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
 
 
-def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[datetime.date] = None) -> pd.DataFrame:
+def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[datetime.datetime] = None) -> pd.DataFrame:
     """
     Convert the AWS Cost explorer JSON data to a pandas Dataframe
     """
@@ -38,6 +38,7 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
 
     assert target_month_start.day == 1
     previous_month_start = (target_month_start - datetime.timedelta(days=1)).replace(day=1)
+    previous_month_end_day = monthrange(previous_month_start.year, previous_month_start.month)[-1]
     last_day_of_month = monthrange(target_month_start.year, target_month_start.month)[-1]
     target_month_end = target_month_start.replace(day=last_day_of_month)
 
@@ -71,16 +72,18 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
 
     ix = pd.date_range(start=previous_month_start.date(), end=target_month_end.date(), freq='D')
     df = df.reindex(ix)
-
-    previous_month_df = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
-    previous_month_df.index = previous_month_df.index + pd.DateOffset(months=1)
-    previous_month_df = previous_month_df.rename('previous_month_cost')
-
-    df = pd.concat([df, previous_month_df])
-    df['previous_month_total'] = df[0]
-    df = df.drop([0], axis=1)
     df.index.name = 'date'
-    return df
+
+    previous_month_series = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
+    previous_month_series.index = previous_month_series.index.shift(periods=previous_month_end_day, freq='D')
+    previous_month_series = previous_month_series.rename('previous_month_total')
+
+    df['previous_month_total'] = previous_month_series
+    df['previous_month_total'].fillna(0.0)
+
+    # remove dates not in the current target_month
+    df_target_month_only = df.loc[(df.index >= target_month_start) & (df.index < target_month_end)]
+    return df_target_month_only
 
 
 def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tuple[datetime.date, datetime.date, datetime.date]:
