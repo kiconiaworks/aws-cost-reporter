@@ -7,7 +7,7 @@ The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS a
 
 ## Prerequisites
 
-- python 3.6
+- python 3.7
 - awscli
 - pipenv
 - AWS Account 
