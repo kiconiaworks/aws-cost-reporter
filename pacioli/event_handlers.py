@@ -38,7 +38,8 @@ def post_daily_chart(event, context) -> None:
             accountid_mapping = json.loads(mapping.read())
 
     logger.info('creating daily chart...')
-    chart_figure = prepare_daily_chart_figure(now, accountid_mapping)
+    chart_figure, current_cost, previous_cost = prepare_daily_chart_figure(now, accountid_mapping)
+    percentage_change = round((current_cost / previous_cost - 1.0) * 100, 1)
 
     logger.info('converting chart to image (png)...')
     image_object = generate_daily_chart_image(chart_figure)
@@ -47,7 +48,7 @@ def post_daily_chart(event, context) -> None:
     slack = SlackPostManager()
     slack.post_image_to_channel(
         channel_name=SLACK_CHANNEL_NAME,
-        title=f'AWS Cost {now.month}/{now.day}',
+        title=f'AWS Cost {now.month}/{now.day} ${round(current_cost, 2)} ({percentage_change}%)',
         image_object=image_object
     )
     logger.info('posted!')

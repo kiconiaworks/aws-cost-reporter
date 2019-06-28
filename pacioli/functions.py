@@ -11,7 +11,7 @@ import pandas as pd
 from bokeh.io.export import get_screenshot_as_png
 
 from .collect import CostManager
-from .charts.create import create_daily_chart_figure
+from .charts.create import create_daily_chart_figure, figure
 
 
 SUPPORTED_IMAGE_FORMATS = (
@@ -29,7 +29,7 @@ def datestr2datetime(date_str) -> datetime.datetime:
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
 
 
-def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[datetime.date] = None) -> pd.DataFrame:
+def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[datetime.datetime] = None) -> pd.DataFrame:
     """
     Convert the AWS Cost explorer JSON data to a pandas Dataframe
     """
@@ -38,6 +38,7 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
 
     assert target_month_start.day == 1
     previous_month_start = (target_month_start - datetime.timedelta(days=1)).replace(day=1)
+    previous_month_end_day = monthrange(previous_month_start.year, previous_month_start.month)[-1]
     last_day_of_month = monthrange(target_month_start.year, target_month_start.month)[-1]
     target_month_end = target_month_start.replace(day=last_day_of_month)
 
@@ -67,20 +68,20 @@ def format_to_dataframe(aws_cost_explorer_data, target_month_start: Optional[dat
 
     df = df.set_index('date')
     df.sort_index(inplace=True)
+    df.index = pd.to_datetime(df.index, '%Y-%m-%d')
     df = df.fillna(0.0)
-
-    ix = pd.date_range(start=previous_month_start.date(), end=target_month_end.date(), freq='D')
-    df = df.reindex(ix)
-
-    previous_month_df = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
-    previous_month_df.index = previous_month_df.index + pd.DateOffset(months=1)
-    previous_month_df = previous_month_df.rename('previous_month_cost')
-
-    df = pd.concat([df, previous_month_df])
-    df['previous_month_total'] = df[0]
-    df = df.drop([0], axis=1)
     df.index.name = 'date'
-    return df
+
+    previous_month_series = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
+    previous_month_series.index = previous_month_series.index.shift(periods=previous_month_end_day, freq='D')
+    previous_month_series = previous_month_series.rename('previous_month_total')
+
+    df['previous_month_total'] = previous_month_series
+    df['previous_month_total'].fillna(0.0)
+
+    # remove dates not in the current target_month
+    df_target_month_only = df.loc[(df.index >= target_month_start) & (df.index < target_month_end)]
+    return df_target_month_only
 
 
 def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tuple[datetime.date, datetime.date, datetime.date]:
@@ -96,7 +97,9 @@ def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> T
     return end_date, current_month_start, previous_month_start
 
 
-def prepare_daily_chart_figure(current_datetime: Optional[datetime.datetime] = None, accountid_mapping: Optional[dict] = None):
+def prepare_daily_chart_figure(
+        current_datetime: Optional[datetime.datetime] = None,
+        accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
     Gathers required Cost Data, and builds chart figure
 
@@ -108,10 +111,9 @@ def prepare_daily_chart_figure(current_datetime: Optional[datetime.datetime] = N
     # get full data from previous month in order to compare current with previous
     manager = CostManager()
     result = manager.collect_account_basic_account_metrics(previous_month_start, end)
-    df = format_to_dataframe(result)
-    current_month_df = df[df.index >= pd.to_datetime(current_month_start)]
-    chart_figure = create_daily_chart_figure(current_month_df, accountid_mapping)
-    return chart_figure
+    current_month_df = format_to_dataframe(result)
+    chart_figure, current_cost, previous_cost = create_daily_chart_figure(current_month_df, accountid_mapping)
+    return chart_figure, current_cost, previous_cost
 
 
 def generate_daily_chart_image(chart_figure, image_format: str = '.png') -> BytesIO:

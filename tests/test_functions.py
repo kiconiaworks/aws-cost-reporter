@@ -12,8 +12,20 @@ def test_format_to_dataframe():
     COST_JSON_FILEPATH = TEST_DATA_DIRECTORY / 'collect_account_basic_account_metrics__result.json'
     with COST_JSON_FILEPATH.open('r', encoding='utf8') as sample_data_json:
         sample_data = json.loads(sample_data_json.read())
-        df = format_to_dataframe(sample_data)
+        target_month_start = datetime.datetime(2019, 2, 1)
+        df = format_to_dataframe(sample_data, target_month_start)
     assert not df.empty
+    assert all(header in df.columns.values for header in ('000000000001', '000000000002', 'previous_month_total'))
+
+    # provides the cumulative sum for each day (including the previous)
+    expected_000000000001_cumsum = 8504.0
+    expected_000000000002_cumsum = 9878.0
+
+    actual_000000000001_sum = df['000000000001'].sum()
+    actual_000000000002_sum = df['000000000002'].sum()
+
+    assert actual_000000000001_sum == expected_000000000001_cumsum
+    assert actual_000000000002_sum == expected_000000000002_cumsum
 
 
 def test___get_month_starts():

@@ -2,7 +2,7 @@
 Functions for building bokeh figure objects from dataframes
 """
 import datetime
-from typing import Optional
+from typing import Optional, Tuple
 
 import pandas as pd
 import numpy as np
@@ -11,7 +11,7 @@ from bokeh.plotting import figure
 from bokeh.palettes import brewer
 
 
-def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> figure:
+def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
     Create a cumulative stacked line graph of given AWS accounts
     :param current_month_df: Dataframe containing the current and previous month data
@@ -19,8 +19,16 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     """
     # get max record date (assumes values will NOT decrease)
     accountids = [i for i in current_month_df.columns if i.isdigit()]
+
+    # dates are same for all accounts
+    # - take a sample to discover the 'last_available_date'
     sample_accountid = accountids[0]
-    last_available_date = current_month_df[current_month_df[sample_accountid] == current_month_df[sample_accountid].max()].index.date[0]
+    account_max_value = current_month_df[[sample_accountid]].max()[0]
+    last_available_date = current_month_df[current_month_df[sample_accountid] == account_max_value].index.date[0]
+
+    current_cost = float(current_month_df[accountids].max().sum())
+    previous_cost = float(current_month_df.loc[last_available_date]['previous_month_total'])
+    percentage_change = round((current_cost / previous_cost - 1.0) * 100, 1)
 
     source = ColumnDataSource(current_month_df)
 
@@ -28,7 +36,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     previous_day = today - datetime.timedelta(days=2)
     today_display_str = today.strftime('%Y-%m-%d')
     f = figure(
-        title=f'AWS Cost ({today_display_str} UTC)',
+        title=f'AWS Cost ({today_display_str} UTC) ${round(current_cost, 2)} ({percentage_change}%)',
         x_axis_type="datetime",
         x_axis_label='Date',
         y_axis_label='Cost ($)',
@@ -49,6 +57,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
         return df_stack
 
     current_month_previous_removed = current_month_df.drop(['previous_month_total'], axis=1)
+
     areas = stacked(current_month_previous_removed)
     areas = areas.fillna(0.0)
     number_of_areas = areas.shape[1]
@@ -63,8 +72,10 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
         colors = brewer['Spectral'][number_of_areas]
 
     x2 = np.hstack(
-        (current_month_previous_removed.index[::-1],
-         current_month_previous_removed.index)
+        (
+            current_month_previous_removed.index[::-1],
+            current_month_previous_removed.index
+        )
     )
 
     current_month_label_values = current_month_df[current_month_df.index == pd.to_datetime(last_available_date)].groupby(level=0).sum()
@@ -137,4 +148,4 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     f.add_layout(labels)
     f.toolbar.logo = None
     f.toolbar_location = None
-    return f
+    return f, current_cost, previous_cost
