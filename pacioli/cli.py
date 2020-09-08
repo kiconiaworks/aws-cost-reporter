@@ -19,9 +19,23 @@ def test_collect_account_basic_account_metrics() -> dict:
     """
     Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results
     """
-    end, previous_month_start, _ = _get_month_starts()
+    now = datetime.datetime.now()
+    end, _, previous_month_start = _get_month_starts(now)
+
     manager = CostManager()
     result = manager.collect_account_basic_account_metrics(previous_month_start, end)
+    return result
+
+
+def test_collect_account_group_account_project() -> dict:
+    """
+    Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results
+    """
+    now = datetime.datetime.now()
+    end, _, previous_month_start = _get_month_starts(now)
+
+    manager = CostManager()
+    result = manager.collect_account_group_account_project(previous_month_start, end)
     return result
 
 
