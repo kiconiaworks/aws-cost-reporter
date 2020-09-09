@@ -1,5 +1,5 @@
 """
-Functions for building bokeh figure objects from dataframes
+Functions for building bokeh figure objects from dataframes.
 """
 import datetime
 import math
@@ -16,7 +16,7 @@ from bokeh.transform import cumsum
 
 def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
-    Create a cumulative stacked line graph of given AWS accounts
+    Create a cumulative stacked line graph of given AWS accounts.
     :param current_month_df: Dataframe containing the current and previous month data
     :param accountid_mapping: AccountID to display name mapping for figure labels
     """
@@ -155,6 +155,9 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
 
 
 def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
+    """
+    tag/service毎のコストの円グラフを作成.
+    """
     project_ids = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
 
     figures = []

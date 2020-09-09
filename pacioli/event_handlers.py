@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 def post_daily_chart(event, context) -> None:
     """
-    Handle the lambda event, create chart, chart image and post to slack
+    Handle the lambda event, create chart, chart image and post to slack.
     """
     now = datetime.datetime.now()
 

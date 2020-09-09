@@ -1,5 +1,5 @@
 """
-Contains main functions for performing collection and generation of charts for posting to slack
+Contains main functions for performing collection and generation of charts for posting to slack.
 """
 import datetime
 from io import BytesIO
@@ -19,16 +19,19 @@ SUPPORTED_IMAGE_FORMATS = (
 
 
 class ImageFormatError(ValueError):
-    """Exception used when an unsupported Image format is used/given"""
+    """Exception used when an unsupported Image format is used/given."""
     pass
 
 
 def datestr2datetime(date_str) -> datetime.datetime:
-    """Convert YYYY-MM-DD to a python datetime object"""
+    """Convert YYYY-MM-DD to a python datetime object."""
     return datetime.datetime.strptime(date_str, '%Y-%m-%d')
 
 
 def format_to_dataframe(aws_cost_explorer_data: dict) -> pd.DataFrame:
+    """
+    CostExplorerからの出力をDataFrameに変換する関数.
+    """
     aws_cost_explorer_data_result = {
         'date': [],
         'group1': [],
@@ -54,6 +57,9 @@ def format_to_dataframe(aws_cost_explorer_data: dict) -> pd.DataFrame:
 
 
 def group_by_cost_cumsum(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    date, group1, group2毎のコストを算出.
+    """
     def groupby_total(group_df):
         return group_df.groupby(['group1', 'group2']).sum()
 
@@ -92,6 +98,9 @@ def group_by_cost_cumsum(df: pd.DataFrame) -> pd.DataFrame:
 
 def add_previous_month_cost_diff(df: pd.DataFrame,
                                  target_month_start: Optional[datetime.datetime] = None) -> pd.DataFrame:
+    """
+    先月のコストを算出.
+    """
     if not target_month_start:
         target_month_start = datetime.datetime.utcnow().replace(day=1)
 
@@ -115,7 +124,7 @@ def add_previous_month_cost_diff(df: pd.DataFrame,
 
 def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tuple[datetime.date, datetime.date, datetime.date]:
     """
-    Calculate the `current` month start date and `previous` month start date from the given current datetime object
+    Calculate the `current` month start date and `previous` month start date from the given current datetime object.
     """
     if not current_datetime:
         current_datetime = datetime.datetime.now()
@@ -130,10 +139,10 @@ def prepare_daily_chart_figure(
         current_datetime: Optional[datetime.datetime] = None,
         accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
-    Gathers required Cost Data, and builds chart figure
+    Gathers required Cost Data, and builds chart figure.
 
-    :param current_datetime: Datetime for the day to calculate the cost for
-    :param accountid_mapping: If given, output will
+    :param current_datetime: Datetime for the day to calculate the cost for.
+    :param accountid_mapping: If given, output will.
     """
     end, current_month_start, previous_month_start = _get_month_starts(current_datetime)
 
@@ -152,9 +161,9 @@ def prepare_daily_chart_figure(
 
 def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime] = None) -> figure:
     """
-    Gathers required Cost Data, and builds chart figure
+    Gathers required Cost Data, and builds chart figure.
 
-    :param current_datetime: Datetime for the day to calculate the cost for
+    :param current_datetime: Datetime for the day to calculate the cost for.
     """
     end, current_month_start, previous_month_start = _get_month_starts(current_datetime)
 
@@ -173,7 +182,7 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
 
 def generate_daily_chart_image(chart_figure, image_format: str = '.png') -> BytesIO:
     """
-    Write the given chart to the descired image format into a BytesIO() object
+    Write the given chart to the descired image format into a BytesIO() object.
     """
     if image_format not in SUPPORTED_IMAGE_FORMATS:
         raise ImageFormatError(f'"{image_format}" not in SUPPORTED_IMAGE_FORMATS: {SUPPORTED_IMAGE_FORMATS}')

@@ -1,5 +1,5 @@
 """
-Key class for interfacing with and obtaining data from the AWS CostExplorer API
+Key class for interfacing with and obtaining data from the AWS CostExplorer API.
 """
 import boto3
 import datetime
@@ -12,7 +12,7 @@ GROUPBY_TAG_NAME = os.environ.get("GROUPBY_TAG_NAME", "ProjectId")
 
 class CostManager:
     """
-    Class intended to manage desired CostExplorer ('ce') operations
+    Class intended to manage desired CostExplorer ('ce') operations.
     """
 
     def __init__(self):
@@ -46,7 +46,7 @@ class CostManager:
 
     def collect_account_service_metrics(self, start: datetime.date, end: datetime.date, granularity='DAILY') -> dict:
         """
-        Collect basic account cost metrics
+        Collect account/service metrics.
         """
         group_by = [
             {'Type': 'DIMENSION', 'Key': 'LINKED_ACCOUNT'},
@@ -55,6 +55,9 @@ class CostManager:
         return self._collect_account_cost(start, end, group_by, granularity)
 
     def collect_groupbytag_service_metrics(self, start: datetime.date, end: datetime.date, granularity='DAILY') -> dict:
+        """
+        Collect tag/service metrics.
+        """
         group_by = [
             {'Type': 'TAG', 'Key': GROUPBY_TAG_NAME},
             {'Type': 'DIMENSION', 'Key': 'SERVICE'},
