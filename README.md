@@ -15,6 +15,13 @@ The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS a
     
     > User billing access must be turned on via the root account
      
+
+## Resource TAGの有効化
+
+- 使用するResource Tagを以下のページから有効化する
+    - https://console.aws.amazon.com/billing/home?#/preferences/tags
+    - ※有効化しないとResource Tagを元にコストを集計することができません
+
 ## Prepare pipenv environment
 
 ```

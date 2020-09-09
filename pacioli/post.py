@@ -1,5 +1,5 @@
 """
-Perform actions necessary for interfacing with SLACK
+Perform actions necessary for interfacing with SLACK.
 """
 import os
 from typing import BinaryIO
@@ -14,12 +14,12 @@ DEFAULT_TEST_MESSAGE = ":fire: :heavy_dollar_sign::heavy_dollar_sign: :fire: Acc
 
 
 class SlackError(Exception):
-    """General Slack Error"""
+    """General Slack Error."""
     pass
 
 
 class SlackChannelError(Exception):
-    """Raise when Slack Channel not found"""
+    """Raise when Slack Channel not found."""
     pass
 
 
@@ -28,14 +28,14 @@ if not SLACK_TOKEN:
 
 
 class SlackPostManager:
-    """Main class for interfacing with Slack"""
+    """Main class for interfacing with Slack."""
 
     def __init__(self, token: str = SLACK_TOKEN):
         self.sc = SlackClient(token)
 
     def _get_channel_id(self, channel_name: str):
         """
-        Obtain the channel_id given the channel_name
+        Obtain the channel_id given the channel_name.
         """
         # get channel id for channel name
         channel_id = None
@@ -54,7 +54,7 @@ class SlackPostManager:
 
     def post_message_to_channel(self, channel_name=SLACK_CHANNEL_NAME, message=DEFAULT_TEST_MESSAGE) -> None:
         """
-        Post a text message as the defined bot to the given channel
+        Post a text message as the defined bot to the given channel.
         """
         channel_id = self._get_channel_id(channel_name)
         self.sc.api_call(
@@ -67,7 +67,7 @@ class SlackPostManager:
 
     def post_image_to_channel(self, channel_name: str, image_object: BinaryIO, title: str = 'Test Upload') -> None:
         """
-        Post an Image to a given channel
+        Post an Image to a given channel.
         """
         channel_id = self._get_channel_id(channel_name)
 

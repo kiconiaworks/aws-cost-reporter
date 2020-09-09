@@ -1,19 +1,22 @@
 """
-Functions for building bokeh figure objects from dataframes
+Functions for building bokeh figure objects from dataframes.
 """
 import datetime
-from typing import Optional, Tuple
+import math
+from typing import Optional, Tuple, Union
 
 import pandas as pd
 import numpy as np
 from bokeh.models import ColumnDataSource, Legend, LegendItem, LabelSet
 from bokeh.plotting import figure
-from bokeh.palettes import brewer
+from bokeh.palettes import brewer, magma
+from bokeh.layouts import gridplot, Row, Column
+from bokeh.transform import cumsum
 
 
 def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
     """
-    Create a cumulative stacked line graph of given AWS accounts
+    Create a cumulative stacked line graph of given AWS accounts.
     :param current_month_df: Dataframe containing the current and previous month data
     :param accountid_mapping: AccountID to display name mapping for figure labels
     """
@@ -149,3 +152,37 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     f.toolbar.logo = None
     f.toolbar_location = None
     return f, current_cost, previous_cost
+
+
+def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
+    """
+    tag/service毎のコストの円グラフを作成.
+    """
+    project_ids = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
+
+    figures = []
+    for project_id in list(project_ids):
+        df_project = df[[x for x in df.columns if x.split("/")[0] == project_id]]
+
+        p = figure(plot_height=350, title=f"{project_id}: {df_project.iloc[-1].sum()}$", toolbar_location=None,
+                   tools="hover", tooltips="@projectid_service: @value")
+
+        df_project.columns = [x.split('/')[1] for x in df_project.columns]
+
+        data = df_project.iloc[-1].reset_index(name="value").rename(columns={"index": "projectid_service"})
+        data = data.sort_values("value", ascending=False).head(5)
+        data["value"] += 0.0000001  # 0だと円グラフが作成されないためイプシロンを足す
+        data["angle"] = data["value"] / data["value"].sum() * 2 * math.pi
+        data["color"] = magma(len(data) + 1)[1:]
+
+        data["projectid_service"] = [f"{row['projectid_service']}: {row['value']:.3f}$" for _, row in data.iterrows()]
+
+        p.wedge(x=0, y=1, radius=0.4,
+                start_angle=cumsum("angle", include_zero=True), end_angle=cumsum("angle"),
+                line_color="white", fill_color="color", legend_field="projectid_service", source=data)
+
+        figures.append(p)
+
+    grid = gridplot(figures, ncols=3)
+
+    return grid
