@@ -5,7 +5,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from pacioli.functions import format_to_dataframe, generate_daily_chart_image
+from pacioli.functions import format_to_dataframe, group_by_cost_cumsum, add_previous_month_cost_diff, generate_daily_chart_image
 from pacioli.charts.create import create_daily_chart_figure
 
 TEST_DATA_DIRECTORY = Path(__file__).absolute().parent / 'data'
@@ -16,7 +16,10 @@ def test_format_to_dataframe():
     with COST_JSON_FILEPATH.open('r', encoding='utf8') as sample_data_json:
         sample_data = json.loads(sample_data_json.read())
         target_month_start = datetime.datetime(2019, 2, 1)
-        df = format_to_dataframe(sample_data, target_month_start)
+        df = format_to_dataframe(sample_data)
+        df["group2"] = ""  # Accountのみで集計する
+        df = group_by_cost_cumsum(df)
+        df = add_previous_month_cost_diff(df, target_month_start)
 
     figure, current_cost, previous_cost = create_daily_chart_figure(df)
 
@@ -31,7 +34,10 @@ def test_generate_daily_chart_image():
         sample_data = json.loads(sample_data_json.read())
 
         target_month_start = datetime.datetime(2019, 2, 1)
-        df = format_to_dataframe(sample_data, target_month_start)
+        df = format_to_dataframe(sample_data)
+        df["group2"] = ""  # Accountのみで集計する
+        df = group_by_cost_cumsum(df)
+        df = add_previous_month_cost_diff(df, target_month_start)
 
     figure, current_cost, previous_cost = create_daily_chart_figure(df)
 

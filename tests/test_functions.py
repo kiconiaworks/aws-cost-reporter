@@ -2,7 +2,7 @@ import json
 import datetime
 from pathlib import Path
 
-from pacioli.functions import format_to_dataframe, _get_month_starts
+from pacioli.functions import format_to_dataframe, group_by_cost_cumsum, add_previous_month_cost_diff, _get_month_starts
 
 
 TEST_DATA_DIRECTORY = Path(__file__).absolute().parent / 'data'
@@ -13,7 +13,10 @@ def test_format_to_dataframe():
     with COST_JSON_FILEPATH.open('r', encoding='utf8') as sample_data_json:
         sample_data = json.loads(sample_data_json.read())
         target_month_start = datetime.datetime(2019, 2, 1)
-        df = format_to_dataframe(sample_data, target_month_start)
+        df = format_to_dataframe(sample_data)
+        df["group2"] = ""  # Accountのみで集計する
+        df = group_by_cost_cumsum(df)
+        df = add_previous_month_cost_diff(df, target_month_start)
     assert not df.empty
     assert all(header in df.columns.values for header in ('000000000001', '000000000002', 'previous_month_total'))
 
