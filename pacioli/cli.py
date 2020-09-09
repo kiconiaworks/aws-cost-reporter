@@ -4,6 +4,7 @@ CLI for testing manually
 import json
 import datetime
 from io import BytesIO
+from typing import Optional
 
 from .event_handlers import post_daily_chart
 from .functions import _get_month_starts, prepare_daily_chart_figure, generate_daily_chart_image
@@ -15,24 +16,22 @@ def run():
     post_daily_chart(None, None)
 
 
-def test_collect_account_basic_account_metrics() -> dict:
+def test_collect_account_basic_account_metrics(target_datetime: Optional[datetime.datetime] = None) -> dict:
     """
     Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results
     """
-    now = datetime.datetime.now()
-    end, _, previous_month_start = _get_month_starts(now)
+    end, _, previous_month_start = _get_month_starts(target_datetime)
 
     manager = CostManager()
     result = manager.collect_account_basic_account_metrics(previous_month_start, end)
     return result
 
 
-def test_collect_account_group_account_project() -> dict:
+def test_collect_account_group_account_project(target_datetime: Optional[datetime.datetime]) -> dict:
     """
     Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results
     """
-    now = datetime.datetime.now()
-    end, _, previous_month_start = _get_month_starts(now)
+    end, _, previous_month_start = _get_month_starts(target_datetime)
 
     manager = CostManager()
     result = manager.collect_account_group_account_project(previous_month_start, end)

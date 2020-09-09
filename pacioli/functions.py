@@ -10,7 +10,7 @@ import pandas as pd
 from bokeh.io.export import get_screenshot_as_png
 
 from .collect import CostManager
-from .charts.create import create_daily_chart_figure, create_cost_ratio_pi_chart, figure
+from .charts.create import create_daily_chart_figure, create_cost_ratio_pie_chart, figure
 
 
 SUPPORTED_IMAGE_FORMATS = (
@@ -139,7 +139,7 @@ def prepare_daily_chart_figure(
 
     # get full data from previous month in order to compare current with previous
     manager = CostManager()
-    result = manager.collect_account_basic_account_metrics(previous_month_start, end)
+    result = manager.collect_account_service_metrics(previous_month_start, end)
 
     df = format_to_dataframe(result)
     df["group2"] = ""  # Accountのみで集計する
@@ -160,14 +160,14 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
 
     # get full data from previous month in order to compare current with previous
     manager = CostManager()
-    result = manager.collect_account_group_account_project(previous_month_start, end)
+    result = manager.collect_groupbytag_service_metrics(previous_month_start, end)
 
     df = format_to_dataframe(result)
     df.loc[df["group1"] == "ProjectId$", "group1"] = "nothing_project_tag"
     df = group_by_cost_cumsum(df)
     df = add_previous_month_cost_diff(df)
 
-    chart_figure = create_cost_ratio_pi_chart(df)
+    chart_figure = create_cost_ratio_pie_chart(df)
     return chart_figure
 
 

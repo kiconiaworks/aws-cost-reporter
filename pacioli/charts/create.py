@@ -154,7 +154,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     return f, current_cost, previous_cost
 
 
-def create_cost_ratio_pi_chart(df: pd.DataFrame) -> Union[Row, Column]:
+def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
     project_ids = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
 
     figures = []
