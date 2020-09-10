@@ -10,7 +10,7 @@ import pandas as pd
 from bokeh.io.export import get_screenshot_as_png
 
 from .collect import CostManager
-from .charts.create import create_daily_chart_figure, create_cost_ratio_pie_chart, figure
+from .charts.create import create_daily_chart_figure, create_daily_pie_chart_figure, figure
 
 
 SUPPORTED_IMAGE_FORMATS = (
@@ -176,7 +176,7 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
     df = group_by_cost_cumsum(df)
     df = add_previous_month_cost_diff(df)
 
-    chart_figure = create_cost_ratio_pie_chart(df)
+    chart_figure = create_daily_pie_chart_figure(df)
     return chart_figure
 
 

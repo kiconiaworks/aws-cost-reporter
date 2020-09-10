@@ -154,7 +154,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     return f, current_cost, previous_cost
 
 
-def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
+def create_daily_pie_chart_figure(df: pd.DataFrame) -> Union[Row, Column]:
     """
     tag/service毎のコストの円グラフを作成.
     """
@@ -179,7 +179,7 @@ def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
 
         p.wedge(x=0, y=1, radius=0.4,
                 start_angle=cumsum("angle", include_zero=True), end_angle=cumsum("angle"),
-                line_color="white", fill_color="color", legend_field="projectid_service", source=data)
+                line_color="white", fill_color="color", legend="projectid_service", source=data)
 
         figures.append(p)
 
