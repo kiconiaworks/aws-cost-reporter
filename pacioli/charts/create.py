@@ -154,7 +154,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     return f, current_cost, previous_cost
 
 
-def create_cost_ratio_pie_chart(df: pd.DataFrame) -> Union[Row, Column]:
+def create_daily_pie_chart_figure(df: pd.DataFrame) -> Union[Row, Column]:
     """
     tag/service毎のコストの円グラフを作成.
     """
