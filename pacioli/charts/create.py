@@ -179,7 +179,7 @@ def create_daily_pie_chart_figure(df: pd.DataFrame) -> Union[Row, Column]:
 
         p.wedge(x=0, y=1, radius=0.4,
                 start_angle=cumsum("angle", include_zero=True), end_angle=cumsum("angle"),
-                line_color="white", fill_color="color", legend_field="projectid_service", source=data)
+                line_color="white", fill_color="color", legend="projectid_service", source=data)
 
         figures.append(p)
 
