@@ -1,4 +1,4 @@
-"""Define exceptions for use in the paciolli package"""
+"""Define exceptions for use in the paciolli package."""
 
 
 class SlackError(Exception):
