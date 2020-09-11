@@ -1,3 +1,6 @@
+"""
+Define package wide settings and handle environment variable defined settings.
+"""
 import os
 
 from .exceptions import SlackError
