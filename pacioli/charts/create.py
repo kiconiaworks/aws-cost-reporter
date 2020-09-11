@@ -154,17 +154,20 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     return f, current_cost, previous_cost
 
 
-def create_daily_pie_chart_figure(df: pd.DataFrame) -> Union[Row, Column]:
+def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optional[dict] = None) -> Union[Row, Column]:
     """
     tag/service毎のコストの円グラフを作成.
     """
+    if not tag_display_mapping:
+        tag_display_mapping = {}
     project_ids = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
 
     figures = []
     for project_id in list(project_ids):
         df_project = df[[x for x in df.columns if x.split("/")[0] == project_id]]
-
-        p = figure(plot_height=350, title=f"{project_id}: {df_project.iloc[-1].sum()}$", toolbar_location=None,
+        project_total_cost = df_project.iloc[-1].sum()
+        display_project_id = tag_display_mapping.get(project_id, project_id)
+        p = figure(plot_height=350, title=f"{display_project_id}: ${project_total_cost:7.2f}", toolbar_location=None,
                    tools="hover", tooltips="@projectid_service: @value")
 
         df_project.columns = [x.split('/')[1] for x in df_project.columns]
@@ -175,7 +178,7 @@ def create_daily_pie_chart_figure(df: pd.DataFrame) -> Union[Row, Column]:
         data["angle"] = data["value"] / data["value"].sum() * 2 * math.pi
         data["color"] = magma(len(data) + 1)[1:]
 
-        data["projectid_service"] = [f"{row['projectid_service']}: {row['value']:.3f}$" for _, row in data.iterrows()]
+        data["projectid_service"] = [f"{row['projectid_service']}: ${row['value']:7.2f}" for _, row in data.iterrows()]
 
         p.wedge(x=0, y=1, radius=0.4,
                 start_angle=cumsum("angle", include_zero=True), end_angle=cumsum("angle"),

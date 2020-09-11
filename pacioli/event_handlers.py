@@ -14,9 +14,6 @@ from .post import SlackPostManager
 DEFAULT_ACCOUNTID_MAPPING_FILENAME = 'accountid_mapping.json'
 DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
 
-DEFAULT_SLACK_CHANNEL_NAME = 'cost_management'
-SLACK_CHANNEL_NAME = os.getenv('SLACK_CHANNEL_NAME', DEFAULT_SLACK_CHANNEL_NAME)
-
 logging.basicConfig(
     stream=sys.stdout,
     level=logging.INFO,

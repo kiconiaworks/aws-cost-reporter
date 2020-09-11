@@ -179,6 +179,7 @@ To test locally, set the following ENVIRONMENT VARIABLES:
 - SLACK_API_TOKEN
 - SLACK_CHANNEL_NAME
 - BOKEH_PHANTOMJS_PATH
+- S3_SERVICE_ENDPOINT=https://127.0.0.1:4566
 
 Once setup and environment variables set, `pacioli` can be tested locally using the following command:
 

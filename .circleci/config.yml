@@ -7,6 +7,7 @@ jobs:
       - image: circleci/python:3.7.3
         environment:
           PIPENV_VENV_IN_PROJECT: true
+      - image: localstack/localstack:0.11.4
 
     steps:
       - checkout

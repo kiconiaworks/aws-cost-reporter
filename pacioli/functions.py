@@ -2,16 +2,21 @@
 Contains main functions for performing collection and generation of charts for posting to slack.
 """
 import datetime
+import json
+import logging
 from io import BytesIO
 from calendar import monthrange
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict
 
 import pandas as pd
 from bokeh.io.export import get_screenshot_as_png
 
+from . import settings
+from .aws import S3_CLIENT, parse_s3_uri
 from .collect import CostManager
 from .charts.create import create_daily_chart_figure, create_daily_pie_chart_figure, figure
 
+logger = logging.getLogger(__name__)
 
 SUPPORTED_IMAGE_FORMATS = (
     '.png',
@@ -135,6 +140,29 @@ def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> T
     return end_date, current_month_start, previous_month_start
 
 
+def _get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_MAPPING_S3_URI) -> Dict:
+    """
+    mapping_s3_uri is a JSON file that maps the Billing GroupBy Key to the desired display value.
+    """
+    mapping = {}
+    if mapping_s3_uri:
+        bucket, key = parse_s3_uri(mapping_s3_uri)
+        try:
+            buffer = BytesIO()
+            S3_CLIENT.download_fileobj(Bucket=bucket, Key=key, Fileobj=buffer)
+            contents = buffer.getvalue().decode("utf8")
+            # load contents to mapping dictionary
+            try:
+                mapping = json.loads(contents)
+            except json.JSONDecodeError as e:
+                logger.exception(e)
+                logger.error(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
+        except Exception as e:
+            logger.exception(e)
+            logger.warning(f"{mapping_s3_uri} not found!")
+    return mapping
+
+
 def prepare_daily_chart_figure(
         current_datetime: Optional[datetime.datetime] = None,
         accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
@@ -175,8 +203,8 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
     df.loc[df["group1"] == "ProjectId$", "group1"] = "nothing_project_tag"
     df = group_by_cost_cumsum(df)
     df = add_previous_month_cost_diff(df)
-
-    chart_figure = create_daily_pie_chart_figure(df)
+    tag_display_mapping = _get_tag_display_mapping()
+    chart_figure = create_daily_pie_chart_figure(df, tag_display_mapping)
     return chart_figure
 
 
