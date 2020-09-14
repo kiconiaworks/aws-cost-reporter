@@ -17,7 +17,7 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 ## Run flake8 and pydocstyle
 flake8:
 	pipenv run flake8 --max-line-length 150 --max-complexity 15 --ignore F403,F405,E252 pacioli/
-	pipenv run pydocstyle --ignore D104,D106,D107,D200,D203,D204,D205,D212,D213,D301,D400 pacioli/
+	pipenv run pydocstyle --ignore D104,D106,D107,D200,D203,D204,D205,D212,D213,D301,D400,D415 pacioli/
 
 ## run pylint
 pylint:

@@ -7,13 +7,14 @@ jobs:
       - image: circleci/python:3.7.3
         environment:
           PIPENV_VENV_IN_PROJECT: true
+      - image: localstack/localstack:0.11.4
 
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
-          key: deps-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: deps-v2-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Upgrade pipenv
           command: |
@@ -29,8 +30,35 @@ jobs:
             wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
             tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
             sudo mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
+      - run:
+          name: prepare boto3 credentials and awscli (Set via ENVARS[AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY])
+          command: |
+            # create ~/.aws/config
+            echo "Creating: ~/.aws/config"
+            mkdir -p ~/.aws
+            cat <<EOT > ~/.aws/config
+            [default]
+            region = ${AWS_DEFAULT_REGION}
+            output = json
+
+            [profile ${AWS_PROFILE}]
+            region = ${AWS_DEFAULT_REGION}
+            source_profile = default
+            EOT
+
+            # create .aws/credentials
+            echo "Creating: ~/.aws/credentials"
+            cat <<EOT > ~/.aws/credentials
+            [default]
+            aws_access_key_id = ${CIRCLECI_AWS_ACCESS_KEY_ID}
+            aws_secret_access_key = ${CIRCLECI_AWS_SECRET_ACCESS_KEY}
+            EOT
+
+            # for deployment
+            pip install awscli
+
       - save_cache:
-          key: deps-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: deps-v2-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - "/home/circleci/.aws"
             - "/home/circlci/.local"
