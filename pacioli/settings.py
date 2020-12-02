@@ -5,6 +5,7 @@ import os
 
 from .exceptions import SlackError
 
+GROUPBY_TAG_NAME = os.environ.get("GROUPBY_TAG_NAME", "ProjectId")
 GROUPBY_TAG_DISPLAY_MAPPING_S3_URI = os.getenv("GROUPBY_TAG_DISPLAY_MAPPING_S3_URI", None)
 
 DEFAULT_SLACK_CHANNEL_NAME = "cost_management"

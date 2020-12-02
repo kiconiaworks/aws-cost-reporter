@@ -4,33 +4,32 @@ Contains main functions for performing collection and generation of charts for p
 import datetime
 import json
 import logging
-from io import BytesIO
 from calendar import monthrange
-from typing import Tuple, Optional, Dict
+from io import BytesIO
+from typing import Dict, Optional, Tuple
 
 import pandas as pd
 from bokeh.io.export import get_screenshot_as_png
 
 from . import settings
 from .aws import S3_CLIENT, parse_s3_uri
-from .collect import CostManager
 from .charts.create import create_daily_chart_figure, create_daily_pie_chart_figure, figure
+from .collect import CostManager
 
 logger = logging.getLogger(__name__)
 
-SUPPORTED_IMAGE_FORMATS = (
-    '.png',
-)
+SUPPORTED_IMAGE_FORMATS = (".png",)
 
 
 class ImageFormatError(ValueError):
     """Exception used when an unsupported Image format is used/given."""
+
     pass
 
 
 def datestr2datetime(date_str) -> datetime.datetime:
     """Convert YYYY-MM-DD to a python datetime object."""
-    return datetime.datetime.strptime(date_str, '%Y-%m-%d')
+    return datetime.datetime.strptime(date_str, "%Y-%m-%d")
 
 
 def format_to_dataframe(aws_cost_explorer_data: dict) -> pd.DataFrame:
@@ -38,22 +37,22 @@ def format_to_dataframe(aws_cost_explorer_data: dict) -> pd.DataFrame:
     CostExplorerからの出力をDataFrameに変換する関数.
     """
     aws_cost_explorer_data_result = {
-        'date': [],
-        'group1': [],
-        'group2': [],
-        'cost': [],
+        "date": [],
+        "group1": [],
+        "group2": [],
+        "cost": [],
     }
-    for record in aws_cost_explorer_data['ResultsByTime']:
-        start = datestr2datetime(record['TimePeriod']['Start'])
+    for record in aws_cost_explorer_data["ResultsByTime"]:
+        start = datestr2datetime(record["TimePeriod"]["Start"])
 
-        for cost_group in record['Groups']:
-            group1, group2 = cost_group['Keys']
-            cost = float(cost_group['Metrics']['UnblendedCost']['Amount'])
+        for cost_group in record["Groups"]:
+            group1, group2 = cost_group["Keys"]
+            cost = float(cost_group["Metrics"]["UnblendedCost"]["Amount"])
 
-            aws_cost_explorer_data_result['date'].append(start.date())
-            aws_cost_explorer_data_result['group1'].append(group1)
-            aws_cost_explorer_data_result['group2'].append(group2)
-            aws_cost_explorer_data_result['cost'].append(cost)
+            aws_cost_explorer_data_result["date"].append(start.date())
+            aws_cost_explorer_data_result["group1"].append(group1)
+            aws_cost_explorer_data_result["group2"].append(group2)
+            aws_cost_explorer_data_result["cost"].append(cost)
 
     df = pd.DataFrame.from_dict(aws_cost_explorer_data_result)
     df.date = pd.to_datetime(df.date)
@@ -65,8 +64,9 @@ def group_by_cost_cumsum(df: pd.DataFrame) -> pd.DataFrame:
     """
     date, group1, group2毎のコストを算出.
     """
+
     def groupby_total(group_df):
-        return group_df.groupby(['group1', 'group2']).sum()
+        return group_df.groupby(["group1", "group2"]).sum()
 
     def groupby_separate_columns(group_df):
         columns = []
@@ -76,10 +76,10 @@ def group_by_cost_cumsum(df: pd.DataFrame) -> pd.DataFrame:
             if row["group1"] and row["group2"]:
                 columns.append(f"{row['group1']}/{row['group2']}")
             elif row["group1"] and (not row["group2"]):
-                columns.append(row['group1'])
+                columns.append(row["group1"])
             elif (not row["group1"]) and row["group2"]:
-                columns.append(row['group2'])
-        costs = [row['cost'] for _, row in group_df.iterrows()]
+                columns.append(row["group2"])
+        costs = [row["cost"] for _, row in group_df.iterrows()]
 
         s = pd.Series({key: value for key, value in zip(columns, costs)})
 
@@ -87,27 +87,26 @@ def group_by_cost_cumsum(df: pd.DataFrame) -> pd.DataFrame:
 
     df["date"] = pd.to_datetime(df["date"])
 
-    df = df.groupby('date').apply(groupby_total)
+    df = df.groupby("date").apply(groupby_total)
     df = df.reset_index()
-    df = df.groupby('date').apply(groupby_separate_columns)
+    df = df.groupby("date").apply(groupby_separate_columns)
     df = df.reset_index().drop(columns=["level_1"])
 
     df["Month"] = df["date"].apply(lambda x: x.month)
-    df = df.set_index('date')
+    df = df.set_index("date")
     df.sort_index(inplace=True)
     df = df.fillna(0.0)
-    df.index.name = 'date'
+    df.index.name = "date"
 
-    return df.groupby('Month').cumsum()
+    return df.groupby("Month").cumsum()
 
 
-def add_previous_month_cost_diff(df: pd.DataFrame,
-                                 target_month_start: Optional[datetime.datetime] = None) -> pd.DataFrame:
+def add_previous_month_cost_diff(df: pd.DataFrame, target_month_start: Optional[datetime.datetime] = None) -> pd.DataFrame:
     """
     先月のコストを算出.
     """
     if not target_month_start:
-        target_month_start = datetime.datetime.utcnow().replace(day=1)
+        target_month_start = datetime.datetime.now(datetime.timezone.utc).replace(day=1)
 
     assert target_month_start.day == 1
     previous_month_start = (target_month_start - datetime.timedelta(days=1)).replace(day=1)
@@ -116,12 +115,12 @@ def add_previous_month_cost_diff(df: pd.DataFrame,
     target_month_end = target_month_start.replace(day=last_day_of_month)
 
     previous_month_series = df[df.index < pd.to_datetime(target_month_start.date())].sum(axis=1)
-    previous_month_series.index = previous_month_series.index.shift(periods=previous_month_end_day, freq='D')
-    previous_month_series = previous_month_series.rename('previous_month_total')
+    previous_month_series.index = previous_month_series.index.shift(periods=previous_month_end_day, freq="D")
+    previous_month_series = previous_month_series.rename("previous_month_total")
 
-    df['previous_month_total'] = previous_month_series
-    df['previous_month_total'].fillna(0.0)
-
+    df["previous_month_total"] = previous_month_series
+    df["previous_month_total"].fillna(0.0)
+    logger.debug(df.head())
     # remove dates not in the current target_month
     df_target_month_only = df.loc[(df.index >= target_month_start) & (df.index < target_month_end)]
     return df_target_month_only
@@ -132,7 +131,7 @@ def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> T
     Calculate the `current` month start date and `previous` month start date from the given current datetime object.
     """
     if not current_datetime:
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.datetime.now(datetime.timezone.utc)
     end_date = current_datetime.date()
 
     current_month_start = datetime.date(end_date.year, end_date.month, 1)
@@ -164,8 +163,8 @@ def _get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_
 
 
 def prepare_daily_chart_figure(
-        current_datetime: Optional[datetime.datetime] = None,
-        accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
+    current_datetime: Optional[datetime.datetime] = None, accountid_mapping: Optional[dict] = None
+) -> Tuple[figure, float, float]:
     """
     Gathers required Cost Data, and builds chart figure.
 
@@ -208,7 +207,7 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
     return chart_figure
 
 
-def generate_daily_chart_image(chart_figure, image_format: str = '.png') -> BytesIO:
+def generate_daily_chart_image(chart_figure, image_format: str = ".png") -> BytesIO:
     """
     Write the given chart to the descired image format into a BytesIO() object.
     """
@@ -216,8 +215,8 @@ def generate_daily_chart_image(chart_figure, image_format: str = '.png') -> Byte
         raise ImageFormatError(f'"{image_format}" not in SUPPORTED_IMAGE_FORMATS: {SUPPORTED_IMAGE_FORMATS}')
 
     buffer = BytesIO()
-    if image_format == '.png':
+    if image_format == ".png":
         image = get_screenshot_as_png(chart_figure)
-        image.save(buffer, format='png')
+        image.save(buffer, format="png")
         buffer.seek(0)
     return buffer

@@ -2,6 +2,7 @@
 Functions for building bokeh figure objects from dataframes.
 """
 import datetime
+import logging
 import math
 from typing import Optional, Tuple, Union
 
@@ -12,6 +13,8 @@ from bokeh.models import ColumnDataSource, LabelSet, Legend, LegendItem
 from bokeh.palettes import brewer, magma
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
+
+logger = logging.getLogger(__name__)
 
 
 def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
@@ -27,6 +30,8 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     # - take a sample to discover the 'last_available_date'
     sample_accountid = accountids[0]
     account_max_value = current_month_df[[sample_accountid]].max()[0]
+    if np.isnan(account_max_value):
+        logger.error(f"No data for sample_accountid={sample_accountid}")
     last_available_date = current_month_df[current_month_df[sample_accountid] == account_max_value].index.date[0]
 
     current_cost = float(current_month_df[accountids].max().sum())
