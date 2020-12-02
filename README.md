@@ -15,12 +15,15 @@ The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS a
     
     > User billing access must be turned on via the root account
      
+## (optional) Enable "Resource Tag" in Cost Explorer
 
-## Resource TAGの有効化
+In order to allow the COST EXPLORER to see tags on resources, the desired "Resource Tag" *MUST* be enabled.
 
-- 使用するResource Tagを以下のページから有効化する
-    - https://console.aws.amazon.com/billing/home?#/preferences/tags
-    - ※有効化しないとResource Tagを元にコストを集計することができません
+> Currently the system assumes that the desired tag is, "ProjectId"
+
+To enable resource tags refer to:
+
+- https://console.aws.amazon.com/billing/home?#/preferences/tags
 
 ## Prepare pipenv environment
 
@@ -28,8 +31,20 @@ The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS a
 # Installs the 'frozen' libraires known to work
 pipenv sync
 ```     
+### (optional) Enable "Resource Tag" Mapping Feature
 
-### Create AccountId Mapping
+The value of the enabled "Resource Tag" may optional be mapped by providing a mapping file in a defined bucket.
+
+Set the following *environment variable* with the s3 uri (ex: `s3://bucket/key/filename.json` to where the mapping file is written.
+
+> NOTE: the function needs read access to the given bucket
+ 
+Add to deployed Lambda function "Environment Variables" Configuration: 
+``` 
+GROUPBY_TAG_DISPLAY_MAPPING_S3_URI=s3://bucket/key/filename.json
+```
+
+### (optional) Create AccountId Mapping
 
 Optionally the `accountid_mapping.json` file can be prepared to provide a more easily understandable display of accounts.
 
