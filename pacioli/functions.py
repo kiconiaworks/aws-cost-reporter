@@ -106,7 +106,7 @@ def add_previous_month_cost_diff(df: pd.DataFrame, target_month_start: Optional[
     先月のコストを算出.
     """
     if not target_month_start:
-        target_month_start = datetime.datetime.now(datetime.timezone.utc).replace(day=1)
+        target_month_start = datetime.datetime.now().replace(day=1)
 
     assert target_month_start.day == 1
     previous_month_start = (target_month_start - datetime.timedelta(days=1)).replace(day=1)
@@ -131,7 +131,7 @@ def _get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> T
     Calculate the `current` month start date and `previous` month start date from the given current datetime object.
     """
     if not current_datetime:
-        current_datetime = datetime.datetime.now(datetime.timezone.utc)
+        current_datetime = datetime.datetime.now()
     end_date = current_datetime.date()
 
     current_month_start = datetime.date(end_date.year, end_date.month, 1)
@@ -145,20 +145,27 @@ def _get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_
     """
     mapping = {}
     if mapping_s3_uri:
+        logger.info(f"retrieving {mapping_s3_uri} ...")
         bucket, key = parse_s3_uri(mapping_s3_uri)
         try:
             buffer = BytesIO()
             S3_CLIENT.download_fileobj(Bucket=bucket, Key=key, Fileobj=buffer)
             contents = buffer.getvalue().decode("utf8")
+            logger.info(f"retrieving {mapping_s3_uri} ... SUCCESS")
             # load contents to mapping dictionary
             try:
+                logger.info(f"loading {mapping_s3_uri} ... ")
                 mapping = json.loads(contents)
+                logger.info(f"loading {mapping_s3_uri} ... SUCCESS")
             except json.JSONDecodeError as e:
                 logger.exception(e)
+                logger.error(f"retrieving {mapping_s3_uri} ... ERROR")
                 logger.error(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
         except Exception as e:
             logger.exception(e)
             logger.warning(f"{mapping_s3_uri} not found!")
+            logger.error(f"retrieving {mapping_s3_uri} ... ERROR")
+
     return mapping
 
 
@@ -186,7 +193,7 @@ def prepare_daily_chart_figure(
     return chart_figure, current_cost, previous_cost
 
 
-def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime] = None) -> figure:
+def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime] = None) -> Tuple[figure, dict]:
     """
     Gathers required Cost Data, and builds chart figure.
 
@@ -203,8 +210,9 @@ def prepare_daily_pie_chart_figure(current_datetime: Optional[datetime.datetime]
     df = group_by_cost_cumsum(df)
     df = add_previous_month_cost_diff(df)
     tag_display_mapping = _get_tag_display_mapping()
-    chart_figure = create_daily_pie_chart_figure(df, tag_display_mapping)
-    return chart_figure
+    logger.info(tag_display_mapping)
+    chart_figure, totals = create_daily_pie_chart_figure(df, tag_display_mapping)
+    return chart_figure, totals
 
 
 def generate_daily_chart_image(chart_figure, image_format: str = ".png") -> BytesIO:
