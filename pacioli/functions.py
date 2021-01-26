@@ -235,7 +235,9 @@ def generate_daily_chart_image(chart_figure, image_format: str = ".png") -> Byte
 
 
 def check_phantomjs(filepath: str = settings.BOKEH_PHANTOMJS_PATH) -> Path:
-    """check if phantomjs binary exists, if not decompress"""
+    """
+    Check if phantomjs binary exists, if not decompressed, decompress to filepath.
+    """
     p = Path(filepath)
     if not p.exists():
         logger.debug(f"uncompressing ({settings.BOKEH_PHANTOMJSXZ_PATH}) -> {p} ...")
@@ -251,6 +253,9 @@ def check_phantomjs(filepath: str = settings.BOKEH_PHANTOMJS_PATH) -> Path:
 
 
 def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[str, list]:
+    """
+    Process project totals into Slack formatted blocks.
+    """
     # https://app.slack.com/block-kit-builder/
     title = "プロジェクトごと（月合計）"
     divider_element = {"type": "divider"}
