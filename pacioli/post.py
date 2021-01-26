@@ -1,8 +1,6 @@
 """
 Perform actions necessary for interfacing with SLACK.
 """
-
-import urllib.parse
 from typing import BinaryIO, Optional
 
 from slack_sdk import WebClient
