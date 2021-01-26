@@ -4,16 +4,18 @@ Defines the function called on the registered events in the 'zappa_settings.json
 import datetime
 import json
 import logging
-import lzma
-import os
 import sys
-from operator import itemgetter
 from pathlib import Path
-from typing import Dict, Tuple
 
-from .functions import generate_daily_chart_image, prepare_daily_chart_figure, prepare_daily_pie_chart_figure
+from .functions import (
+    check_phantomjs,
+    generate_daily_chart_image,
+    get_projecttotals_message_blocks,
+    prepare_daily_chart_figure,
+    prepare_daily_pie_chart_figure,
+)
 from .post import SlackPostManager
-from .settings import BOKEH_PHANTOMJS_PATH, BOKEH_PHANTOMJSXZ_PATH, SLACK_CHANNEL_NAME
+from .settings import SLACK_CHANNEL_NAME
 
 DEFAULT_ACCOUNTID_MAPPING_FILENAME = "accountid_mapping.json"
 DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
@@ -24,53 +26,11 @@ logging.getLogger("botocore").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-def _check_phantomjs(filepath: str = BOKEH_PHANTOMJS_PATH) -> Path:
-    """check if phantomjs binary exists, if not decompress"""
-    p = Path(filepath)
-    if not p.exists():
-        logger.debug(f"uncompressing ({BOKEH_PHANTOMJSXZ_PATH}) -> {p} ...")
-        compressed_filepath = Path(BOKEH_PHANTOMJSXZ_PATH)
-        assert compressed_filepath.exists()
-        # uncompress file into
-        with p.open("wb") as uncompressed, compressed_filepath.open("rb") as compressed:
-            uncompressed.write(lzma.LZMAFile(compressed).read())
-        assert p.exists()
-        os.chmod(str(p), 0o755)
-        logger.debug(f"uncompressing ({BOKEH_PHANTOMJSXZ_PATH}) -> {p} ... COMPLETE!")
-    return p
-
-
-def _get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[str, list]:
-    # https://app.slack.com/block-kit-builder/
-    title = "プロジェクトごと（月合計）"
-    divider_element = {"type": "divider"}
-    json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
-
-    dollar_emoji = ":heavy_dollar_sign:"
-    total = sum(project_totals.values())
-    null_project_id = "nothing_project_tag"
-    for project_id, project_total in sorted(project_totals.items(), key=itemgetter(1), reverse=True):
-        if project_id == null_project_id:
-            project_id = "ProjectIdタグなしのリソース費用"
-        multiplier = int(5 * (project_total / total))
-        dollar_emojis = "-"
-        if int(project_total) > 0:
-            dollar_emojis = dollar_emoji * (multiplier + 1)
-        project_section = {
-            "type": "section",
-            "text": {"text": project_id, "type": "mrkdwn"},
-            "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"${project_total:15.2f}"}],
-        }
-        json_formatted_message.append(project_section)
-        json_formatted_message.append(divider_element)
-    return title, json_formatted_message
-
-
 def post_daily_chart(event, context) -> None:
     """
     Handle the lambda event, create chart, chart image and post to slack.
     """
-    _check_phantomjs()
+    check_phantomjs()
     now = datetime.datetime.now()
 
     accountid_mapping = None
@@ -104,7 +64,7 @@ def post_daily_chart(event, context) -> None:
     )
     logger.info("posted: pie chart")
 
-    title, project_totals_blocks = _get_projecttotals_message_blocks(project_totals)
+    title, project_totals_blocks = get_projecttotals_message_blocks(project_totals)
     logger.info("posting project_totals_message to slack...")
     logger.debug(project_totals_blocks)
     slack.post_message_to_channel(channel_name=SLACK_CHANNEL_NAME, message=title, blocks=project_totals_blocks)

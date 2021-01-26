@@ -4,8 +4,12 @@ Contains main functions for performing collection and generation of charts for p
 import datetime
 import json
 import logging
+import lzma
+import os
 from calendar import monthrange
 from io import BytesIO
+from operator import itemgetter
+from pathlib import Path
 from typing import Dict, Optional, Tuple
 
 import pandas as pd
@@ -228,3 +232,45 @@ def generate_daily_chart_image(chart_figure, image_format: str = ".png") -> Byte
         image.save(buffer, format="png")
         buffer.seek(0)
     return buffer
+
+
+def check_phantomjs(filepath: str = settings.BOKEH_PHANTOMJS_PATH) -> Path:
+    """check if phantomjs binary exists, if not decompress"""
+    p = Path(filepath)
+    if not p.exists():
+        logger.debug(f"uncompressing ({settings.BOKEH_PHANTOMJSXZ_PATH}) -> {p} ...")
+        compressed_filepath = Path(settings.BOKEH_PHANTOMJSXZ_PATH).absolute()
+        assert compressed_filepath.exists(), f"Not Found: {compressed_filepath}"
+        # uncompress file into
+        with p.open("wb") as uncompressed, compressed_filepath.open("rb") as compressed:
+            uncompressed.write(lzma.LZMAFile(compressed).read())
+        assert p.exists(), f"Not Found: {p}"
+        os.chmod(str(p), 0o755)
+        logger.debug(f"uncompressing ({settings.BOKEH_PHANTOMJSXZ_PATH}) -> {p} ... COMPLETE!")
+    return p
+
+
+def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[str, list]:
+    # https://app.slack.com/block-kit-builder/
+    title = "プロジェクトごと（月合計）"
+    divider_element = {"type": "divider"}
+    json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
+
+    dollar_emoji = ":heavy_dollar_sign:"
+    total = sum(project_totals.values())
+    null_project_id = "nothing_project_tag"
+    for project_id, project_total in sorted(project_totals.items(), key=itemgetter(1), reverse=True):
+        if project_id == null_project_id:
+            project_id = "ProjectIdタグなしのリソース費用"
+        multiplier = int(5 * (project_total / total))
+        dollar_emojis = "-"
+        if int(project_total) > 0:
+            dollar_emojis = dollar_emoji * (multiplier + 1)
+        project_section = {
+            "type": "section",
+            "text": {"text": project_id, "type": "mrkdwn"},
+            "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"${project_total:15.2f}"}],
+        }
+        json_formatted_message.append(project_section)
+        json_formatted_message.append(divider_element)
+    return title, json_formatted_message
