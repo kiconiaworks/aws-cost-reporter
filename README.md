@@ -210,3 +210,14 @@ If the `--test` option is given, results will NOT be posted to slack, and CostMa
 ```
 python -m pacioli.cli --test
 ```
+
+
+### awscli ce example
+
+```
+aws ce get-cost-and-usage \
+    --time-period Start="2020-12-01",End="2020-12-31" \
+    --granularity DAILY \
+    --metrics "BlendedCost" "UnblendedCost" "UsageQuantity" \
+    --group-by Type=DIMENSION,Key=LINKED_ACCOUNT Type=DIMENSION,Key=SERVICE
+```

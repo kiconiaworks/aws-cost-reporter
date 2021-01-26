@@ -2,6 +2,7 @@
 Functions for building bokeh figure objects from dataframes.
 """
 import datetime
+import logging
 import math
 from typing import Optional, Tuple, Union
 
@@ -12,6 +13,8 @@ from bokeh.models import ColumnDataSource, LabelSet, Legend, LegendItem
 from bokeh.palettes import brewer, magma
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
+
+logger = logging.getLogger(__name__)
 
 
 def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping: Optional[dict] = None) -> Tuple[figure, float, float]:
@@ -27,6 +30,8 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     # - take a sample to discover the 'last_available_date'
     sample_accountid = accountids[0]
     account_max_value = current_month_df[[sample_accountid]].max()[0]
+    if np.isnan(account_max_value):
+        logger.error(f"No data for sample_accountid={sample_accountid}")
     last_available_date = current_month_df[current_month_df[sample_accountid] == account_max_value].index.date[0]
 
     current_cost = float(current_month_df[accountids].max().sum())
@@ -133,7 +138,7 @@ def create_daily_chart_figure(current_month_df: pd.DataFrame, accountid_mapping:
     return f, current_cost, previous_cost
 
 
-def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optional[dict] = None) -> Union[Row, Column]:
+def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optional[dict] = None) -> Tuple[Union[Row, Column], dict]:
     """
     tag/service毎のコストの円グラフを作成.
     """
@@ -142,10 +147,14 @@ def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optiona
     groupby_tag_values = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
 
     figures = []
+    totals = {}
     for groupby_tag_value in list(groupby_tag_values):
         df_project = df[[x for x in df.columns if x.split("/")[0] == groupby_tag_value]]
         project_total_cost = df_project.iloc[-1].sum()
-        display_groupby_tag_value = tag_display_mapping.get(groupby_tag_value, groupby_tag_value)
+        project_id_key = groupby_tag_value.replace("ProjectId$", "")
+        display_groupby_tag_value = tag_display_mapping.get(project_id_key, groupby_tag_value)
+        logger.info(f"Processing pie chart for {display_groupby_tag_value} ...")
+        totals[display_groupby_tag_value] = project_total_cost
         p = figure(
             plot_height=350,
             title=f"{display_groupby_tag_value}: ${project_total_cost:7.2f}",
@@ -177,7 +186,8 @@ def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optiona
         )
 
         figures.append(p)
+        logger.info(f"Processing pie chart for {display_groupby_tag_value} ... DONE!")
 
     grid = gridplot(figures, ncols=3)
 
-    return grid
+    return grid, totals
