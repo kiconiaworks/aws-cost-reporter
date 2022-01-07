@@ -4,6 +4,7 @@ Functions for building bokeh figure objects from dataframes.
 import datetime
 import logging
 import math
+from operator import itemgetter
 from typing import Optional, Tuple, Union
 
 import numpy as np
@@ -146,11 +147,16 @@ def create_daily_pie_chart_figure(df: pd.DataFrame, tag_display_mapping: Optiona
         tag_display_mapping = {}
     groupby_tag_values = set([str(x.split("/")[0]) for x in df.columns if x != "previous_month_total"])
 
-    figures = []
-    totals = {}
+    display_order = []
     for groupby_tag_value in list(groupby_tag_values):
         df_project = df[[x for x in df.columns if x.split("/")[0] == groupby_tag_value]]
         project_total_cost = df_project.iloc[-1].sum()
+        display_order.append((groupby_tag_value, project_total_cost))
+
+    figures = []
+    totals = {}
+    for groupby_tag_value, project_total_cost in sorted(display_order, key=itemgetter(1), reverse=True):
+        df_project = df[[x for x in df.columns if x.split("/")[0] == groupby_tag_value]]
         project_id_key = groupby_tag_value.replace("ProjectId$", "")
         display_groupby_tag_value = tag_display_mapping.get(project_id_key, groupby_tag_value)
         logger.info(f"Processing pie chart for {display_groupby_tag_value} ...")
