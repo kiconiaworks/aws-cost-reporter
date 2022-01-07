@@ -129,6 +129,7 @@ If the script doesn't work follow the steps in the section below.
     wget https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS_VERSION}.tar.bz2
     tar xvjf ${PHANTOMJS_VERSION}.tar.bz2
     sudo mv ${PHANTOMJS_VERSION}/bin/phantomjs bin/  
+    xz -9 bin/phantomjs
     ```
 
 2. Place binary in `REPOSITORY_ROOT/bin`
@@ -220,4 +221,14 @@ aws ce get-cost-and-usage \
     --granularity DAILY \
     --metrics "BlendedCost" "UnblendedCost" "UsageQuantity" \
     --group-by Type=DIMENSION,Key=LINKED_ACCOUNT Type=DIMENSION,Key=SERVICE
+```
+
+### Execute lambda function
+
+From the AWS lambda Test Console add the command, and click, "Test":
+
+```json
+{
+  "command": "pacioli.event_handlers.post_daily_chart"
+}
 ```
