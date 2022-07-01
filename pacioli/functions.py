@@ -23,6 +23,7 @@ from .collect import CostManager
 logger = logging.getLogger(__name__)
 
 SUPPORTED_IMAGE_FORMATS = (".png",)
+SLACK_MAX_BLOCKS = 50
 
 
 class ImageFormatError(ValueError):
@@ -256,14 +257,14 @@ def check_phantomjs(filepath: str = settings.BOKEH_PHANTOMJS_PATH) -> Path:
     return p
 
 
-def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[str, list]:
+def get_projecttotals_message_blocks(project_totals: Dict[str, float], max_blocks: int = SLACK_MAX_BLOCKS) -> Tuple[str, list]:
     """
     Process project totals into Slack formatted blocks.
     """
     # https://app.slack.com/block-kit-builder/
     title = "プロジェクトごと（月合計）"
     divider_element = {"type": "divider"}
-    json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
+    json_formatted_message_blocks = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
 
     dollar_emoji = ":heavy_dollar_sign:"
     total = sum(project_totals.values())
@@ -280,6 +281,6 @@ def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[
             "text": {"text": project_id, "type": "mrkdwn"},
             "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"${project_total:15.2f}"}],
         }
-        json_formatted_message.append(project_section)
-        json_formatted_message.append(divider_element)
-    return title, json_formatted_message
+        json_formatted_message_blocks.append(project_section)
+        json_formatted_message_blocks.append(divider_element)
+    return title, json_formatted_message_blocks[:max_blocks]
