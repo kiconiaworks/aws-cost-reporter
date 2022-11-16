@@ -1,0 +1,1191 @@
+{
+    "GroupDefinitions": [
+        {
+            "Type": "DIMENSION",
+            "Key": "RECORD_TYPE"
+        }
+    ],
+    "ResultsByTime": [
+        {
+            "TimePeriod": {
+                "Start": "2022-10-01",
+                "End": "2022-10-02"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Tax"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "23.94",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "29354.1926552824",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.5691132123",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-02",
+                "End": "2022-10-03"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "11060.0254073131",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.3887531758",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-03",
+                "End": "2022-10-04"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "235990.3036586464",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.408443669",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-04",
+                "End": "2022-10-05"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "299279.1394106179",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.158062398",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-05",
+                "End": "2022-10-06"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "300993.1068522778",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1765742232",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-06",
+                "End": "2022-10-07"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "351459.8854593442",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1302886536",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-07",
+                "End": "2022-10-08"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "328248.3240983326",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1514023871",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-08",
+                "End": "2022-10-09"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "40949.5130182777",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.7437185428",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-09",
+                "End": "2022-10-10"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "14411.7842258282",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.3828754498",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-10",
+                "End": "2022-10-11"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "354117.0640701426",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.0400893894",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-11",
+                "End": "2022-10-12"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "308346.9729323522",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2448038983",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-12",
+                "End": "2022-10-13"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "276520.120440149",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.24692582",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-13",
+                "End": "2022-10-14"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "296019.5139149986",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2615962849",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-14",
+                "End": "2022-10-15"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "311266.988634366",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1411489721",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-15",
+                "End": "2022-10-16"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "16976.4420643115",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.4456025958",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-16",
+                "End": "2022-10-17"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "22447.8429782875",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.4385596283",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-17",
+                "End": "2022-10-18"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "285892.4691616263",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2635436733",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-18",
+                "End": "2022-10-19"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "315907.2729500678",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1615670439",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-19",
+                "End": "2022-10-20"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "313952.5621879858",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1605183817",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-20",
+                "End": "2022-10-21"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "306709.1894152121",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2868409092",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-21",
+                "End": "2022-10-22"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "337523.2129512303",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1173337715",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-22",
+                "End": "2022-10-23"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "30658.7053879438",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.7322913503",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-23",
+                "End": "2022-10-24"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "37251.5206763848",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.7204531783",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-24",
+                "End": "2022-10-25"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "291267.2385918369",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2927181854",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-25",
+                "End": "2022-10-26"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "306344.3742713188",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2481226692",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-26",
+                "End": "2022-10-27"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "246838.2614558962",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.3447258089",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-27",
+                "End": "2022-10-28"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "318349.8082780306",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.3053469633",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-28",
+                "End": "2022-10-29"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "370733.9540910734",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1768870382",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-29",
+                "End": "2022-10-30"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "48020.9465891168",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.9072134616",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-30",
+                "End": "2022-10-31"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "19743.8340277073",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.4572369151",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-31",
+                "End": "2022-11-01"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "298180.6591447243",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2666143439",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-01",
+                "End": "2022-11-02"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Tax"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "11.51",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "314689.8856245978",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1352918442",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-02",
+                "End": "2022-11-03"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "333279.5312879567",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1091591852",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-03",
+                "End": "2022-11-04"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "409184.7709670526",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "8.861633725",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-04",
+                "End": "2022-11-05"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "347044.5701427881",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1055641175",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-05",
+                "End": "2022-11-06"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "96477.7343560632",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.6684178709",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-06",
+                "End": "2022-11-07"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "22448.351187617",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.4526460376",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-07",
+                "End": "2022-11-08"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "268739.2343498327",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.29088037",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-08",
+                "End": "2022-11-09"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "307309.6067294539",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1806501913",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-09",
+                "End": "2022-11-10"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "328161.9846240881",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1049706718",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-10",
+                "End": "2022-11-11"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "336074.9630952042",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.2295481714",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-11",
+                "End": "2022-11-12"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "286890.8053975153",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.1637841466",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-12",
+                "End": "2022-11-13"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "28553.1596704635",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.5068245744",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-13",
+                "End": "2022-11-14"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "26601.3865605023",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.5798795088",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-14",
+                "End": "2022-11-15"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "291432.2462416596",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "9.194959178",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-15",
+                "End": "2022-11-16"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "Usage"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "201959.5288360887",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.4945881146",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        }
+    ],
+    "DimensionValueAttributes": []
+}

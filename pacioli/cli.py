@@ -1,14 +1,14 @@
 """
 CLI for testing manually.
 """
-import json
 import datetime
+import json
 from io import BytesIO
 from typing import Optional
 
-from .event_handlers import post_daily_chart
-from .functions import _get_month_starts, prepare_daily_chart_figure, generate_daily_chart_image
-from .collect import CostManager
+from .functions import _get_month_starts
+from .handlers.events import post_daily_chart
+from .managers import CostManager
 
 
 def run():
@@ -48,22 +48,25 @@ def test_graph_image_creation() -> BytesIO:
     return image_bytes
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test',
-                        action='store_true',
-                        default=False,
-                        help='If given, results will NOT posted to slack, CostManager.collect_account_basic_account_metrics() output displayed!')
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        default=False,
+        help="If given, results will NOT posted to slack, CostManager.collect_account_basic_account_metrics() output displayed!",
+    )
 
     args = parser.parse_args()
     if args.test:
         cost_manager_collect_result = test_collect_account_basic_account_metrics()
         print(json.dumps(cost_manager_collect_result, indent=4))
 
-        test_chart_filename = 'test-image.png'
-        print(f'writing ({test_chart_filename}) ...')
-        with open(test_chart_filename, 'wb') as image_out:
+        test_chart_filename = "test-image.png"
+        print(f"writing ({test_chart_filename}) ...")
+        with open(test_chart_filename, "wb") as image_out:
             image_bytes = test_graph_image_creation()
             image_out.write(image_bytes.read())
     else:

@@ -1,7 +1,11 @@
+import json
+from pathlib import Path
 from typing import List
 
 from pacioli import settings
 from pacioli.aws import S3_RESOURCE, parse_s3_uri
+
+DATA_DIRECTORY = Path(__file__).parent / "data"
 
 
 def reset_buckets(buckets: List[str]) -> List[str]:
@@ -20,3 +24,27 @@ def reset_buckets(buckets: List[str]) -> List[str]:
         created_buckets.append(bucket_name)
 
     return created_buckets
+
+
+def mock_collect_groupbytag_projectid(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_projectid.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
+
+
+def mock_collect_groupbytag_projectid_services(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_projectid_with_services.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
+
+
+def mock_collect_groupby_resoucetype(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_recordtype.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
+
+
+def mock_collect_groupby_linkedaccount(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_linkedaccount.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
