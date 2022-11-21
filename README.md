@@ -4,10 +4,15 @@
 
 The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS account(s) monthly cost and posts the resulting chart image to the defined slack channel (`SLACK_CHANNEL_NAME`).
 
+The following reports can be sent via Slack:
+
+- AWS Account Cost Change Report
+- AWS Tag (ProjectID) Cost Change Report
+- Top N Tag (ProjectID) Service Breakdown report
 
 ## Prerequisites
 
-- python 3.7
+- python 3.9
 - awscli
 - pipenv
 - AWS Account 

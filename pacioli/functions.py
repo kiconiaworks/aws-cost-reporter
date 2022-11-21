@@ -33,8 +33,9 @@ def get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tu
     """
     Calculate the `current` month start date and `previous` month start date from the given current datetime object.
     """
+    now = datetime.datetime.now(datetime.timezone.utc)
     if not current_datetime:
-        current_datetime = datetime.datetime.now(datetime.timezone.utc)
+        current_datetime = now
 
     # get nearest FULL day
     most_recent_full_date = current_datetime.date()

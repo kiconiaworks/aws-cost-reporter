@@ -12,6 +12,8 @@ from .settings import GROUPBY_TAG_NAME
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_EXCLUDE_TAGS = ["Tax"]
+
 
 class CostManager:
     """
@@ -272,3 +274,83 @@ class CostManager:
             percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
+
+
+class ReportManager:
+    def __init__(
+        self,
+        generation_datetime: Optional[datetime.datetime] = None,
+        previous_month_start: Optional[datetime.date] = None,
+        current_month_start: Optional[datetime.date] = None,
+        most_recent_full_date: Optional[datetime.date] = None,
+    ):
+
+        if not generation_datetime:
+            generation_datetime = datetime.datetime.now(datetime.timezone.utc)
+        if not previous_month_start and not current_month_start and not most_recent_full_date:
+            logger.info("dates not given, calculating...")
+            most_recent_full_date, current_month_start, previous_month_start = get_month_starts(generation_datetime)
+
+        logger.info(f"generation_datetime={generation_datetime}")
+        logger.info(f"most_recent_full_date={most_recent_full_date}")
+        logger.info(f"current_month_start={current_month_start}")
+        logger.info(f"previous_month_start={previous_month_start}")
+
+        self.generation_datetime = generation_datetime
+        self.most_recent_full_date = most_recent_full_date
+        self.current_month_start = current_month_start
+        self.previous_month_start = previous_month_start
+
+        self.cm = CostManager()
+
+    def generate_accounts_report(self) -> list[dict]:
+        """
+        :return:
+            [
+                {
+                    "id": {ACCOUNT_ID},
+                    "name": {ACCOUNT_NAME},
+                    "current_cost": {CURRENT_COST},
+                    "previous_cost": {PREVIOUS_COST},
+                    "percentage_change": {PercentageChange},
+                    "
+                },
+                ...
+            ]
+        """
+
+        raise NotImplementedError
+
+    def generate_tag_report(self, tag: str = GROUPBY_TAG_NAME, exclude_tags: list[str] = DEFAULT_EXCLUDE_TAGS) -> list[dict]:
+        """
+        :return:
+            [
+                {
+                    "id": {ACCOUNT_ID},
+                    "name": {ACCOUNT_NAME},
+                    "current_cost": {CURRENT_COST},
+                    "previous_cost": {PREVIOUS_COST},
+                    "percentage_change": {PercentageChange},
+                    "
+                },
+                ...
+            ]
+        """
+        raise NotImplementedError
+
+    def generate_tag_itemized_report(self, tag: str = GROUPBY_TAG_NAME, exclude_tags: list[str] = DEFAULT_EXCLUDE_TAGS) -> list[dict]:
+        """
+        :return:
+            [
+                {
+                    "id": {ACCOUNT_ID},
+                    "name": {ACCOUNT_NAME},
+                    "current_cost": {CURRENT_COST},
+                    "previous_cost": {PREVIOUS_COST},
+                    "percentage_change": {PercentageChange},
+                    "
+                },
+                ...
+            ]
+        """
+        raise NotImplementedError

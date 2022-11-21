@@ -27,14 +27,14 @@ def post_status(event, context) -> None:
     """
     now = datetime.datetime.now()
     end, current_month_start, previous_month_start = get_month_starts(now)
-
-    cm = CostManager()
-
-    current_cost, previous_cost = cm.get_stats()
-    percentage_change = round((current_cost / previous_cost - 1.0) * 100, 1)
-
-    logger.info("Get project totals...")
-    project_totals = cm.get_project_totals()
+    #
+    # cm = CostManager()
+    #
+    # current_cost, previous_cost = cm.get_stats()
+    # percentage_change = round((current_cost / previous_cost - 1.0) * 100, 1)
+    #
+    # logger.info("Get project totals...")
+    # project_totals = cm.get_project_totals()
 
     logger.info("posting to slack...")
     slack = SlackPostManager()
