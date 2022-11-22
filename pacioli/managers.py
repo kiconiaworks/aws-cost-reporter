@@ -301,6 +301,10 @@ class CostManager:
 
 
 class ReportManager:
+    """
+    Use CostManager to format results for reporting.
+    """
+
     def __init__(
         self,
         generation_datetime: Optional[datetime.datetime] = None,
