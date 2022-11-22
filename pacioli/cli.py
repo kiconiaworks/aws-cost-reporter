@@ -3,24 +3,23 @@ CLI for testing manually.
 """
 import datetime
 import json
-from io import BytesIO
 from typing import Optional
 
-from .functions import _get_month_starts
-from .handlers.events import post_daily_chart
+from .functions import get_month_starts
+from .handlers.events import post_status
 from .managers import CostManager
 
 
 def run():
     """Call the event_handler.post_daily_chart() function."""
-    post_daily_chart(None, None)
+    post_status(None, None)
 
 
 def test_collect_account_basic_account_metrics(target_datetime: Optional[datetime.datetime] = None) -> dict:
     """
     Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results.
     """
-    end, _, previous_month_start = _get_month_starts(target_datetime)
+    end, _, previous_month_start = get_month_starts(target_datetime)
 
     manager = CostManager()
     result = manager.collect_account_basic_account_metrics(previous_month_start, end)
@@ -31,21 +30,11 @@ def test_collect_account_group_account_project(target_datetime: Optional[datetim
     """
     Run the CostManager.collect_account_basic_account_metrics() function and retrieve the results.
     """
-    end, _, previous_month_start = _get_month_starts(target_datetime)
+    end, _, previous_month_start = get_month_starts(target_datetime)
 
     manager = CostManager()
     result = manager.collect_account_group_account_project(previous_month_start, end)
     return result
-
-
-def test_graph_image_creation() -> BytesIO:
-    """
-    Run graph image creation for the current date.
-    """
-    now = datetime.datetime.now()
-    chart_figure = prepare_daily_chart_figure(now)
-    image_bytes = generate_daily_chart_image(chart_figure)
-    return image_bytes
 
 
 if __name__ == "__main__":
@@ -63,11 +52,5 @@ if __name__ == "__main__":
     if args.test:
         cost_manager_collect_result = test_collect_account_basic_account_metrics()
         print(json.dumps(cost_manager_collect_result, indent=4))
-
-        test_chart_filename = "test-image.png"
-        print(f"writing ({test_chart_filename}) ...")
-        with open(test_chart_filename, "wb") as image_out:
-            image_bytes = test_graph_image_creation()
-            image_out.write(image_bytes.read())
     else:
         run()
