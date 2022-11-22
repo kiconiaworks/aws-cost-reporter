@@ -4,7 +4,7 @@ from io import BytesIO
 from pathlib import Path
 
 from pacioli.aws import S3_CLIENT
-from pacioli.functions import _get_month_starts, get_tag_display_mapping
+from pacioli.functions import get_month_starts, get_tag_display_mapping
 
 from .utils import reset_buckets
 
@@ -15,7 +15,7 @@ def test__get_month_starts():
     d = datetime.datetime(2019, 1, 5)
     expected_current_month_start = datetime.date(2019, 1, 1)
     expected_previous_month_start = datetime.date(2018, 12, 1)
-    _, actual_current_month_start, actual_previous_month_start = _get_month_starts(d)
+    _, actual_current_month_start, actual_previous_month_start = get_month_starts(d)
 
     assert actual_current_month_start == expected_current_month_start
     assert actual_previous_month_start == expected_previous_month_start
