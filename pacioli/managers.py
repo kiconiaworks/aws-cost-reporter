@@ -70,6 +70,9 @@ class CostManager:
         return self._collect_account_cost(start, end, group_by, granularity)
 
     def get_period_total_tax(self, start: datetime.date, end: datetime.date) -> float:
+        """
+        Get the total Tax cost for the given period.
+        """
         group_by = [{"Type": "DIMENSION", "Key": "RECORD_TYPE"}]
         daily_results = self._collect_account_cost(start, end, group_by, granularity="DAILY")
         c = Counter()
@@ -172,6 +175,9 @@ class CostManager:
         return c
 
     def get_account_totals(self, start: datetime.date, end: datetime.date) -> dict:
+        """
+        Get cost totals for all connected accounts.
+        """
         results = self.collect_account_service_metrics(start, end)
         c = Counter()
         for period in results["ResultsByTime"]:
