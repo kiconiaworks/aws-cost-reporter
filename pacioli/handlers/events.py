@@ -2,12 +2,11 @@
 Defines the function called on the registered events in the 'zappa_settings.json' file.
 """
 import datetime
-import json
 import logging
 import sys
 from pathlib import Path
 
-from ..functions import get_month_starts, get_projecttotals_message_blocks
+from ..functions import get_projecttotals_message_blocks
 from ..managers import ReportManager
 from ..reporting.slack import SlackPostManager
 from ..settings import SLACK_CHANNEL_NAME

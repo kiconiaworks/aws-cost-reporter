@@ -5,9 +5,8 @@ import datetime
 import json
 import logging
 from io import BytesIO
-from operator import itemgetter
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 from . import settings
 from .aws import S3_CLIENT, parse_s3_uri
