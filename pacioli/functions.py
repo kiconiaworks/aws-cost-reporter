@@ -76,7 +76,7 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
     return mapping
 
 
-def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[str, list]:
+def get_projecttotals_message_blocks(projects: list[dict]) -> Tuple[str, list]:
     """
     Process project totals into Slack formatted blocks.
 
@@ -86,6 +86,7 @@ def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[
             PROJECT_ID (str): PROJECT_TOTAL (float),
             ...
         }
+
     """
     # https://app.slack.com/block-kit-builder/
     title = "プロジェクトごと（月合計）"
@@ -93,18 +94,26 @@ def get_projecttotals_message_blocks(project_totals: Dict[str, float]) -> Tuple[
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
 
     dollar_emoji = ":heavy_dollar_sign:"
-    total = sum(project_totals.values())
-    null_project_id = "nothing_project_tag"
-    for project_id, project_total in sorted(project_totals.items(), key=itemgetter(1), reverse=True):
-        if project_id == null_project_id:
-            project_id = "ProjectIdタグなしのリソース費用"
+    total = sum(p["current_cost"] for p in projects)
+    null_project_ids = ("nothing_project_tag", "")
+    for project_info in projects:
+        project_total = project_info["current_cost"]
+        project_name = project_info["name"]
+        project_id = project_info["id"]
+        if project_id in null_project_ids:
+            project_name = "ProjectIdタグなしのリソース費用"
         multiplier = int(5 * (project_total / total))
         dollar_emojis = "-"
         if int(project_total) > 0:
             dollar_emojis = dollar_emoji * (multiplier + 1)
+        direction = ""
+        change = project_info["percentage_change"]
+        if change > 0:
+            direction = "+"
+        project_display_name = f"{project_name} ({project_id}) {direction}{change}%"
         project_section = {
             "type": "section",
-            "text": {"text": project_id, "type": "mrkdwn"},
+            "text": {"text": project_display_name, "type": "mrkdwn"},
             "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"${project_total:15.2f}"}],
         }
         json_formatted_message.append(project_section)

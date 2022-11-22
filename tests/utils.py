@@ -38,6 +38,12 @@ def mock_collect_groupbytag_projectid_services(*args, **kwargs):
     return data
 
 
+def mock_collect_groupbytag_projectid_services__single_day(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_projectid_with_services__single_day.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
+
+
 def mock_collect_groupby_resoucetype(*args, **kwargs):
     filepath = DATA_DIRECTORY / "costusage_daily_groupby_recordtype.json"
     data = json.loads(filepath.read_text(encoding="utf8"))

@@ -4,10 +4,11 @@ Key class for interfacing with and obtaining data from the AWS CostExplorer API.
 import datetime
 import logging
 from collections import Counter, defaultdict
+from operator import itemgetter
 from typing import List, Optional
 
 from .aws import CE_CLIENT
-from .functions import get_month_starts
+from .functions import get_accountid_mapping, get_month_starts, get_tag_display_mapping
 from .settings import GROUPBY_TAG_NAME
 
 logger = logging.getLogger(__name__)
@@ -151,6 +152,16 @@ class CostManager:
         return c
 
     def get_projectid_itemized_totals(self, start: datetime.date, end: datetime.date) -> dict:
+        """
+        :return:
+            {
+                "{PROJECT_ID}": {
+                    "{SERVICE}": {COST},
+                    ...
+                },
+                ...
+            }
+        """
         daily_results = self.collect_groupbytag_service_metrics(start, end, include_services=True)
         c = defaultdict(Counter)
         for period in daily_results["ResultsByTime"]:
@@ -227,7 +238,14 @@ class CostManager:
             change[account_id] = (current, previous, percentage_change)
         return change
 
-    def get_change_in_projects(self, now: Optional[datetime.date] = None):
+    def get_change_in_projects(self, now: Optional[datetime.date] = None) -> dict:
+        """
+        :return:
+            {
+                "PROJECT_ID": (current, previous, percentage_change),
+                ...
+            }
+        """
         if not now:
             now = datetime.datetime.now(datetime.timezone.utc)
 
@@ -318,10 +336,18 @@ class ReportManager:
                 ...
             ]
         """
+        results = self.cm.get_change_in_accounts(self.generation_datetime)
+        # reformat to expected output
+        data = []
+        id_mapping = get_accountid_mapping()
+        for account_id, (current, previous, perc_change) in results.items():
+            # get account name
+            name = id_mapping.get(account_id, "UNDEFINED")
+            info = {"id": account_id, "name": name, "current_cost": current, "previous_cost": previous, "percentage_change": perc_change}
+            data.append(info)
+        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
 
-        raise NotImplementedError
-
-    def generate_tag_report(self, tag: str = GROUPBY_TAG_NAME, exclude_tags: list[str] = DEFAULT_EXCLUDE_TAGS) -> list[dict]:
+    def generate_projectid_report(self) -> list[dict]:
         """
         :return:
             [
@@ -331,14 +357,30 @@ class ReportManager:
                     "current_cost": {CURRENT_COST},
                     "previous_cost": {PREVIOUS_COST},
                     "percentage_change": {PercentageChange},
-                    "
+                    "services": [
+                        {
+                            "name": NAME,
+                            "cost": COST,
+                        },
+                        ...
+                    ]
                 },
                 ...
             ]
         """
-        raise NotImplementedError
+        results = self.cm.get_change_in_projects(self.generation_datetime)
 
-    def generate_tag_itemized_report(self, tag: str = GROUPBY_TAG_NAME, exclude_tags: list[str] = DEFAULT_EXCLUDE_TAGS) -> list[dict]:
+        # reformat to expected output
+        data = []
+        id_mapping = get_tag_display_mapping()
+        for project_id_raw, (current, previous, perc_change) in results.items():
+            project_id = project_id_raw.replace("ProjectId$", "").strip()
+            name = id_mapping.get(project_id, "UNDEFINED")
+            info = {"id": project_id, "name": name, "current_cost": current, "previous_cost": previous, "percentage_change": perc_change}
+            data.append(info)
+        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
+
+    def generate_projectid_itemized_report(self) -> list[dict]:
         """
         :return:
             [
@@ -346,11 +388,41 @@ class ReportManager:
                     "id": {ACCOUNT_ID},
                     "name": {ACCOUNT_NAME},
                     "current_cost": {CURRENT_COST},
-                    "previous_cost": {PREVIOUS_COST},
-                    "percentage_change": {PercentageChange},
-                    "
+                    "previous_cost": None,
+                    "services": [
+                        ({SERVICE_NAME}, {COST}),
+                        ...
+                    ]
                 },
                 ...
             ]
         """
-        raise NotImplementedError
+        end = self.most_recent_full_date + datetime.timedelta(days=1)
+        results = self.cm.get_projectid_itemized_totals(start=self.most_recent_full_date, end=end)
+
+        # results structure:
+        # {
+        #     "{PROJECT_ID}": {
+        #         "{SERVICE}": {COST},
+        #         ...
+        #     },
+        #     ...
+        # }
+        # reformat to expected output
+        data = []
+        id_mapping = get_tag_display_mapping()
+        for project_id_raw, services in results.items():
+            project_id = project_id_raw.replace("ProjectId$", "").strip()
+            name = id_mapping.get(project_id, "UNDEFINED")
+            info = {"id": project_id, "name": name, "current_cost": 0, "previous_cost": None, "services": []}
+            project_services = []
+            current_cost = 0
+            for service_name, cost in services.items():
+                project_services.append((service_name, cost))
+                current_cost += cost
+            # sort biggest -> smallest
+            info["services"] = sorted(project_services, key=lambda x: x[1], reverse=True)
+            info["current_cost"] = current_cost
+            data.append(info)
+
+        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
