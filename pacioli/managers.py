@@ -340,6 +340,7 @@ class ReportManager:
         self.cm = CostManager()
 
     def get_period_total_tax(self) -> float:
+        """Get the current taxed value for the current month"""
         result = self.cm.get_period_total_tax(start=self.current_month_start, end=self.most_recent_full_date)
         return result
 

@@ -76,6 +76,9 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
 
 
 def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: Optional[str] = "") -> Tuple[str, list]:
+    """
+    Prepare account totals message blocks for post to slack
+    """
     dollar_emoji = ":heavy_dollar_sign:"
     previous_total = sum(a["previous_cost"] for a in accounts)
     current_total = sum(a["current_cost"] for a in accounts)
@@ -164,6 +167,9 @@ def get_projecttotals_message_blocks(projects: list[dict], display_datetime: Opt
 def get_topn_projectservices_message_blocks(
     project_services: list[dict], display_datetime: Optional[str] = "", topn: Optional[int] = 5
 ) -> Tuple[str, list]:
+    """
+    Prepare Top N Project Services message blocks for post to slack
+    """
     title = f"*プロジェクトサービス（月合計）Top {topn} {display_datetime}*"
     divider_element = {"type": "divider"}
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
