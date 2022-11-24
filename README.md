@@ -85,7 +85,7 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
         "aws_region": "us-west-2",
         "profile_name": "default",
         "project_name": "aws-cost-report",
-        "runtime": "python3.7",
+        "runtime": "python3.9",
         "s3_bucket": "{YOUR BUCKET}",
         "apigateway_enabled": false,
         "keep_warm": false,
@@ -94,7 +94,7 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
             "SLACK_CHANNEL_NAME": "{NAME_OF_SLACK_CHANNEL_TO_POST_TO}"
         },
         "events": [{
-           "function": "pacioli.event_handlers.post_daily_chart",
+           "function": "pacioli.handlers.events.post_status",
            "expression": "cron(0 50,53 ? * MON,WED,FRI *)"
         }]
     }
