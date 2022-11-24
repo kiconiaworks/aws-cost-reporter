@@ -72,6 +72,10 @@ class CostManager:
             {"Type": "TAG", "Key": GROUPBY_TAG_NAME},
         ]
         if include_services:
+            # To breakdown "EC2 - Other" USAGE_TYPE may be used
+            # -- however, max of 2 dimensions are only supported.
+            # -- May want to create a new function to breakdown "EC2 - Other" only costs.
+            # {"Type": "DIMENSION", "Key": "USAGE_TYPE"}
             group_by.append({"Type": "DIMENSION", "Key": "SERVICE"})
         return self._collect_account_cost(start, end, group_by, granularity)
 
