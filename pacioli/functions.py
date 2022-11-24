@@ -119,7 +119,11 @@ def get_projecttotals_message_blocks(projects: list[dict], display_datetime: Opt
     # https://app.slack.com/block-kit-builder/
     title = f"*プロジェクトごと（月合計）{display_datetime}*"
     divider_element = {"type": "divider"}
-    json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
+    json_formatted_message = [
+        {"type": "section", "text": {"type": "mrkdwn", "text": title}},
+        {"type": "section", "text": {"type": "mrkdwn", "text": f"_Tax: ${tax:.2f}_"}},
+        divider_element,
+    ]
 
     dollar_emoji = ":heavy_dollar_sign:"
     total = sum(p["current_cost"] for p in projects)
@@ -174,7 +178,7 @@ def get_topn_projectservices_message_blocks(
     divider_element = {"type": "divider"}
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
     null_project_ids = ("nothing_project_tag", "")
-    for project_info in project_services[:topn]:
+    for count, project_info in enumerate(project_services[:topn], start=1):
         project_name = project_info["name"]
         project_id = project_info["id"]
         if project_id in null_project_ids:
@@ -184,7 +188,7 @@ def get_topn_projectservices_message_blocks(
         project_id_display = ""
         if project_id:
             project_id_display = f"({project_id})"
-        project_display_name = f"{project_name} {project_id_display} ${current_cost:15.2f}"
+        project_display_name = f"_*{count}. {project_name}* {project_id_display} ${current_cost:15.2f}_"
 
         project_fields = [{"type": "mrkdwn", "text": f"_{name} ${cost:.2f}_"} for name, cost in project_info["services"]]
         if len(project_fields) > 10:
