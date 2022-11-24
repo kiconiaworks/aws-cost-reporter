@@ -266,15 +266,13 @@ class CostManager:
         end = most_recent_full_date
 
         results = self.collect_groupbytag_service_metrics(start, end, include_services=False)
-        daily_cumsum = {}
+        daily_cumsum = defaultdict(dict)
         earliest = None
         latest = None
         for period in sorted(results["ResultsByTime"], key=sort_by_periodstart):
             day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
             for group in period["Groups"]:
                 project_id = "".join(group["Keys"])
-                if project_id not in daily_cumsum:
-                    daily_cumsum[project_id] = {}
                 if day.month not in daily_cumsum[project_id]:
                     daily_cumsum[project_id][day.month] = {}
                 if day.day == 1 or day.day - 1 not in daily_cumsum[project_id][day.month]:
