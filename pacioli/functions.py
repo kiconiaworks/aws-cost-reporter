@@ -14,13 +14,7 @@ from .aws import S3_CLIENT, parse_s3_uri
 logger = logging.getLogger(__name__)
 
 DEFAULT_ACCOUNTID_MAPPING_FILENAME = "accountid_mapping.json"
-DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
-
-
-class ImageFormatError(ValueError):
-    """Exception used when an unsupported Image format is used/given."""
-
-    pass
+DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
 
 
 def datestr2datetime(date_str) -> datetime.datetime:
@@ -218,7 +212,8 @@ def get_accountid_mapping() -> dict:
     Get the accountid mapping dictionary
     """
     accountid_mapping = {}
+    logger.debug(f"DEFAULT_ACCOUNTID_MAPPING_FILEPATH={DEFAULT_ACCOUNTID_MAPPING_FILEPATH}")
+    logger.debug(f"DEFAULT_ACCOUNTID_MAPPING_FILEPATH.exists()={DEFAULT_ACCOUNTID_MAPPING_FILEPATH.exists()}")
     if DEFAULT_ACCOUNTID_MAPPING_FILEPATH.exists():
-        with DEFAULT_ACCOUNTID_MAPPING_FILEPATH.open("r", encoding="utf8") as mapping:
-            accountid_mapping = json.loads(mapping.read())
+        accountid_mapping = json.loads(DEFAULT_ACCOUNTID_MAPPING_FILEPATH.read_text(encoding="utf8"))
     return accountid_mapping
