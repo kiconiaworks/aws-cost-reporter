@@ -3,6 +3,7 @@ Key class for interfacing with and obtaining data from the AWS CostExplorer API.
 """
 import datetime
 import logging
+import pprint
 from collections import Counter, defaultdict
 from operator import itemgetter
 from typing import List, Optional
@@ -239,6 +240,10 @@ class CostManager:
                 latest = day
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
+
+        logger.info(f"latest={latest}")
+        logger.debug("daily_cumsum:")
+        logger.debug(pprint.pformat(daily_cumsum, indent=4))
         change = {}
         for account_id in daily_cumsum.keys():
             current = daily_cumsum[account_id][latest.month][latest.day]
@@ -380,13 +385,6 @@ class ReportManager:
                     "current_cost": {CURRENT_COST},
                     "previous_cost": {PREVIOUS_COST},
                     "percentage_change": {PercentageChange},
-                    "services": [
-                        {
-                            "name": NAME,
-                            "cost": COST,
-                        },
-                        ...
-                    ]
                 },
                 ...
             ]
@@ -414,7 +412,10 @@ class ReportManager:
                     "current_cost": {CURRENT_COST},
                     "previous_cost": None,
                     "services": [
-                        ({SERVICE_NAME}, {COST}),
+                        {
+                            "name": NAME,
+                            "cost": COST,
+                        },
                         ...
                     ]
                 },
