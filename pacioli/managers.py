@@ -16,6 +16,11 @@ logger = logging.getLogger(__name__)
 DEFAULT_EXCLUDE_TAGS = ["Tax"]
 
 
+def sort_by_periodstart(entry) -> datetime.datetime:
+    """Sort CostExplorer results by Period Start"""
+    return datetime.datetime.fromisoformat(entry["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
+
+
 class CostManager:
     """
     Class intended to manage desired CostExplorer ('ce') operations.
@@ -30,7 +35,7 @@ class CostManager:
             TimePeriod={"Start": start.isoformat(), "End": end.isoformat()},
             Granularity=granularity,
             GroupBy=group_by,
-            Metrics=["BlendedCost", "UnblendedCost", "UsageQuantity"],
+            Metrics=["UnblendedCost", "UsageQuantity"],
         )
         all_results["ResultsByTime"].extend(response["ResultsByTime"])
 
@@ -211,7 +216,8 @@ class CostManager:
         latest = None
         for period in results["ResultsByTime"]:
             day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
-
+            if day.date() > most_recent_full_date:
+                continue
             for group in period["Groups"]:
                 account_id = "".join(group["Keys"])
                 if account_id not in daily_cumsum:
@@ -263,8 +269,10 @@ class CostManager:
         daily_cumsum = {}
         earliest = None
         latest = None
-        for period in results["ResultsByTime"]:
+        for period in sorted(results["ResultsByTime"], key=sort_by_periodstart):
             day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
+            if day.date() > most_recent_full_date:
+                continue
 
             for group in period["Groups"]:
                 project_id = "".join(group["Keys"])
@@ -273,6 +281,9 @@ class CostManager:
                 if day.month not in daily_cumsum[project_id]:
                     daily_cumsum[project_id][day.month] = {}
                 if day.day == 1:
+                    previous_total = 0
+                elif day.day - 1 not in daily_cumsum[project_id][day.month]:
+                    # project newly added
                     previous_total = 0
                 else:
                     previous_total = daily_cumsum[project_id][day.month][day.day - 1]
@@ -292,10 +303,15 @@ class CostManager:
         for project_id in daily_cumsum.keys():
             current = daily_cumsum[project_id][latest.month][latest.day]
             previous_month_day = latest.day
-            if previous_month_day not in daily_cumsum[project_id][earliest.month]:
-                previous_month_day -= 1
-            previous = daily_cumsum[project_id][earliest.month][previous_month_day]
-            percentage_change = round((current / previous - 1.0) * 100, 1)
+            previous = None
+            percentage_change = None
+            if earliest.month in daily_cumsum[project_id]:
+                if previous_month_day not in daily_cumsum[project_id][earliest.month]:
+                    previous_month_day -= 1
+
+                if previous_month_day in daily_cumsum[project_id][earliest.month]:
+                    previous = daily_cumsum[project_id][earliest.month][previous_month_day]
+                    percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
 
@@ -330,6 +346,10 @@ class ReportManager:
         self.previous_month_start = previous_month_start
 
         self.cm = CostManager()
+
+    def get_period_total_tax(self) -> float:
+        result = self.cm.get_period_total_tax(start=self.current_month_start, end=self.most_recent_full_date)
+        return result
 
     def generate_accounts_report(self) -> list[dict]:
         """
@@ -392,6 +412,7 @@ class ReportManager:
 
     def generate_projectid_itemized_report(self) -> list[dict]:
         """
+        NOTE: Tax is excluded from results
         :return:
             [
                 {
@@ -407,8 +428,7 @@ class ReportManager:
                 ...
             ]
         """
-        end = self.most_recent_full_date + datetime.timedelta(days=1)
-        results = self.cm.get_projectid_itemized_totals(start=self.most_recent_full_date, end=end)
+        results = self.cm.get_projectid_itemized_totals(start=self.current_month_start, end=self.most_recent_full_date)
 
         # results structure:
         # {
@@ -419,17 +439,27 @@ class ReportManager:
         #     ...
         # }
         # reformat to expected output
+        # aggregate project services
+        all_project_services = defaultdict(Counter)
+        tax_service_name = "Tax"
+        for project_id_raw, services in results.items():
+            for service_name, cost in services.items():
+                # remove Tax
+                if service_name == tax_service_name:
+                    logger.info(f"excluding tag '{tax_service_name}' {cost}")
+                    continue
+                all_project_services[project_id_raw][service_name] += cost
+                all_project_services[project_id_raw]["current_cost"] += cost
+
         data = []
         id_mapping = get_tag_display_mapping()
         for project_id_raw, services in results.items():
             project_id = project_id_raw.replace("ProjectId$", "").strip()
             name = id_mapping.get(project_id, "UNDEFINED")
             info = {"id": project_id, "name": name, "current_cost": 0, "previous_cost": None, "services": []}
-            project_services = []
-            current_cost = 0
-            for service_name, cost in services.items():
-                project_services.append((service_name, cost))
-                current_cost += cost
+            current_cost = all_project_services[project_id_raw].pop("current_cost", 0)
+            project_services = list(all_project_services[project_id_raw].items())
+
             # sort biggest -> smallest
             info["services"] = sorted(project_services, key=lambda x: x[1], reverse=True)
             info["current_cost"] = current_cost
