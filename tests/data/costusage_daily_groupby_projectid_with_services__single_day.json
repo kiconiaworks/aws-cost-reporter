@@ -1,0 +1,201 @@
+{
+    "GroupDefinitions": [
+        {
+            "Type": "TAG",
+            "Key": "ProjectId"
+        },
+        {
+            "Type": "DIMENSION",
+            "Key": "SERVICE"
+        }
+    ],
+    "ResultsByTime": [
+        {
+            "TimePeriod": {
+                "Start": "2022-11-15",
+                "End": "2022-11-16"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "AWS Lambda"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0028699928",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "Amazon API Gateway"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "23.0000039059",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.00009775",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "Amazon Relational Database Service"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "365166.4810105348",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "4.129455547",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "Amazon Simple Queue Service"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "8800",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "Amazon Simple Storage Service"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "76",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.00002812",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "Amazon Virtual Private Cloud"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "92",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.288",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$",
+                        "AmazonCloudWatch"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0065676075",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1",
+                        "AWS Lambda"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4405.682",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1",
+                        "EC2 - Other"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "51.2283833146",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.1761595389",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1",
+                        "Amazon Elastic Compute Cloud - Compute"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.000990217",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e",
+                        "Amazon Elastic File System"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0000249803",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000008993",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        }
+    ],
+    "DimensionValueAttributes": []
+}
