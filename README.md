@@ -2,9 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/kiconiaworks/aws-cost-reporter.svg?style=svg)](https://circleci.com/gh/kiconiaworks/aws-cost-reporter)
 
-The 'pacioli' package is a simple SLACK bot that generates a chart of your AWS account(s) monthly cost and posts the resulting chart image to the defined slack channel (`SLACK_CHANNEL_NAME`).
+The 'pacioli' package is a simple SLACK bot that generates status of your AWS account(s) monthly cost and posts the resulting reports to the defined slack channel (`SLACK_CHANNEL_NAME`).
 
-The following reports can be sent via Slack:
+The following reports are sent via Slack:
 
 - AWS Account Cost Change Report
 - AWS Tag (ProjectID) Cost Change Report
@@ -24,7 +24,7 @@ The following reports can be sent via Slack:
 
 In order to allow the COST EXPLORER to see tags on resources, the desired "Resource Tag" *MUST* be enabled.
 
-> Currently the system assumes that the desired tag is, "ProjectId"
+> The system assumes that the desired tag is, "ProjectId"
 
 To enable resource tags refer to:
 
@@ -91,7 +91,6 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
         "keep_warm": false,
         "environment_variables": {
             "SLACK_API_TOKEN": "{INSERT YOUR SLACK BOT TOKEN}",
-            "BOKEH_PHANTOMJS_PATH": "/var/task/bin/phantomjs",
             "SLACK_CHANNEL_NAME": "{NAME_OF_SLACK_CHANNEL_TO_POST_TO}"
         },
         "events": [{
@@ -107,40 +106,12 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
 ### Available Environment Variables
 
 - SLACK_API_TOKEN: {INSERT YOUR SLACK BOT TOKEN}",
-- BOKEH_PHANTOMJS_PATH: "/var/task/bin/phantomjs",
 - SLACK_CHANNEL_NAME": "{NAME_OF_SLACK_CHANNEL_TO_POST_TO}"
 - SLACK_BOT_NAME: Display name of Slack Bot
 - SLACK_BOT_ICONURL: Icon image for BOT
-
-## bokeh setting
-
-In order to export PNG bokeh requires that [phantomjs](http://phantomjs.org/download.html) be available.
-The location of `phantomjs` can be specified via the `BOKEH_PHANTOMJS_PATH` environment variable.
-
-The `get_phantomjs.py` script will attempt to download the latest `phantomjs` linux binary and place it in the `{REPOSITORY_ROOT}/bin` directory:
-
-```
-pipenv run get_phantomjs.py
-```
-
-If the script doesn't work follow the steps in the section below. 
-
-### Prepare phantomjs
-
-1. Download the linux phantomjs binary from (http://phantomjs.org/download.html):
-
-    ```bash
-    export PHANTOMJS_VERSION=phantomjs-2.1.1-linux-x86_64
-    wget https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS_VERSION}.tar.bz2
-    tar xvjf ${PHANTOMJS_VERSION}.tar.bz2
-    sudo mv ${PHANTOMJS_VERSION}/bin/phantomjs bin/  
-    xz -9 bin/phantomjs
-    ```
-
-2. Place binary in `REPOSITORY_ROOT/bin`
-
-> NOTE: If you used the sample `zappa_settings.json` template above you should be set to run the function.
-
+- LOG_LEVEL: Cloudwatch log level (DEFAULT=INFO)
+- UTC_OFFSET: (float) Time offset from UTC for date time display in reports
+- PROJECTSERVICES_TOPN: Number of Top Projects to include in the "Top N Tag (ProjectID) Service Breakdown" report (DEFAULT=10)
 
 ## AWS Configuration
 
@@ -199,26 +170,25 @@ To test locally, set the following ENVIRONMENT VARIABLES:
 
 - SLACK_API_TOKEN
 - SLACK_CHANNEL_NAME
-- BOKEH_PHANTOMJS_PATH
 - S3_SERVICE_ENDPOINT=https://127.0.0.1:4566
 
 Once setup and environment variables set, `pacioli` can be tested locally using the following command:
 
 > NOTE: the command below assumes that pipenv is used and sync'd and you are already in the shell
-> This will create and post the image to the configured slack channel
-
 
 ```
 python -m pacioli.cli
 ```
 
-If the `--test` option is given, results will NOT be posted to slack, and CostManager.collect_account_basic_account_metrics() output will be displayed:
+To test submission to SLACK, use the `--post-to-slack` option:
 ```
-python -m pacioli.cli --test
+python -m pacioli.cli --post-to-slack
 ```
 
 
 ### awscli ce example
+
+> NOTE: your account must have billing access
 
 ```
 aws ce get-cost-and-usage \
@@ -234,6 +204,6 @@ From the AWS lambda Test Console add the command, and click, "Test":
 
 ```json
 {
-  "command": "pacioli.event_handlers.post_daily_chart"
+  "command": "pacioli.handlers.events.post_status"
 }
 ```
