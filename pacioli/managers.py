@@ -259,6 +259,33 @@ class CostManager:
             change[account_id] = (current, previous, percentage_change)
         return change
 
+    @staticmethod
+    def _get_project_change(daily_cumsum: dict[dict], earliest_date: datetime.date, latest_date: datetime.date) -> dict:
+        """Get project change from 2 month daily cumulative sum dictionary."""
+        change = {}
+        for project_id in daily_cumsum.keys():
+            current = None
+            previous = None
+            percentage_change = None
+
+            # get project current cost (find latest day)
+            latest_day = latest_date.day
+            while latest_day >= 1 and latest_day not in daily_cumsum[project_id][latest_date.month]:
+                latest_day -= 1
+
+            if latest_day >= 1:
+                current = daily_cumsum[project_id][latest_date.month][latest_day]
+                previous_month_day = latest_date.day
+                if earliest_date.month in daily_cumsum[project_id]:
+                    if previous_month_day not in daily_cumsum[project_id][earliest_date.month]:
+                        previous_month_day -= 1
+
+                    if previous_month_day in daily_cumsum[project_id][earliest_date.month]:
+                        previous = daily_cumsum[project_id][earliest_date.month][previous_month_day]
+                        percentage_change = round((current / previous - 1.0) * 100, 1)
+            change[project_id] = (current, previous, percentage_change)
+        return change
+
     def get_change_in_projects(self, now: Optional[datetime.date] = None) -> dict:
         """
         :return:
@@ -300,20 +327,7 @@ class CostManager:
 
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
-        change = {}
-        for project_id in daily_cumsum.keys():
-            current = daily_cumsum[project_id][latest.month][latest.day]
-            previous_month_day = latest.day
-            previous = None
-            percentage_change = None
-            if earliest.month in daily_cumsum[project_id]:
-                if previous_month_day not in daily_cumsum[project_id][earliest.month]:
-                    previous_month_day -= 1
-
-                if previous_month_day in daily_cumsum[project_id][earliest.month]:
-                    previous = daily_cumsum[project_id][earliest.month][previous_month_day]
-                    percentage_change = round((current / previous - 1.0) * 100, 1)
-            change[project_id] = (current, previous, percentage_change)
+        change = self._get_project_change(daily_cumsum, earliest, latest)
         return change
 
 
