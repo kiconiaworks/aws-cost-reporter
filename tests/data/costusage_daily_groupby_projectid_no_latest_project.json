@@ -1,0 +1,3186 @@
+{
+    "GroupDefinitions": [
+        {
+            "Type": "TAG",
+            "Key": "ProjectId"
+        }
+    ],
+    "ResultsByTime": [
+        {
+            "TimePeriod": {
+                "Start": "2022-10-01",
+                "End": "2022-10-02"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "28909.3070356006",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "25.511669751",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "444.880643814",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9973106137",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-02",
+                "End": "2022-10-03"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "10803.7168165949",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.4083540651",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "256.3036148504",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9802662631",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-03",
+                "End": "2022-10-04"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "231129.1037665143",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.9716531954",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4861.1949162643",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.436657626",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-04",
+                "End": "2022-10-05"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "294997.4437254932",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8108098954",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4281.6907092569",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.347119655",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-05",
+                "End": "2022-10-06"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "297147.2801059211",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8291047942",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3845.8217704889",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3473365814",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-06",
+                "End": "2022-10-07"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "346816.4163730983",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7531889613",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4643.4641103781",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3769668447",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-07",
+                "End": "2022-10-08"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "323956.8768706115",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7956209735",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4291.4422518532",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.355648566",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-08",
+                "End": "2022-10-09"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "40392.8694411597",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.7291685188",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "556.6386012502",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.0144171764",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-09",
+                "End": "2022-10-10"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "14272.6593841766",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.4024722214",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "139.1198657838",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9802703808",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-10",
+                "End": "2022-10-11"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "349756.0808329785",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7227513631",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4360.9782612963",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3172051787",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-11",
+                "End": "2022-10-12"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "303210.2061049543",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.820846977",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "5136.7618515301",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4238240737",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-12",
+                "End": "2022-10-13"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "272871.984726883",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.891119075",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3648.1307373983",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3556738974",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-13",
+                "End": "2022-10-14"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "291904.7242446717",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8675967981",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4114.7846944591",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3938666392",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-14",
+                "End": "2022-10-15"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "307236.8528875155",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7895546026",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4030.1307709827",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3514615219",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-15",
+                "End": "2022-10-16"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "16820.2556418247",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.4652160819",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "156.181446619",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9802536663",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-16",
+                "End": "2022-10-17"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "22218.1336162808",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.4538970285",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "229.7043861389",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9845297522",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-17",
+                "End": "2022-10-18"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "281409.8690826629",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8863852718",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4482.5951030956",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3770255539",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-18",
+                "End": "2022-10-19"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "311669.1101150913",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8016239921",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4238.1578591087",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3598102042",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-19",
+                "End": "2022-10-20"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "309995.6103200159",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7675723134",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3956.9468921021",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3928132207",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-20",
+                "End": "2022-10-21"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "302723.3499245998",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.839234177",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3985.8345147445",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4474738846",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-21",
+                "End": "2022-10-22"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "333214.0810514497",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7184969648",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4309.1269239128",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3987039591",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-22",
+                "End": "2022-10-23"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "30194.7020419762",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.7117088427",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "421.9983700998",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.02043412",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "28.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000416142",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "14.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001067734",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-23",
+                "End": "2022-10-24"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "36523.5337452209",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.6963354151",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "727.9819552961",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.0239849156",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-24",
+                "End": "2022-10-25"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "286279.8444472809",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8829271419",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4987.3891686882",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4096581959",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-25",
+                "End": "2022-10-26"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "302252.3608840692",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8388039296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4092.0084113818",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.409185892",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-26",
+                "End": "2022-10-27"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "243368.2520776148",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.9101219411",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3470.0044024136",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4344710202",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-27",
+                "End": "2022-10-28"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "314253.3136553504",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8381307958",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4096.4896468124",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4670833199",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-28",
+                "End": "2022-10-29"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "364704.9670713504",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7163851536",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "6028.9820438552",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.460369037",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-29",
+                "End": "2022-10-30"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "47177.1337448773",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.8587105898",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "843.8078683717",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.0483700242",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-30",
+                "End": "2022-10-31"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "19487.2615455373",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.464922148",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "256.5675063022",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9921819195",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-10-31",
+                "End": "2022-11-01"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "292794.3411826032",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8301219846",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "5386.3129862533",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4363595117",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012501689",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0000312542",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0037256989",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001015934",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": false
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-01",
+                "End": "2022-11-02"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "310781.6009689903",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "17.6865346208",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3908.2795138783",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3686199478",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-02",
+                "End": "2022-11-03"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "329120.3361290046",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7447113791",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4159.1900172229",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3643105305",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-03",
+                "End": "2022-11-04"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "404542.4326622199",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.5741249012",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4642.3331631035",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.2873715482",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-04",
+                "End": "2022-11-05"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "342972.6398036887",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7796252124",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4071.9251973702",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3258016295",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-05",
+                "End": "2022-11-06"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "94729.0365770537",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.5599962169",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "1748.6926372803",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.1082843784",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-06",
+                "End": "2022-11-07"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "22097.1573057297",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.4551936858",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "351.1887401581",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9973150762",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-07",
+                "End": "2022-11-08"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "263868.372484985",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.9264237708",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4870.8567231185",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3643193236",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-08",
+                "End": "2022-11-09"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "303404.1992438562",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.820651627",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3905.4023438685",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3598612887",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-09",
+                "End": "2022-11-10"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "323987.5663141541",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.7661393218",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4174.4131682048",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3386940744",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-10",
+                "End": "2022-11-11"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "330854.8874738162",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.758563445",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "5220.0704796588",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.4708474508",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-11",
+                "End": "2022-11-12"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "283305.3050384005",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8293920097",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "3585.4952173856",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3342548613",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-12",
+                "End": "2022-11-13"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "28241.7242958778",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.5136258826",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "311.4302328565",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9930614162",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-13",
+                "End": "2022-11-14"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "26233.4188224589",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "1.5824406208",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "367.9625963142",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "2.9973016124",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$e6739776-4931-4161-b94b-693fe4214c7e"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.003849888",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.0001049796",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-14",
+                "End": "2022-11-15"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "287147.092130875",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.8095096861",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4285.1489690554",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.3853122163",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$6b2cc2b3-2ca1-465c-832f-f95c9d63cf4f"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "0.0012918412",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "0.000032296",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        },
+        {
+            "TimePeriod": {
+                "Start": "2022-11-15",
+                "End": "2022-11-16"
+            },
+            "Total": {},
+            "Groups": [
+                {
+                    "Keys": [
+                        "ProjectId$"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "374157.490452041",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "5.417581417",
+                            "Unit": "USD"
+                        }
+                    }
+                },
+                {
+                    "Keys": [
+                        "ProjectId$2daec5cf-78b5-4cdc-96be-06b7cefb6eb1"
+                    ],
+                    "Metrics": {
+                        "UsageQuantity": {
+                            "Amount": "4456.9113735316",
+                            "Unit": "N/A"
+                        },
+                        "UnblendedCost": {
+                            "Amount": "3.1761595389",
+                            "Unit": "USD"
+                        }
+                    }
+                }
+            ],
+            "Estimated": true
+        }
+    ],
+    "DimensionValueAttributes": []
+}

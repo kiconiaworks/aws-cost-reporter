@@ -32,6 +32,12 @@ def mock_collect_groupbytag_projectid(*args, **kwargs):
     return data
 
 
+def mock_collect_groupbytag_projectid_missing_latest(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_projectid_no_latest_project.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
+
+
 def mock_collect_groupbytag_projectid_services(*args, **kwargs):
     filepath = DATA_DIRECTORY / "costusage_daily_groupby_projectid_with_services.json"
     data = json.loads(filepath.read_text(encoding="utf8"))

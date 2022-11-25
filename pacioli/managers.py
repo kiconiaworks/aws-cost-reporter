@@ -302,17 +302,25 @@ class CostManager:
             latest = most_recent_full_date
         change = {}
         for project_id in daily_cumsum.keys():
-            current = daily_cumsum[project_id][latest.month][latest.day]
-            previous_month_day = latest.day
+            current = None
             previous = None
             percentage_change = None
-            if earliest.month in daily_cumsum[project_id]:
-                if previous_month_day not in daily_cumsum[project_id][earliest.month]:
-                    previous_month_day -= 1
 
-                if previous_month_day in daily_cumsum[project_id][earliest.month]:
-                    previous = daily_cumsum[project_id][earliest.month][previous_month_day]
-                    percentage_change = round((current / previous - 1.0) * 100, 1)
+            # get project current cost (find latest day)
+            latest_day = latest.day
+            while latest_day >= 1 and latest_day not in daily_cumsum[project_id][latest.month]:
+                latest_day -= 1
+
+            if latest_day >= 1:
+                current = daily_cumsum[project_id][latest.month][latest_day]
+                previous_month_day = latest.day
+                if earliest.month in daily_cumsum[project_id]:
+                    if previous_month_day not in daily_cumsum[project_id][earliest.month]:
+                        previous_month_day -= 1
+
+                    if previous_month_day in daily_cumsum[project_id][earliest.month]:
+                        previous = daily_cumsum[project_id][earliest.month][previous_month_day]
+                        percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
 

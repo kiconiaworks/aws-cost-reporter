@@ -164,6 +164,38 @@ Requires:
 aws iam attach-role-policy --role-name aws-cost-report-dev-ZappaLambdaExecutionRole --policy-arn $(aws iam list-policies --scope Local --query "Policies[?PolicyName=='cost-reporter-ce-policy'].Arn" --output text)
 ```
 
+### Apply Manual Cloudwatch Rule
+
+1. Get Function Arn:
+
+2. Create Rule from Cloudformation Template:
+
+    ```bash
+    STAGE={STAGE}
+    FUNCTION_ARN={FUNCTION_ARN}
+    aws cloudformation create-stack --stack-name cost-report-rule-${STAGE} \
+      --template-body file://./aws/rules/lambda_schedule_trigger.yaml \
+      --parameters \
+          ParameterKey=StageName,ParameterValue=${STAGE} \
+          ParameterKey=FunctionArn,ParameterValue=${FUNCTION_ARN} \
+      --region ap-northeast-1 \
+      --disable-rollback && \
+      aws cloudformation wait stack-create-complete --stack-name cost-report-rule-${STAGE} --region ap-northeast-1   
+    ```
+
+3. Add lambda invoke permission to rule:
+
+    ```bash
+    export FUNCTION_NAME={FUNCTION_NAME}
+    export RULE_SOURCE_ARN={RULE_SOURCE_ARN}
+    aws lambda add-permission --function-name ${FUNCTION_NAME} \
+      --statement-id ${FUNCTION_NAME}-permission \
+      --action 'lambda:InvokeFunction' \
+      --principal events.amazonaws.com \
+      --region {REGION} \
+      --source-arn ${RULE_SOURCE_ARN}
+    ```
+
 ## Testing
 
 To test locally, set the following ENVIRONMENT VARIABLES:
