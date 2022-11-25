@@ -276,7 +276,7 @@ class CostManager:
             if latest_day >= 1:
                 current = daily_cumsum[project_id][latest_date.month][latest_day]
                 previous_month_day = latest_date.day
-                if earliest.month in daily_cumsum[project_id]:
+                if earliest_date.month in daily_cumsum[project_id]:
                     if previous_month_day not in daily_cumsum[project_id][earliest_date.month]:
                         previous_month_day -= 1
 
