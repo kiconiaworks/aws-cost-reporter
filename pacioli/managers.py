@@ -29,6 +29,13 @@ class CostManager:
 
     def _collect_account_cost(self, start: datetime.date, end: datetime.date, group_by: List[dict], granularity: str = "DAILY") -> dict:
         logger.info(f"start={start}, end={end}, granularity={granularity}, group_by={group_by}")
+        if start == end:
+            # Validation error occurs if start == end
+            # An error occurred (ValidationException) when calling the GetCostAndUsage operation:
+            #   - Start date (and hour) should be before end date (and hour)
+            logger.warning(f"start({start}) == end({end}), incrementing end")
+            end += datetime.timedelta(days=1)
+            logger.info(f"end={end}")
 
         all_results = {"ResultsByTime": []}
 
