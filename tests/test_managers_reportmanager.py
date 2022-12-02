@@ -9,6 +9,7 @@ from pacioli.managers import ReportManager
 
 from .utils import (
     mock_collect_groupby_linkedaccount,
+    mock_collect_groupby_linkedaccount_firstdayofmonth,
     mock_collect_groupbytag_projectid,
     mock_collect_groupbytag_projectid_missing_latest,
     mock_collect_groupbytag_projectid_services__single_day,
@@ -37,6 +38,32 @@ class ReportManagerTestCase(unittest.TestCase):
         self.assertEqual(actual, expected_previous_cost)
 
         expected_current_cost = 122.09420959270001  # current_cost - sum of 11/1 ~ 11/14
+        actual = account_info["current_cost"]
+        self.assertEqual(actual, expected_current_cost)
+
+        expected_change_percentage = round((expected_current_cost / expected_previous_cost - 1.0) * 100, 1)
+        actual = account_info["percentage_change"]
+        self.assertEqual(actual, expected_change_percentage)
+
+    @mock.patch("pacioli.aws.CE_CLIENT.get_cost_and_usage", return_value=mock_collect_groupby_linkedaccount_firstdayofmonth())
+    def test_generate_accounts_report__firstdayofmonth(self, *_):
+        now = datetime.datetime(2022, 11, 1, tzinfo=datetime.timezone.utc)
+        rm = ReportManager(generation_datetime=now)
+        result = rm.generate_accounts_report()
+        self.assertTrue(result)
+        expected = 1
+        actual = len(result)
+        self.assertEqual(actual, expected)
+        account_info = result[0]
+        expected = "000000000001"
+        actual = account_info["id"]
+        self.assertEqual(actual, expected)
+
+        expected_previous_cost = 28.5091132123  # previous_cost - sum of 10/1 ~ 10/2
+        actual = account_info["previous_cost"]
+        self.assertEqual(actual, expected_previous_cost)
+
+        expected_current_cost = 20.6452918442  # current_cost - sum of 11/1 ~ 11/2
         actual = account_info["current_cost"]
         self.assertEqual(actual, expected_current_cost)
 

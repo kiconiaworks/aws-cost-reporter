@@ -60,3 +60,9 @@ def mock_collect_groupby_linkedaccount(*args, **kwargs):
     filepath = DATA_DIRECTORY / "costusage_daily_groupby_linkedaccount.json"
     data = json.loads(filepath.read_text(encoding="utf8"))
     return data
+
+
+def mock_collect_groupby_linkedaccount_firstdayofmonth(*args, **kwargs):
+    filepath = DATA_DIRECTORY / "costusage_daily_groupby_linkedaccount_firstdayofmonth.json"
+    data = json.loads(filepath.read_text(encoding="utf8"))
+    return data
