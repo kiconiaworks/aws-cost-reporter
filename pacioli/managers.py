@@ -262,7 +262,9 @@ class CostManager:
             if previous_month_day not in daily_cumsum[account_id][earliest.month]:
                 previous_month_day -= 1
             previous = daily_cumsum[account_id][earliest.month][previous_month_day]
-            percentage_change = round((current / previous - 1.0) * 100, 1)
+            percentage_change = 0.0
+            if current >= 0.01 and previous >= 0.01:  # only update change if >= 0.01
+                percentage_change = round((current / previous - 1.0) * 100, 1)
             change[account_id] = (current, previous, percentage_change)
         return change
 
@@ -289,7 +291,9 @@ class CostManager:
 
                     if previous_month_day in daily_cumsum[project_id][earliest_date.month]:
                         previous = daily_cumsum[project_id][earliest_date.month][previous_month_day]
-                        percentage_change = round((current / previous - 1.0) * 100, 1)
+                        percentage_change = 0.0
+                        if current >= 0.01 and previous >= 0.01:  # only update change if >= 0.01
+                            percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
 
