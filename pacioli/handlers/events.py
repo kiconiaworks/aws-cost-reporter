@@ -23,15 +23,13 @@ logger = logging.getLogger(__name__)
 
 def post_status(event, context) -> None:
     """
-    Handle the lambda event, create chart, chart image and post to slack.
+    Generate cost reports and post results to slack.
     """
     post_to_slack = event.get("post_to_slack", True)
     logger.debug(f"post_to_slack={post_to_slack}")
     now = datetime.datetime.now(datetime.timezone.utc)
     display_datetime = now.astimezone(DISPLAY_TIMEZONE).strftime("%m/%d %H:%M (%Z)")
     rm = ReportManager(generation_datetime=now)
-
-    logger.info("posting to slack...")
     slack = SlackPostManager()
 
     # prepare accounts report
