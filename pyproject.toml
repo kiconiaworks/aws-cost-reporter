@@ -57,6 +57,10 @@ exclude = [".git", ".venv", "**/node_modules/", "tests/*"]
 fix = true
 respect-gitignore = true
 unsafe-fixes = false
+extend-safe-fixes = [
+    "D200",  # unnecessary-multiline-docstring
+    "ANN204"  # missing-return-type-special-method (__init__)
+]
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -123,6 +127,10 @@ fixable = ["ALL"]
 unfixable = []
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds this value.
+max-complexity = 13
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

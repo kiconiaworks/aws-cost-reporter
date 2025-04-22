@@ -1,12 +1,10 @@
-"""
-Contains main functions for performing collection and generation of charts for posting to slack.
-"""
+"""Contains main functions for performing collection and generation of charts for posting to slack."""
+
 import datetime
 import json
 import logging
 from io import BytesIO
 from pathlib import Path
-from typing import Optional, Tuple
 
 from . import settings
 from .aws import S3_CLIENT, parse_s3_uri
@@ -17,16 +15,16 @@ DEFAULT_ACCOUNTID_MAPPING_FILENAME = "accountid_mapping.json"
 DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent / DEFAULT_ACCOUNTID_MAPPING_FILENAME
 
 
-def datestr2datetime(date_str) -> datetime.datetime:
+def datestr2datetime(date_str: str) -> datetime.datetime:
     """Convert YYYY-MM-DD to a python datetime object."""
-    return datetime.datetime.strptime(date_str, "%Y-%m-%d")
+    return datetime.datetime.strptime(date_str, "%Y-%m-%d").astimezone(datetime.UTC)
 
 
-def get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tuple[datetime.date, datetime.date, datetime.date]:
-    """
-    Calculate the `current` month start date and `previous` month start date from the given current datetime object.
-    """
-    now = datetime.datetime.now(datetime.timezone.utc)
+def get_month_starts(
+    current_datetime: datetime.datetime | None = None,
+) -> tuple[datetime.date, datetime.date, datetime.date]:
+    """Calculate `current` month start date and `previous` month start date from the given current datetime object."""
+    now = datetime.datetime.now(datetime.UTC)
     if not current_datetime:
         current_datetime = now
 
@@ -41,9 +39,7 @@ def get_month_starts(current_datetime: Optional[datetime.datetime] = None) -> Tu
 
 
 def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_MAPPING_S3_URI) -> dict:
-    """
-    mapping_s3_uri is a JSON file that maps the Billing GroupBy Key to the desired display value.
-    """
+    """mapping_s3_uri is a JSON file that maps the Billing GroupBy Key to the desired display value."""
     mapping = {}
     if mapping_s3_uri:
         logger.info(f"retrieving {mapping_s3_uri} ...")
@@ -58,21 +54,17 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
                 logger.info(f"loading {mapping_s3_uri} ... ")
                 mapping = json.loads(contents)
                 logger.info(f"loading {mapping_s3_uri} ... SUCCESS")
-            except json.JSONDecodeError as e:
-                logger.exception(e)
-                logger.error(f"retrieving {mapping_s3_uri} ... ERROR")
-                logger.error(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
-        except Exception as e:
-            logger.exception(e)
+            except json.JSONDecodeError:
+                logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
+                logger.exception(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
+        except Exception:
             logger.warning(f"{mapping_s3_uri} not found!")
-            logger.error(f"retrieving {mapping_s3_uri} ... ERROR")
+            logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
     return mapping
 
 
-def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: Optional[str] = "") -> Tuple[str, list]:
-    """
-    Prepare account totals message blocks for post to slack
-    """
+def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: str | None = "") -> tuple[str, list]:
+    """Prepare account totals message blocks for post to slack"""
     dollar_emoji = ":heavy_dollar_sign:"
     previous_total = sum(a["previous_cost"] for a in accounts)
     current_total = sum(a["current_cost"] for a in accounts)
@@ -99,17 +91,20 @@ def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: Opt
         section = {
             "type": "section",
             "text": {"text": display_name, "type": "mrkdwn"},
-            "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"_${account_total:15.2f}_"}],
+            "fields": [
+                {"type": "mrkdwn", "text": dollar_emojis},
+                {"type": "mrkdwn", "text": f"_${account_total:15.2f}_"},
+            ],
         }
         json_formatted_message.append(section)
         json_formatted_message.append(divider_element)
     return title, json_formatted_message
 
 
-def get_projecttotals_message_blocks(projects: list[dict], display_datetime: Optional[str] = "", tax: float = 0.0) -> Tuple[str, list]:
-    """
-    Process project totals into Slack formatted blocks.
-    """
+def get_projecttotals_message_blocks(
+    projects: list[dict], display_datetime: str | None = "", tax: float = 0.0
+) -> tuple[str, list]:
+    """Process project totals into Slack formatted blocks."""
     # https://app.slack.com/block-kit-builder/
     title = f"*プロジェクトごと（月合計）{display_datetime}*"
     divider_element = {"type": "divider"}
@@ -151,23 +146,27 @@ def get_projecttotals_message_blocks(projects: list[dict], display_datetime: Opt
         project_section = {
             "type": "section",
             "text": {"text": project_display_name, "type": "mrkdwn"},
-            "fields": [{"type": "mrkdwn", "text": dollar_emojis}, {"type": "mrkdwn", "text": f"_${project_total:15.2f}_"}],
+            "fields": [
+                {"type": "mrkdwn", "text": dollar_emojis},
+                {"type": "mrkdwn", "text": f"_${project_total:15.2f}_"},
+            ],
         }
         json_formatted_message.append(project_section)
         json_formatted_message.append(divider_element)
 
-    if len(json_formatted_message) > 50:
-        logger.warning(f"len(json_formatted_message) {len(json_formatted_message) > 50} > 50, truncating json_formatted_message!")
+    if len(json_formatted_message) > settings.JSON_MAX_LENGTH:
+        logger.warning(
+            f"len(json_formatted_message) {len(json_formatted_message) > settings.JSON_MAX_LENGTH} > "
+            f"{settings.JSON_MAX_LENGTH}, truncating json_formatted_message!"
+        )
         json_formatted_message = json_formatted_message[:50]
     return title, json_formatted_message
 
 
 def get_topn_projectservices_message_blocks(
-    project_services: list[dict], display_datetime: Optional[str] = "", topn: Optional[int] = 5
-) -> Tuple[str, list]:
-    """
-    Prepare Top N Project Services message blocks for post to slack
-    """
+    project_services: list[dict], display_datetime: str | None = "", topn: int | None = 5
+) -> tuple[str, list]:
+    """Prepare Top N Project Services message blocks for post to slack"""
     title = f"*プロジェクトサービス（月合計）Top {topn} {display_datetime}*"
     divider_element = {"type": "divider"}
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
@@ -184,9 +183,13 @@ def get_topn_projectservices_message_blocks(
             project_id_display = f"({project_id})"
         project_display_name = f"_*{count}. {project_name}* {project_id_display} ${current_cost:15.2f}_"
 
-        project_fields = [{"type": "mrkdwn", "text": f"_{name} ${cost:.2f}_"} for name, cost in project_info["services"]]
-        if len(project_fields) > 10:
-            logger.warning(f"len(project_fields) {len(project_fields)} > 10, truncating...")
+        project_fields = [
+            {"type": "mrkdwn", "text": f"_{name} ${cost:.2f}_"} for name, cost in project_info["services"]
+        ]
+        if len(project_fields) > settings.PROJECT_FIELDS_MAX_LENGTH:
+            logger.warning(
+                f"len(project_fields) {len(project_fields)} > {settings.PROJECT_FIELDS_MAX_LENGTH}, truncating..."
+            )
             top9 = project_fields[:9]
             remaining = project_fields[9:]
             others_cost = 0
@@ -208,9 +211,7 @@ def get_topn_projectservices_message_blocks(
 
 
 def get_accountid_mapping() -> dict:
-    """
-    Get the accountid mapping dictionary
-    """
+    """Get the accountid mapping dictionary"""
     accountid_mapping = {}
     logger.debug(f"DEFAULT_ACCOUNTID_MAPPING_FILEPATH={DEFAULT_ACCOUNTID_MAPPING_FILEPATH}")
     logger.debug(f"DEFAULT_ACCOUNTID_MAPPING_FILEPATH.exists()={DEFAULT_ACCOUNTID_MAPPING_FILEPATH.exists()}")
