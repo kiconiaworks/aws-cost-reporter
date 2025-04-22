@@ -1,6 +1,5 @@
-"""
-Define package wide settings and handle environment variable defined settings.
-"""
+"""Define package wide settings and handle environment variable defined settings."""
+
 import datetime
 import logging
 import os
@@ -25,7 +24,9 @@ if not SLACK_TOKEN:
     raise SlackError('Required "SLACK_API_TOKEN" environment variable not set!')
 
 SLACK_BOT_NAME = os.getenv("SLACK_BOT_NAME", "pacioli")
-SLACK_BOT_ICONURL = os.getenv("SLACK_BOT_ICONURL", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Pacioli.jpg/174px-Pacioli.jpg")
+SLACK_BOT_ICONURL = os.getenv(
+    "SLACK_BOT_ICONURL", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Pacioli.jpg/174px-Pacioli.jpg"
+)
 
 DEFAULT_SLACK_TEST_MESSAGE = ":fire: :heavy_dollar_sign: fire: Accounting Rules :fire: :heavy_dollar_sign: :fire:"
 SLACK_TEST_MESSAGE = os.getenv("SLACK_TEST_MESSAGE", DEFAULT_SLACK_TEST_MESSAGE)
@@ -43,3 +44,6 @@ DEFAULT_UTC_OFFSET = 9
 UTC_OFFSET = float(os.getenv("UTC_OFFSET", DEFAULT_UTC_OFFSET))
 
 DISPLAY_TIMEZONE = datetime.timezone(datetime.timedelta(hours=UTC_OFFSET))
+
+JSON_MAX_LENGTH = 50
+PROJECT_FIELDS_MAX_LENGTH = 10

@@ -1,12 +1,10 @@
-"""
-Key class for interfacing with and obtaining data from the AWS CostExplorer API.
-"""
+"""Key class for interfacing with and obtaining data from the AWS CostExplorer API."""
+
 import datetime
 import logging
 import pprint
 from collections import Counter, defaultdict
 from operator import itemgetter
-from typing import List, Optional
 
 from .aws import CE_CLIENT
 from .functions import get_accountid_mapping, get_month_starts, get_tag_display_mapping
@@ -17,17 +15,17 @@ logger = logging.getLogger(__name__)
 DEFAULT_EXCLUDE_TAGS = ["Tax"]
 
 
-def sort_by_periodstart(entry) -> datetime.datetime:
+def sort_by_periodstart(entry: dict) -> datetime.datetime:
     """Sort CostExplorer results by Period Start"""
-    return datetime.datetime.fromisoformat(entry["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
+    return datetime.datetime.fromisoformat(entry["TimePeriod"]["Start"]).replace(tzinfo=datetime.UTC)
 
 
 class CostManager:
-    """
-    Class intended to manage desired CostExplorer ('ce') operations.
-    """
+    """Class intended to manage desired CostExplorer ('ce') operations."""
 
-    def _collect_account_cost(self, start: datetime.date, end: datetime.date, group_by: List[dict], granularity: str = "DAILY") -> dict:
+    def _collect_account_cost(
+        self, start: datetime.date, end: datetime.date, group_by: list[dict], granularity: str = "DAILY"
+    ) -> dict:
         logger.info(f"start={start}, end={end}, granularity={granularity}, group_by={group_by}")
 
         all_results = {"ResultsByTime": []}
@@ -53,21 +51,19 @@ class CostManager:
 
         return all_results
 
-    def collect_account_service_metrics(self, start: datetime.date, end: datetime.date, granularity="DAILY") -> dict:
-        """
-        Collect account/service metrics.
-        """
+    def collect_account_service_metrics(
+        self, start: datetime.date, end: datetime.date, granularity: str = "DAILY"
+    ) -> dict:
+        """Collect account/service metrics."""
         group_by = [
             {"Type": "DIMENSION", "Key": "LINKED_ACCOUNT"},
         ]
         return self._collect_account_cost(start, end, group_by, granularity)
 
     def collect_groupbytag_service_metrics(
-        self, start: datetime.date, end: datetime.date, granularity="DAILY", include_services: bool = True
+        self, start: datetime.date, end: datetime.date, granularity: str = "DAILY", include_services: bool = True
     ) -> dict:
-        """
-        Collect tag/service metrics.
-        """
+        """Collect tag/service metrics."""
         group_by = [
             {"Type": "TAG", "Key": GROUPBY_TAG_NAME},
         ]
@@ -80,9 +76,7 @@ class CostManager:
         return self._collect_account_cost(start, end, group_by, granularity)
 
     def get_period_total_tax(self, start: datetime.date, end: datetime.date) -> float:
-        """
-        Get the total Tax cost for the given period.
-        """
+        """Get the total Tax cost for the given period."""
         group_by = [{"Type": "DIMENSION", "Key": "RECORD_TYPE"}]
         daily_results = self._collect_account_cost(start, end, group_by, granularity="DAILY")
         c = Counter()
@@ -185,9 +179,7 @@ class CostManager:
         return c
 
     def get_account_totals(self, start: datetime.date, end: datetime.date) -> dict:
-        """
-        Get cost totals for all connected accounts.
-        """
+        """Get cost totals for all connected accounts."""
         results = self.collect_account_service_metrics(start, end)
         c = Counter()
         for period in results["ResultsByTime"]:
@@ -196,7 +188,7 @@ class CostManager:
                 c[accountid] += float(group["Metrics"]["UnblendedCost"]["Amount"])
         return c
 
-    def get_change_in_accounts(self, now: Optional[datetime.date] = None) -> dict:
+    def get_change_in_accounts(self, now: datetime.date | None = None) -> dict:
         """
         :return:
             {
@@ -209,7 +201,7 @@ class CostManager:
             }
         """
         if not now:
-            now = datetime.datetime.now(datetime.timezone.utc)
+            now = datetime.datetime.now(datetime.UTC)
 
         most_recent_full_date, current_month_start, previous_month_start = get_month_starts(now)
         start = previous_month_start
@@ -220,7 +212,7 @@ class CostManager:
         earliest = None
         latest = None
         for period in results["ResultsByTime"]:
-            day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
+            day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.UTC)
             if day.date() > most_recent_full_date:
                 continue
             for group in period["Groups"]:
@@ -229,18 +221,13 @@ class CostManager:
                     daily_cumsum[account_id] = {}
                 if day.month not in daily_cumsum[account_id]:
                     daily_cumsum[account_id][day.month] = {}
-                if day.day == 1:
-                    previous_total = 0
-                else:
-                    previous_total = daily_cumsum[account_id][day.month][day.day - 1]
-                daily_cumsum[account_id][day.month][day.day] = previous_total + float(group["Metrics"]["UnblendedCost"]["Amount"])
-            if not earliest:
+                previous_total = 0 if day.day == 1 else daily_cumsum[account_id][day.month][day.day - 1]
+                daily_cumsum[account_id][day.month][day.day] = previous_total + float(
+                    group["Metrics"]["UnblendedCost"]["Amount"]
+                )
+            if not earliest or day < earliest:
                 earliest = day
-            elif day < earliest:
-                earliest = day
-            if not latest:
-                latest = day
-            elif day > latest:
+            if not latest or day > latest:
                 latest = day
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
@@ -249,7 +236,7 @@ class CostManager:
         logger.debug("daily_cumsum:")
         logger.debug(pprint.pformat(daily_cumsum, indent=4))
         change = {}
-        for account_id in daily_cumsum.keys():
+        for account_id in daily_cumsum:
             current = daily_cumsum[account_id][latest.month][latest.day]
             previous_month_day = latest.day
             if previous_month_day not in daily_cumsum[account_id][earliest.month]:
@@ -263,30 +250,30 @@ class CostManager:
     def _get_project_change(daily_cumsum: dict[dict], earliest_date: datetime.date, latest_date: datetime.date) -> dict:
         """Get project change from 2 month daily cumulative sum dictionary."""
         change = {}
-        for project_id in daily_cumsum.keys():
+        for project_id, project_data in daily_cumsum.items():
             current = None
             previous = None
             percentage_change = None
 
             # get project current cost (find latest day)
             latest_day = latest_date.day
-            while latest_day >= 1 and latest_day not in daily_cumsum[project_id][latest_date.month]:
+            while latest_day >= 1 and latest_day not in project_data[latest_date.month]:
                 latest_day -= 1
 
             if latest_day >= 1:
-                current = daily_cumsum[project_id][latest_date.month][latest_day]
+                current = project_data[latest_date.month][latest_day]
                 previous_month_day = latest_date.day
-                if earliest_date.month in daily_cumsum[project_id]:
-                    if previous_month_day not in daily_cumsum[project_id][earliest_date.month]:
+                if earliest_date.month in project_data:
+                    if previous_month_day not in project_data[earliest_date.month]:
                         previous_month_day -= 1
 
-                    if previous_month_day in daily_cumsum[project_id][earliest_date.month]:
-                        previous = daily_cumsum[project_id][earliest_date.month][previous_month_day]
+                    if previous_month_day in project_data[earliest_date.month]:
+                        previous = project_data[earliest_date.month][previous_month_day]
                         percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
 
-    def get_change_in_projects(self, now: Optional[datetime.date] = None) -> dict:
+    def get_change_in_projects(self, now: datetime.date | None = None) -> dict:
         """
         :return:
             {
@@ -295,7 +282,7 @@ class CostManager:
             }
         """
         if not now:
-            now = datetime.datetime.now(datetime.timezone.utc)
+            now = datetime.datetime.now(datetime.UTC)
 
         most_recent_full_date, current_month_start, previous_month_start = get_month_starts(now)
         start = previous_month_start
@@ -306,7 +293,7 @@ class CostManager:
         earliest = None
         latest = None
         for period in sorted(results["ResultsByTime"], key=sort_by_periodstart):
-            day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.timezone.utc)
+            day = datetime.datetime.fromisoformat(period["TimePeriod"]["Start"]).replace(tzinfo=datetime.UTC)
             for group in period["Groups"]:
                 project_id = "".join(group["Keys"])
                 if day.month not in daily_cumsum[project_id]:
@@ -315,14 +302,12 @@ class CostManager:
                     previous_total = 0
                 else:
                     previous_total = daily_cumsum[project_id][day.month][day.day - 1]
-                daily_cumsum[project_id][day.month][day.day] = previous_total + float(group["Metrics"]["UnblendedCost"]["Amount"])
-            if not earliest:
+                daily_cumsum[project_id][day.month][day.day] = previous_total + float(
+                    group["Metrics"]["UnblendedCost"]["Amount"]
+                )
+            if not earliest or day < earliest:
                 earliest = day
-            elif day < earliest:
-                earliest = day
-            if not latest:
-                latest = day
-            elif day > latest:
+            if not latest or day > latest:
                 latest = day
 
         if latest.date() > most_recent_full_date:
@@ -332,20 +317,17 @@ class CostManager:
 
 
 class ReportManager:
-    """
-    Use CostManager to format results for reporting.
-    """
+    """Use CostManager to format results for reporting."""
 
     def __init__(
         self,
-        generation_datetime: Optional[datetime.datetime] = None,
-        previous_month_start: Optional[datetime.date] = None,
-        current_month_start: Optional[datetime.date] = None,
-        most_recent_full_date: Optional[datetime.date] = None,
-    ):
-
+        generation_datetime: datetime.datetime | None = None,
+        previous_month_start: datetime.date | None = None,
+        current_month_start: datetime.date | None = None,
+        most_recent_full_date: datetime.date | None = None,
+    ) -> None:
         if not generation_datetime:
-            generation_datetime = datetime.datetime.now(datetime.timezone.utc)
+            generation_datetime = datetime.datetime.now(datetime.UTC)
         if not previous_month_start and not current_month_start and not most_recent_full_date:
             logger.info("dates not given, calculating...")
             most_recent_full_date, current_month_start, previous_month_start = get_month_starts(generation_datetime)
@@ -389,7 +371,13 @@ class ReportManager:
         for account_id, (current, previous, perc_change) in results.items():
             # get account name
             name = id_mapping.get(account_id, "UNDEFINED")
-            info = {"id": account_id, "name": name, "current_cost": current, "previous_cost": previous, "percentage_change": perc_change}
+            info = {
+                "id": account_id,
+                "name": name,
+                "current_cost": current,
+                "previous_cost": previous,
+                "percentage_change": perc_change,
+            }
             data.append(info)
         return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
 
@@ -415,7 +403,13 @@ class ReportManager:
         for project_id_raw, (current, previous, perc_change) in results.items():
             project_id = project_id_raw.replace("ProjectId$", "").strip()
             name = id_mapping.get(project_id, "UNDEFINED")
-            info = {"id": project_id, "name": name, "current_cost": current, "previous_cost": previous, "percentage_change": perc_change}
+            info = {
+                "id": project_id,
+                "name": name,
+                "current_cost": current,
+                "previous_cost": previous,
+                "percentage_change": perc_change,
+            }
             data.append(info)
         return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
 
@@ -465,7 +459,7 @@ class ReportManager:
 
         data = []
         id_mapping = get_tag_display_mapping()
-        for project_id_raw, services in results.items():
+        for project_id_raw in results:
             project_id = project_id_raw.replace("ProjectId$", "").strip()
             name = id_mapping.get(project_id, "UNDEFINED")
             info = {"id": project_id, "name": name, "current_cost": 0, "previous_cost": None, "services": []}

@@ -1,6 +1,5 @@
-"""
-CLI for testing manually.
-"""
+"""CLI for testing manually."""
+
 import logging
 
 from .handlers.events import post_status
@@ -13,7 +12,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--post-to-slack", dest="post_to_slack", action="store_true", default=False, help="If given, results will be posted to slack."
+        "--post-to-slack",
+        dest="post_to_slack",
+        action="store_true",
+        default=False,
+        help="If given, results will be posted to slack.",
     )
 
     args = parser.parse_args()
