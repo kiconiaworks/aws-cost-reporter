@@ -8,7 +8,7 @@ from operator import itemgetter
 
 from .aws import CE_CLIENT
 from .functions import get_accountid_mapping, get_month_starts, get_tag_display_mapping
-from .settings import GROUPBY_TAG_NAME
+from .settings import GROUPBY_TAG_NAME, MIN_PERCENTAGE_CHANGE
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +27,15 @@ class CostManager:
         self, start: datetime.date, end: datetime.date, group_by: list[dict], granularity: str = "DAILY"
     ) -> dict:
         logger.info(f"start={start}, end={end}, granularity={granularity}, group_by={group_by}")
+        if start == end:
+            # Validation error occurs if start == end
+            # An error occurred (ValidationException) when calling the GetCostAndUsage operation:
+            #   - Start date (and hour) should be before end date (and hour)
+            logger.warning(f"start({start}) == end({end}), incrementing end")
+            end += datetime.timedelta(days=1)
+            logger.info(f"end={end}")
 
         all_results = {"ResultsByTime": []}
-
         response = CE_CLIENT.get_cost_and_usage(
             TimePeriod={"Start": start.isoformat(), "End": end.isoformat()},
             Granularity=granularity,
@@ -242,7 +248,9 @@ class CostManager:
             if previous_month_day not in daily_cumsum[account_id][earliest.month]:
                 previous_month_day -= 1
             previous = daily_cumsum[account_id][earliest.month][previous_month_day]
-            percentage_change = round((current / previous - 1.0) * 100, 1)
+            percentage_change = 0.0
+            if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:  # only update change if >= 0.01
+                percentage_change = round((current / previous - 1.0) * 100, 1)
             change[account_id] = (current, previous, percentage_change)
         return change
 
@@ -269,7 +277,10 @@ class CostManager:
 
                     if previous_month_day in project_data[earliest_date.month]:
                         previous = project_data[earliest_date.month][previous_month_day]
-                        percentage_change = round((current / previous - 1.0) * 100, 1)
+                        percentage_change = 0.0
+                        # only update change if >= MIN_PERCENTAGE_CHANGE
+                        if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:
+                            percentage_change = round((current / previous - 1.0) * 100, 1)
             change[project_id] = (current, previous, percentage_change)
         return change
 
