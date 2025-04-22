@@ -15,29 +15,20 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 
 
 ## Run flake8 and pydocstyle
-flake8:
-	pipenv run flake8 --max-line-length 150 --max-complexity 15 --ignore F403,F405,E252 pacioli/
-	pipenv run pydocstyle --ignore D104,D106,D107,D200,D203,D204,D205,D212,D213,D301,D400,D415 pacioli/
-
-## run pylint
-pylint:
-	pipenv run pylint --rcfile .pylintrc pacioli/
-
-mypy:
-	export MYPYPATH=./stubs/ mypy
-	pipenv run mypy -m pacioli/ --disallow-untyped-defs --ignore-missing-imports
-
 ## Run tests (without coverage)
 test:
-	pipenv run pytest -v --junitxml=test-reports/junit.xml
-
-## Run tests (with coverage)
-coverage:
-	pipenv run pytest --cov pacioli/ --cov-report term-missing --junitxml=test-reports/junit.xml
-
+	mkdir test-reports || true
+	uv run pytest -v --junitxml=test-reports/junit.xml
 
 ## Define checks to run on PR
-pullrequestcheck: flake8 pylint coverage
+check:
+	uv run ruff check
+
+type-check:
+	uv run pyright
+
+## Define checks to run on PR
+pullrequestcheck: check
 
 
 
