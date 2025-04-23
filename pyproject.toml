@@ -23,6 +23,7 @@ dependencies = [
     "slack_sdk",
     "zappa",
     "pyyaml",
+    "pydantic>=2.11.3",
 ]
 
 [project.urls]
