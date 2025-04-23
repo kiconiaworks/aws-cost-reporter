@@ -23,6 +23,7 @@ def test__get_month_starts():
 
 def test__get_tag_display_mapping__no_definition():
     expected = {}
+    get_tag_display_mapping.cache_clear()
     actual = get_tag_display_mapping()
     assert actual == expected
 
@@ -32,6 +33,7 @@ def test__get_tag_display_mapping__invalid_key():
     s3_uri = f"s3://{test_bucket}/invalid-key"
     reset_buckets(buckets=[test_bucket])  # make sure bucket is created!
     expected = {}
+    get_tag_display_mapping.cache_clear()
     actual = get_tag_display_mapping(mapping_s3_uri=s3_uri)
     assert actual == expected
 
@@ -49,6 +51,7 @@ def test__get_tag_display_mapping__invalid_key_contents():
     S3_CLIENT.upload_fileobj(bytesout, test_bucket, key)
 
     expected = {}
+    get_tag_display_mapping.cache_clear()
     actual = get_tag_display_mapping(mapping_s3_uri=s3_uri)
     assert actual == expected
 
@@ -65,6 +68,10 @@ def test__get_tag_display_mapping__valid_key():
     bytesout = BytesIO(json.dumps(expected).encode("utf8"))
     bytesout.seek(0)
     S3_CLIENT.upload_fileobj(bytesout, test_bucket, key)
+    result = S3_CLIENT.head_object(Bucket=test_bucket, Key=key)
+    assert result and result["ResponseMetadata"]["HTTPStatusCode"] == 200
+
+    get_tag_display_mapping.cache_clear()
     actual = get_tag_display_mapping(mapping_s3_uri=s3_uri)
     for expected_key, expected_value in expected.items():
         assert expected_key in actual

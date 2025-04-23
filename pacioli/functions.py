@@ -50,11 +50,18 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
         logger.info(f"retrieving {mapping_s3_uri} ...")
         bucket, key = parse_s3_uri(mapping_s3_uri)
         logger.debug(f"bucket={bucket}, key={key}")
+        contents = None
         try:
             buffer = BytesIO()
             S3_CLIENT.download_fileobj(Bucket=bucket, Key=key, Fileobj=buffer)
+            buffer.seek(0)
             contents = buffer.getvalue().decode("utf8")
             logger.info(f"retrieving {mapping_s3_uri} ... SUCCESS")
+        except ClientError:
+            logger.warning(f"{mapping_s3_uri} not found!")
+            logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
+
+        if contents:
             # load contents to mapping dictionary
             try:
                 logger.info(f"loading {mapping_s3_uri} ... ")
@@ -63,9 +70,6 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
             except json.JSONDecodeError:
                 logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
                 logger.exception(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
-        except ClientError:
-            logger.warning(f"{mapping_s3_uri} not found!")
-            logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
     else:
         logger.warning("mapping_s3_uri is None, mapping will not be retrieved!!!")
     return mapping

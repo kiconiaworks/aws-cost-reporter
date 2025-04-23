@@ -26,7 +26,7 @@ def reset_buckets(buckets: list[str]) -> list[str]:
             )
         except ClientError as e:
             if e.response["Error"]["Code"] == "BucketAlreadyOwnedByYou":
-                print(f"-- ERROR - Bucket Already exists: {bucket_name}")
+                print(f"-- WARNING - Bucket Already exists: {bucket_name}")
             else:
                 raise
         S3_RESOURCE.Bucket(bucket_name).objects.all().delete()

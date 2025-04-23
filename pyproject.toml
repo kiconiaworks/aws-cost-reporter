@@ -49,6 +49,7 @@ pythonVersion = "3.12"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+log_cli = 1
 
 [tool.ruff]
 line-length = 120
