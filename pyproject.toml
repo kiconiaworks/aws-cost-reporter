@@ -58,14 +58,14 @@ exclude = [".git", ".venv", "**/node_modules/", "tests/*"]
 fix = true
 respect-gitignore = true
 unsafe-fixes = false
-extend-safe-fixes = [
-    "D200",  # unnecessary-multiline-docstring
-    "ANN204"  # missing-return-type-special-method (__init__)
-]
 
 [tool.ruff.lint]
 select = ["ALL"]
 extend-per-file-ignores = { "**/__init__.py" = ["I", "F403"] }
+extend-safe-fixes = [
+    "D200",  # unnecessary-multiline-docstring
+    "ANN204"  # missing-return-type-special-method (__init__)
+]
 ignore = [
     "A005",
     "ANN002",
