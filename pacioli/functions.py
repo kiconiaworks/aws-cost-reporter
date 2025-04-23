@@ -8,6 +8,7 @@ from pathlib import Path
 
 from . import settings
 from .aws import S3_CLIENT, parse_s3_uri
+from .definitions import AccountCostChange, ProjectCostChange, ProjectServicesCost
 
 logger = logging.getLogger(__name__)
 
@@ -63,11 +64,13 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
     return mapping
 
 
-def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: str | None = "") -> tuple[str, list]:
+def get_accounttotals_message_blocks(
+    accounts: list[AccountCostChange], display_datetime: str | None = ""
+) -> tuple[str, list]:
     """Prepare account totals message blocks for post to slack"""
     dollar_emoji = ":heavy_dollar_sign:"
-    previous_total = sum(a["previous_cost"] for a in accounts)
-    current_total = sum(a["current_cost"] for a in accounts)
+    previous_total = sum(a.previous_cost for a in accounts)
+    current_total = sum(a.current_cost for a in accounts)
     total_change = round((current_total / previous_total - 1.0) * 100, 1)
     direction = ""
     if total_change > 0:
@@ -76,14 +79,14 @@ def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: str
     divider_element = {"type": "divider"}
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
     for account_info in accounts:
-        name = account_info["name"]
-        account_id = account_info["id"]
+        name = account_info.name
+        account_id = account_info.id
         direction = ""
-        change = account_info["percentage_change"]
+        change = account_info.percentage_change
         if change > 0:
             direction = "+"
         display_name = f"{name} ({account_id}) {direction}{change}%"
-        account_total = account_info["current_cost"]
+        account_total = account_info.current_cost
         multiplier = int(5 * (account_total / current_total))
         dollar_emojis = "-"
         if int(account_total) > 0:
@@ -102,7 +105,7 @@ def get_accounttotals_message_blocks(accounts: list[dict], display_datetime: str
 
 
 def get_projecttotals_message_blocks(
-    projects: list[dict], display_datetime: str | None = "", tax: float = 0.0
+    projects: list[ProjectCostChange], display_datetime: str | None = "", tax: float = 0.0
 ) -> tuple[str, list]:
     """Process project totals into Slack formatted blocks."""
     # https://app.slack.com/block-kit-builder/
@@ -115,12 +118,12 @@ def get_projecttotals_message_blocks(
     ]
 
     dollar_emoji = ":heavy_dollar_sign:"
-    total = sum(p["current_cost"] for p in projects)
+    total = sum(p.current_cost for p in projects)
     null_project_ids = ("nothing_project_tag", "")
     for project_info in projects:
-        project_total = project_info["current_cost"]
-        project_name = project_info["name"]
-        project_id = project_info["id"]
+        project_total = project_info.current_cost
+        project_name = project_info.name
+        project_id = project_info.id
         if project_id in null_project_ids:
             logger.debug(f"project_id={project_id}")
             project_name = "ProjectIdタグなしのリソース費用"
@@ -134,7 +137,7 @@ def get_projecttotals_message_blocks(
             dollar_emojis = dollar_emoji * (multiplier + 1)
         change_display = "-"
         direction = ""
-        change = project_info["percentage_change"]
+        change = project_info.percentage_change
         if change:
             if change > 0:
                 direction = "+"
@@ -164,7 +167,7 @@ def get_projecttotals_message_blocks(
 
 
 def get_topn_projectservices_message_blocks(
-    project_services: list[dict], display_datetime: str | None = "", topn: int | None = 5
+    project_services: list[ProjectServicesCost], display_datetime: str | None = "", topn: int | None = 5
 ) -> tuple[str, list]:
     """Prepare Top N Project Services message blocks for post to slack"""
     title = f"*プロジェクトサービス（月合計）Top {topn} {display_datetime}*"
@@ -172,20 +175,21 @@ def get_topn_projectservices_message_blocks(
     json_formatted_message = [{"type": "section", "text": {"type": "mrkdwn", "text": title}}, divider_element]
     null_project_ids = ("nothing_project_tag", "")
     for count, project_info in enumerate(project_services[:topn], start=1):
-        project_name = project_info["name"]
-        project_id = project_info["id"]
+        project_name = project_info.name
+        project_id = project_info.id
         if project_id in null_project_ids:
             logger.debug(f"project_id={project_id}")
             project_name = "ProjectIdタグなしのリソース費用"
-        current_cost = project_info["current_cost"]
+        total_cost = project_info.total_cost
         project_id_display = ""
         if project_id:
             project_id_display = f"({project_id})"
-        project_display_name = f"_*{count}. {project_name}* {project_id_display} ${current_cost:15.2f}_"
+        project_display_name = f"_*{count}. {project_name}* {project_id_display} ${total_cost:15.2f}_"
 
-        project_fields = [
-            {"type": "mrkdwn", "text": f"_{name} ${cost:.2f}_"} for name, cost in project_info["services"]
-        ]
+        project_fields = []
+        for service_info in project_info.services:
+            v = {"type": "mrkdwn", "text": f"_{service_info.name} ${service_info.cost:.2f}_"}
+            project_fields.append(v)
         if len(project_fields) > settings.PROJECT_FIELDS_MAX_LENGTH:
             logger.warning(
                 f"len(project_fields) {len(project_fields)} > {settings.PROJECT_FIELDS_MAX_LENGTH}, truncating..."

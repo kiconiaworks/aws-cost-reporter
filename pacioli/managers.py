@@ -230,9 +230,6 @@ class CostManager:
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
 
-        logger.info(f"latest={latest}")
-        logger.debug("daily_cumsum:")
-        logger.debug(pprint.pformat(daily_cumsum, indent=4))
         account_change_data = []
         for account_id in daily_cumsum:
             current = daily_cumsum[account_id][latest.month][latest.day]
@@ -264,29 +261,46 @@ class CostManager:
         id_mapping = get_tag_display_mapping()
         for project_id_raw, project_data in daily_cumsum.items():
             current = None
-            previous = None
-            percentage_change = None
 
             # get project current cost (find latest day)
             latest_day = latest_date.day
-            while latest_day >= 1 and latest_day not in project_data[latest_date.month]:
-                latest_day -= 1
+            project_id = project_id_raw.replace("ProjectId$", "").strip()
+            project_name = id_mapping.get(project_id, "UNDEFINED")
+            if latest_date.month in project_data:
+                previous = 0.0
+                percentage_change = 0.0
+                while latest_day >= 1 and latest_day not in project_data[latest_date.month]:
+                    latest_day -= 1
 
-            if latest_day >= 1:
-                current = project_data[latest_date.month][latest_day]
-                previous_month_day = latest_date.day
+                if latest_day >= 1:
+                    current = project_data[latest_date.month][latest_day]
+                    previous_month_day = latest_date.day
+                    if earliest_date.month in project_data:
+                        if previous_month_day not in project_data[earliest_date.month]:
+                            previous_month_day -= 1
+
+                        if previous_month_day in project_data[earliest_date.month]:
+                            previous = project_data[earliest_date.month][previous_month_day]
+                            percentage_change = 0.0
+                            # only update change if >= MIN_PERCENTAGE_CHANGE
+                            if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:
+                                percentage_change = round((current / previous - 1.0) * 100, 1)
+            else:
+                # Project does not incur any cost in the latest month
+                logger.warning(f"project_id {project_id_raw} not found in daily_cumsum for month {latest_date.month}")
+                logger.warning("project_data:")
+                logger.warning(pprint.pformat(project_data, indent=4))
+                current = 0.0
+                previous = 0.0
+                percentage_change = 0.0
                 if earliest_date.month in project_data:
+                    previous_month_day = latest_date.day
                     if previous_month_day not in project_data[earliest_date.month]:
                         previous_month_day -= 1
 
                     if previous_month_day in project_data[earliest_date.month]:
                         previous = project_data[earliest_date.month][previous_month_day]
-                        percentage_change = 0.0
-                        # only update change if >= MIN_PERCENTAGE_CHANGE
-                        if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:
-                            percentage_change = round((current / previous - 1.0) * 100, 1)
-            project_id = project_id_raw.replace("ProjectId$", "").strip()
-            project_name = id_mapping.get(project_id, "UNDEFINED")
+
             project_change_data = ProjectCostChange(
                 raw_id=project_id_raw,
                 name=project_name,

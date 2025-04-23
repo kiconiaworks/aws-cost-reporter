@@ -6,6 +6,7 @@ import pprint
 import sys
 from pathlib import Path
 
+from pacioli.definitions import AccountCostChange, ProjectCostChange, ProjectServicesCost
 from pacioli.functions import (
     get_accounttotals_message_blocks,
     get_projecttotals_message_blocks,
@@ -22,6 +23,7 @@ logging.basicConfig(
     stream=sys.stdout, level=LOG_LEVEL, format="%(asctime)s [%(levelname)s] (%(name)s) %(funcName)s: %(message)s"
 )
 logging.getLogger("botocore").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +38,7 @@ def post_status(event: dict, _context: dict) -> None:
     slack = SlackPostManager()
 
     # prepare accounts report
-    account_totals = rm.generate_accounts_report()
+    account_totals: list[AccountCostChange] = rm.generate_accounts_report()
     logger.debug("rm.generate_accounts_report() account_totals:")
     logger.debug(pprint.pformat(account_totals, indent=4))
     title, account_totals_blocks = get_accounttotals_message_blocks(account_totals, display_datetime)
@@ -49,7 +51,7 @@ def post_status(event: dict, _context: dict) -> None:
 
     # prepare projects report
     tax = rm.get_period_total_tax()
-    project_totals = rm.generate_projectid_report()
+    project_totals: list[ProjectCostChange] = rm.generate_projectid_report()
     logger.debug("rm.generate_projectid_report() project_totals:")
     logger.debug(pprint.pformat(project_totals, indent=4))
     title, project_totals_blocks = get_projecttotals_message_blocks(project_totals, display_datetime, tax=tax)
@@ -61,7 +63,7 @@ def post_status(event: dict, _context: dict) -> None:
         logger.info("posting project_totals_blocks to slack... DONE")
 
     # prepare top N projects breakdown report
-    project_services = rm.generate_projectid_itemized_report()
+    project_services: list[ProjectServicesCost] = rm.generate_projectid_itemized_report()
     logger.debug("rm.generate_projectid_itemized_report() project_services:")
     logger.debug(pprint.pformat(project_services, indent=4))
     title, projectservice_totals_blocks = get_topn_projectservices_message_blocks(
