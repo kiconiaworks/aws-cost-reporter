@@ -22,8 +22,11 @@ DEFAULT_ACCOUNTID_MAPPING_FILEPATH = Path(__file__).resolve().parent.parent.pare
 logging.basicConfig(
     stream=sys.stdout, level=LOG_LEVEL, format="%(asctime)s [%(levelname)s] (%(name)s) %(funcName)s: %(message)s"
 )
+logging.getLogger("boto3").setLevel(logging.WARNING)
 logging.getLogger("botocore").setLevel(logging.WARNING)
+logging.getLogger("s3transfer").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+
 
 logger = logging.getLogger(__name__)
 

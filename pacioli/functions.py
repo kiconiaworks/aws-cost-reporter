@@ -7,6 +7,8 @@ from functools import cache
 from io import BytesIO
 from pathlib import Path
 
+from botocore.exceptions import ClientError
+
 from . import settings
 from .aws import S3_CLIENT, parse_s3_uri
 from .definitions import AccountCostChange, ProjectCostChange, ProjectServicesCost
@@ -47,6 +49,7 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
     if mapping_s3_uri:
         logger.info(f"retrieving {mapping_s3_uri} ...")
         bucket, key = parse_s3_uri(mapping_s3_uri)
+        logger.debug(f"bucket={bucket}, key={key}")
         try:
             buffer = BytesIO()
             S3_CLIENT.download_fileobj(Bucket=bucket, Key=key, Fileobj=buffer)
@@ -60,9 +63,11 @@ def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_M
             except json.JSONDecodeError:
                 logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
                 logger.exception(f"Unable to decode {mapping_s3_uri} content as JSON: {contents}")
-        except Exception:
+        except ClientError:
             logger.warning(f"{mapping_s3_uri} not found!")
             logger.exception(f"retrieving {mapping_s3_uri} ... ERROR")
+    else:
+        logger.warning("mapping_s3_uri is None, mapping will not be retrieved!!!")
     return mapping
 
 
