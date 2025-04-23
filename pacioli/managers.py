@@ -4,11 +4,13 @@ import datetime
 import logging
 import pprint
 from collections import Counter, defaultdict
-from operator import itemgetter
+from operator import attrgetter
+from typing import Any
 
 from .aws import CE_CLIENT
+from .definitions import AccountCostChange, ProjectCostChange, ProjectServicesCost, ServiceCost
 from .functions import get_accountid_mapping, get_month_starts, get_tag_display_mapping
-from .settings import GROUPBY_TAG_NAME, MIN_PERCENTAGE_CHANGE
+from .settings import GROUPBY_TAG_NAME, MIN_PERCENTAGE_CHANGE, TAX_SERVICE_NAME
 
 logger = logging.getLogger(__name__)
 
@@ -164,7 +166,7 @@ class CostManager:
                 c[key] += amount
         return c
 
-    def get_projectid_itemized_totals(self, start: datetime.date, end: datetime.date) -> dict:
+    def get_projectid_itemized_totals(self, start: datetime.date, end: datetime.date) -> dict[str, Counter]:
         """
         :return:
             {
@@ -194,18 +196,7 @@ class CostManager:
                 c[accountid] += float(group["Metrics"]["UnblendedCost"]["Amount"])
         return c
 
-    def get_change_in_accounts(self, now: datetime.date | None = None) -> dict:
-        """
-        :return:
-            {
-                ACCOUNT_ID: (
-                    CURRENT_COST,
-                    PREVIOUS_COST,
-                    PERCENTAGE_CHANGE,
-                ),
-                ...
-            }
-        """
+    def get_change_in_accounts(self, now: datetime.date | None = None) -> list[AccountCostChange]:
         if not now:
             now = datetime.datetime.now(datetime.UTC)
 
@@ -213,6 +204,7 @@ class CostManager:
         start = previous_month_start
         end = most_recent_full_date
 
+        accountis_name_mapping = get_accountid_mapping()
         results = self.collect_account_service_metrics(start, end)
         daily_cumsum = {}
         earliest = None
@@ -238,10 +230,7 @@ class CostManager:
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
 
-        logger.info(f"latest={latest}")
-        logger.debug("daily_cumsum:")
-        logger.debug(pprint.pformat(daily_cumsum, indent=4))
-        change = {}
+        account_change_data = []
         for account_id in daily_cumsum:
             current = daily_cumsum[account_id][latest.month][latest.day]
             previous_month_day = latest.day
@@ -251,47 +240,80 @@ class CostManager:
             percentage_change = 0.0
             if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:  # only update change if >= 0.01
                 percentage_change = round((current / previous - 1.0) * 100, 1)
-            change[account_id] = (current, previous, percentage_change)
-        return change
+            account_display_name = accountis_name_mapping.get(account_id, "UNDEFINED")
+            change_data = AccountCostChange(
+                id=account_id,
+                name=account_display_name,
+                date=latest.date(),
+                current_cost=current,
+                previous_cost=previous,
+                percentage_change=percentage_change,
+            )
+            account_change_data.append(change_data)
+        return account_change_data
 
     @staticmethod
-    def _get_project_change(daily_cumsum: dict[dict], earliest_date: datetime.date, latest_date: datetime.date) -> dict:
+    def _get_project_change(
+        daily_cumsum: defaultdict[Any, dict], earliest_date: datetime.date, latest_date: datetime.date
+    ) -> list[ProjectCostChange]:
         """Get project change from 2 month daily cumulative sum dictionary."""
-        change = {}
-        for project_id, project_data in daily_cumsum.items():
+        all_change_data = []
+        id_mapping = get_tag_display_mapping()
+        for project_id_raw, project_data in daily_cumsum.items():
             current = None
-            previous = None
-            percentage_change = None
 
             # get project current cost (find latest day)
             latest_day = latest_date.day
-            while latest_day >= 1 and latest_day not in project_data[latest_date.month]:
-                latest_day -= 1
+            project_id = project_id_raw.replace("ProjectId$", "").strip()
+            project_name = id_mapping.get(project_id, "UNDEFINED")
+            if latest_date.month in project_data:
+                previous = 0.0
+                percentage_change = 0.0
+                while latest_day >= 1 and latest_day not in project_data[latest_date.month]:
+                    latest_day -= 1
 
-            if latest_day >= 1:
-                current = project_data[latest_date.month][latest_day]
-                previous_month_day = latest_date.day
+                if latest_day >= 1:
+                    current = project_data[latest_date.month][latest_day]
+                    previous_month_day = latest_date.day
+                    if earliest_date.month in project_data:
+                        if previous_month_day not in project_data[earliest_date.month]:
+                            previous_month_day -= 1
+
+                        if previous_month_day in project_data[earliest_date.month]:
+                            previous = project_data[earliest_date.month][previous_month_day]
+                            percentage_change = 0.0
+                            # only update change if >= MIN_PERCENTAGE_CHANGE
+                            if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:
+                                percentage_change = round((current / previous - 1.0) * 100, 1)
+            else:
+                # Project does not incur any cost in the latest month
+                logger.warning(f"project_id {project_id_raw} not found in daily_cumsum for month {latest_date.month}")
+                logger.warning("project_data:")
+                logger.warning(pprint.pformat(project_data, indent=4))
+                current = 0.0
+                previous = 0.0
+                percentage_change = 0.0
                 if earliest_date.month in project_data:
+                    previous_month_day = latest_date.day
                     if previous_month_day not in project_data[earliest_date.month]:
                         previous_month_day -= 1
 
                     if previous_month_day in project_data[earliest_date.month]:
                         previous = project_data[earliest_date.month][previous_month_day]
-                        percentage_change = 0.0
-                        # only update change if >= MIN_PERCENTAGE_CHANGE
-                        if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:
-                            percentage_change = round((current / previous - 1.0) * 100, 1)
-            change[project_id] = (current, previous, percentage_change)
-        return change
 
-    def get_change_in_projects(self, now: datetime.date | None = None) -> dict:
-        """
-        :return:
-            {
-                "PROJECT_ID": (current, previous, percentage_change),
-                ...
-            }
-        """
+            project_change_data = ProjectCostChange(
+                raw_id=project_id_raw,
+                name=project_name,
+                date=latest_date,
+                current_cost=current,
+                previous_cost=previous,
+                percentage_change=percentage_change,
+            )
+            all_change_data.append(project_change_data)
+        return all_change_data
+
+    def get_change_in_projects(self, now: datetime.date | None = None) -> list[ProjectCostChange]:
+        """Get change in projects for the given period."""
         if not now:
             now = datetime.datetime.now(datetime.UTC)
 
@@ -323,8 +345,8 @@ class CostManager:
 
         if latest.date() > most_recent_full_date:
             latest = most_recent_full_date
-        change = self._get_project_change(daily_cumsum, earliest, latest)
-        return change
+        change_data = self._get_project_change(daily_cumsum, earliest, latest)
+        return change_data
 
 
 class ReportManager:
@@ -360,92 +382,22 @@ class ReportManager:
         result = self.cm.get_period_total_tax(start=self.current_month_start, end=self.most_recent_full_date)
         return result
 
-    def generate_accounts_report(self) -> list[dict]:
-        """
-        :return:
-            [
-                {
-                    "id": {ACCOUNT_ID},
-                    "name": {ACCOUNT_NAME},
-                    "current_cost": {CURRENT_COST},
-                    "previous_cost": {PREVIOUS_COST},
-                    "percentage_change": {PercentageChange},
-                    "
-                },
-                ...
-            ]
-        """
-        results = self.cm.get_change_in_accounts(self.generation_datetime)
-        # reformat to expected output
-        data = []
-        id_mapping = get_accountid_mapping()
-        for account_id, (current, previous, perc_change) in results.items():
-            # get account name
-            name = id_mapping.get(account_id, "UNDEFINED")
-            info = {
-                "id": account_id,
-                "name": name,
-                "current_cost": current,
-                "previous_cost": previous,
-                "percentage_change": perc_change,
-            }
-            data.append(info)
-        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
+    def generate_accounts_report(self) -> list[AccountCostChange]:
+        account_change_data = self.cm.get_change_in_accounts(self.generation_datetime)
+        return sorted(
+            account_change_data, key=attrgetter("current_cost"), reverse=True
+        )  # sort biggest -> smallest current cost
 
-    def generate_projectid_report(self) -> list[dict]:
-        """
-        :return:
-            [
-                {
-                    "id": {ACCOUNT_ID},
-                    "name": {ACCOUNT_NAME},
-                    "current_cost": {CURRENT_COST},
-                    "previous_cost": {PREVIOUS_COST},
-                    "percentage_change": {PercentageChange},
-                },
-                ...
-            ]
-        """
-        results = self.cm.get_change_in_projects(self.generation_datetime)
+    def generate_projectid_report(self) -> list[ProjectCostChange]:
+        """Get list of Project Change Data for the report `generation_datetime` sorted by largest cost to smallest"""
+        data = self.cm.get_change_in_projects(self.generation_datetime)
+        return sorted(data, key=attrgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
 
-        # reformat to expected output
-        data = []
-        id_mapping = get_tag_display_mapping()
-        for project_id_raw, (current, previous, perc_change) in results.items():
-            project_id = project_id_raw.replace("ProjectId$", "").strip()
-            name = id_mapping.get(project_id, "UNDEFINED")
-            info = {
-                "id": project_id,
-                "name": name,
-                "current_cost": current,
-                "previous_cost": previous,
-                "percentage_change": perc_change,
-            }
-            data.append(info)
-        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
-
-    def generate_projectid_itemized_report(self) -> list[dict]:
-        """
-        NOTE: Tax is excluded from results
-        :return:
-            [
-                {
-                    "id": {ACCOUNT_ID},
-                    "name": {ACCOUNT_NAME},
-                    "current_cost": {CURRENT_COST},
-                    "previous_cost": None,
-                    "services": [
-                        {
-                            "name": NAME,
-                            "cost": COST,
-                        },
-                        ...
-                    ]
-                },
-                ...
-            ]
-        """
-        results = self.cm.get_projectid_itemized_totals(start=self.current_month_start, end=self.most_recent_full_date)
+    def generate_projectid_itemized_report(self) -> list[ProjectServicesCost]:
+        """NOTE: Tax is excluded from results"""
+        results: dict[str, Counter] = self.cm.get_projectid_itemized_totals(
+            start=self.current_month_start, end=self.most_recent_full_date
+        )
 
         # results structure:
         # {
@@ -457,29 +409,34 @@ class ReportManager:
         # }
         # reformat to expected output
         # aggregate project services
-        all_project_services = defaultdict(Counter)
-        tax_service_name = "Tax"
-        for project_id_raw, services in results.items():
-            for service_name, cost in services.items():
-                # remove Tax
-                if service_name == tax_service_name:
-                    logger.info(f"excluding tag '{tax_service_name}' {cost}")
-                    continue
-                all_project_services[project_id_raw][service_name] += cost
-                all_project_services[project_id_raw]["current_cost"] += cost
-
-        data = []
         id_mapping = get_tag_display_mapping()
-        for project_id_raw in results:
+        all_project_services: list[ProjectServicesCost] = []
+        for project_id_raw, services in results.items():
             project_id = project_id_raw.replace("ProjectId$", "").strip()
             name = id_mapping.get(project_id, "UNDEFINED")
-            info = {"id": project_id, "name": name, "current_cost": 0, "previous_cost": None, "services": []}
-            current_cost = all_project_services[project_id_raw].pop("current_cost", 0)
-            project_services = list(all_project_services[project_id_raw].items())
+            project_services_cost = ProjectServicesCost(
+                raw_id=project_id_raw,
+                name=name,
+                date=self.most_recent_full_date,
+                services=[],
+            )
+            service_costs = []
+            for service_name, cost in services.items():
+                # exclude Tax
+                if service_name == TAX_SERVICE_NAME:
+                    logger.info(f"excluding tag '{TAX_SERVICE_NAME}' {cost}")
+                    continue
+                service_cost = ServiceCost(
+                    name=service_name,
+                    cost=cost,
+                )
+                service_costs.append(service_cost)
+            # sort project services by cost
+            # biggest -> smallest
+            services_sorted_by_cost = sorted(service_costs, key=attrgetter("cost"), reverse=True)
+            project_services_cost.services = services_sorted_by_cost
+            all_project_services.append(project_services_cost)
 
-            # sort biggest -> smallest
-            info["services"] = sorted(project_services, key=lambda x: x[1], reverse=True)
-            info["current_cost"] = current_cost
-            data.append(info)
-
-        return sorted(data, key=itemgetter("current_cost"), reverse=True)  # sort biggest -> smallest current cost
+        return sorted(
+            all_project_services, key=attrgetter("total_cost"), reverse=True
+        )  # sort biggest -> smallest current cost
