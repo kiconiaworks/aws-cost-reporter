@@ -3,6 +3,7 @@
 import datetime
 import json
 import logging
+from functools import cache
 from io import BytesIO
 from pathlib import Path
 
@@ -39,6 +40,7 @@ def get_month_starts(
     return most_recent_full_date, current_month_start, previous_month_start
 
 
+@cache
 def get_tag_display_mapping(mapping_s3_uri: str = settings.GROUPBY_TAG_DISPLAY_MAPPING_S3_URI) -> dict:
     """mapping_s3_uri is a JSON file that maps the Billing GroupBy Key to the desired display value."""
     mapping = {}
@@ -214,6 +216,7 @@ def get_topn_projectservices_message_blocks(
     return title, json_formatted_message
 
 
+@cache
 def get_accountid_mapping() -> dict:
     """Get the accountid mapping dictionary"""
     accountid_mapping = {}
