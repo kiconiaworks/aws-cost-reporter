@@ -24,6 +24,7 @@ dependencies = [
     "zappa",
     "pyyaml",
     "pydantic>=2.11.3",
+    "setuptools>=79.0.0",
 ]
 
 [project.urls]
