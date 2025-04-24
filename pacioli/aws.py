@@ -6,8 +6,12 @@ import boto3
 
 from . import settings
 
-S3_CLIENT = boto3.client("s3", endpoint_url=settings.AWS_SERVICE_ENDPOINTS["s3"])
-S3_RESOURCE = boto3.resource("s3", endpoint_url=settings.AWS_SERVICE_ENDPOINTS["s3"])
+S3_CLIENT = boto3.client(
+    "s3", endpoint_url=settings.AWS_SERVICE_ENDPOINTS["s3"], region_name=settings.AWS_CLIENT_REGION
+)
+S3_RESOURCE = boto3.resource(
+    "s3", endpoint_url=settings.AWS_SERVICE_ENDPOINTS["s3"], region_name=settings.AWS_CLIENT_REGION
+)
 
 CE_CLIENT = boto3.client("ce")
 

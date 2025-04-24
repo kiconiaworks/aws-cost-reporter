@@ -85,7 +85,7 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
         "aws_region": "us-west-2",
         "profile_name": "default",
         "project_name": "aws-cost-report",
-        "runtime": "python3.9",
+        "runtime": "python3.12",
         "s3_bucket": "{YOUR BUCKET}",
         "apigateway_enabled": false,
         "keep_warm": false,
