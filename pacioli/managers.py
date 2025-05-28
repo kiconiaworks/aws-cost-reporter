@@ -206,7 +206,7 @@ class CostManager:
 
         accountis_name_mapping = get_accountid_mapping()
         results = self.collect_account_service_metrics(start, end)
-        daily_cumsum = {}
+        daily_cumsum = defaultdict(lambda: defaultdict(dict))
         earliest = None
         latest = None
         for period in results["ResultsByTime"]:
@@ -215,11 +215,12 @@ class CostManager:
                 continue
             for group in period["Groups"]:
                 account_id = "".join(group["Keys"])
-                if account_id not in daily_cumsum:
-                    daily_cumsum[account_id] = {}
-                if day.month not in daily_cumsum[account_id]:
-                    daily_cumsum[account_id][day.month] = {}
-                previous_total = 0 if day.day == 1 else daily_cumsum[account_id][day.month][day.day - 1]
+                previous_day = day.day - 1
+                if any((day.day == 1, previous_day not in daily_cumsum[account_id][day.month])):
+                    previous_total = 0
+                else:
+                    # get previous total for the day
+                    previous_total = daily_cumsum[account_id][day.month][previous_day]
                 daily_cumsum[account_id][day.month][day.day] = previous_total + float(
                     group["Metrics"]["UnblendedCost"]["Amount"]
                 )
