@@ -196,6 +196,32 @@ class CostManager:
                 c[accountid] += float(group["Metrics"]["UnblendedCost"]["Amount"])
         return c
 
+    def _get_previous_value(self, account_id: str, month: int, previous_month_day: int, daily_cumsum: dict) -> int:
+        if previous_month_day <= 1:
+            logger.debug(
+                f"previous_month_day {previous_month_day} is <= 1, setting previous to 0 for account {account_id}"
+            )
+            previous = 0
+        elif previous_month_day not in daily_cumsum[account_id][month]:
+            logger.debug(
+                f"previous_month_day {previous_month_day} not found in daily_cumsum for account {account_id}, "
+                f"setting previous to 0"
+            )
+            previous = 0
+        elif previous_month_day in daily_cumsum[account_id][month]:
+            # get previous total for the day
+            previous = daily_cumsum[account_id][month][previous_month_day]
+            logger.debug(
+                f"previous_month_day {previous_month_day} found in daily_cumsum for account {account_id}, "
+                f"setting previous to {previous}"
+            )
+        else:
+            logger.warning(
+                f"previous_month_day {previous_month_day} not found in daily_cumsum for account {account_id}"
+            )
+            previous = 0
+        return previous
+
     def get_change_in_accounts(self, now: datetime.date | None = None) -> list[AccountCostChange]:
         if not now:
             now = datetime.datetime.now(datetime.UTC)
@@ -237,7 +263,10 @@ class CostManager:
             previous_month_day = latest.day
             if previous_month_day not in daily_cumsum[account_id][earliest.month]:
                 previous_month_day -= 1
-            previous = daily_cumsum[account_id][earliest.month][previous_month_day]
+            previous = self._get_previous_value(
+                account_id, month=earliest.month, previous_month_day=previous_month_day, daily_cumsum=daily_cumsum
+            )
+
             percentage_change = 0.0
             if current >= MIN_PERCENTAGE_CHANGE and previous >= MIN_PERCENTAGE_CHANGE:  # only update change if >= 0.01
                 percentage_change = round((current / previous - 1.0) * 100, 1)
