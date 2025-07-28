@@ -10,9 +10,20 @@ The following reports are sent via Slack:
 - AWS Tag (ProjectID) Cost Change Report
 - Top N Tag (ProjectID) Service Breakdown report
 
+### EC2 - Other Cost Breakdown
+
+When enabled (default), the service automatically breaks down generic "EC2 - Other" costs into specific usage types such as:
+- Data Transfer (In/Out, Regional, Inter-AZ)
+- Elastic IP (Idle, Additional)
+- NAT Gateway (Hours, Data Processing)
+- VPC Endpoints
+- And more...
+
+This provides better visibility into what specific AWS services are contributing to the "EC2 - Other" category. To disable this feature, set the environment variable `BREAKDOWN_EC2_OTHER=false`.
+
 ## Prerequisites
 
-- python 3.9
+- python 3.12+
 - awscli
 - pipenv
 - AWS Account 
@@ -112,6 +123,7 @@ Below is a template `zappa_settings.json` file that can be used to prepare this 
 - LOG_LEVEL: Cloudwatch log level (DEFAULT=INFO)
 - UTC_OFFSET: (float) Time offset from UTC for date time display in reports
 - PROJECTSERVICES_TOPN: Number of Top Projects to include in the "Top N Tag (ProjectID) Service Breakdown" report (DEFAULT=10)
+- BREAKDOWN_EC2_OTHER: Enable breakdown of "EC2 - Other" costs into specific usage types (DEFAULT=true)
 
 ## AWS Configuration
 
@@ -238,4 +250,48 @@ From the AWS lambda Test Console add the command, and click, "Test":
 {
   "command": "pacioli.handlers.events.post_status"
 }
+```
+
+## Scripts
+
+### get_project_details.py
+
+A command-line tool to retrieve and display detailed AWS cost information for specific projects, with resources grouped by account and service category.
+
+#### Usage
+
+```bash
+# Get details for a specific project
+python scripts/get_project_details.py --project-id PROJECT_ID
+
+# Get details with debug logging
+python scripts/get_project_details.py --project-id PROJECT_ID --log-level DEBUG
+
+# List all available project IDs with their names
+python scripts/get_project_details.py list-projectids
+```
+
+#### Output Example
+
+```
+=== Project Details ===
+Project ID: abc-123
+Project Name: My Project
+Date Range: 2025-07-01 to 2025-07-28
+Total Cost: $1,234.56 USD
+Accounts: 2
+
+================================================================================
+Account: Production (123456789012) - Total: $1,000.00 USD
+================================================================================
+
+  Compute ($800.00 USD):
+  ----------------------
+    • Amazon Elastic Compute Cloud - Compute: $750.00 USD
+    • AWS Lambda: $50.00 USD
+
+  Storage ($200.00 USD):
+  ----------------------
+    • Amazon Simple Storage Service: $150.00 USD
+    • Amazon Elastic Block Store: $50.00 USD
 ```

@@ -10,16 +10,61 @@ from typing import Any
 from .aws import CE_CLIENT
 from .definitions import AccountCostChange, ProjectCostChange, ProjectServicesCost, ServiceCost
 from .functions import get_accountid_mapping, get_month_starts, get_tag_display_mapping
-from .settings import GROUPBY_TAG_NAME, MIN_PERCENTAGE_CHANGE, TAX_SERVICE_NAME
+from .settings import BREAKDOWN_EC2_OTHER, GROUPBY_TAG_NAME, MIN_PERCENTAGE_CHANGE, TAX_SERVICE_NAME
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_EXCLUDE_TAGS = ["Tax"]
 
+# Constants for magic numbers
+MIN_GROUP_KEYS_COUNT = 2
+
+# EC2 - Other usage type mapping
+EC2_OTHER_USAGE_TYPE_MAPPING = {
+    # Data Transfer
+    "DataTransfer-In-Bytes": "EC2 - Data Transfer In",
+    "DataTransfer-Out-Bytes": "EC2 - Data Transfer Out",
+    "DataTransfer": "EC2 - Data Transfer",
+    "DataTransfer-Regional-Bytes": "EC2 - Regional Data Transfer",
+    "DataTransfer-InterZone-In": "EC2 - Inter-AZ Data Transfer In",
+    "DataTransfer-InterZone-Out": "EC2 - Inter-AZ Data Transfer Out",
+    # Elastic IP
+    "ElasticIP:IdleAddress": "EC2 - Elastic IP (Idle)",
+    "ElasticIP:AdditionalAddress": "EC2 - Elastic IP (Additional)",
+    # NAT Gateway
+    "NatGateway-Hours": "EC2 - NAT Gateway Hours",
+    "NatGateway-Bytes": "EC2 - NAT Gateway Data Processing",
+    # VPC Endpoints
+    "VpcEndpoint-Hours": "EC2 - VPC Endpoint Hours",
+    "VpcEndpoint-Bytes": "EC2 - VPC Endpoint Data Processing",
+    # Load Balancer (sometimes appears under EC2 - Other)
+    "LoadBalancerUsage": "EC2 - Load Balancer Usage",
+    # EBS Optimized
+    "EBSOptimized": "EC2 - EBS Optimized",
+    # Dedicated Hosts
+    "DedicatedUsage": "EC2 - Dedicated Host",
+    # Spot Instances
+    "SpotUsage": "EC2 - Spot Instance Usage",
+    # Instance Store
+    "InstanceStore": "EC2 - Instance Store",
+    # Default fallback
+    "Unknown": "EC2 - Other (Unknown)",
+}
+
 
 def sort_by_periodstart(entry: dict) -> datetime.datetime:
     """Sort CostExplorer results by Period Start"""
     return datetime.datetime.fromisoformat(entry["TimePeriod"]["Start"]).replace(tzinfo=datetime.UTC)
+
+
+def categorize_ec2_other_usage_type(usage_type: str) -> str:
+    """Categorize EC2 - Other usage types into more readable descriptions."""
+    # Try to match usage type to known patterns
+    for pattern, description in EC2_OTHER_USAGE_TYPE_MAPPING.items():
+        if pattern.lower() in usage_type.lower():
+            return f"{description} ({usage_type})"
+    # If no match, return a generic description with the usage type
+    return f"EC2 - Other ({usage_type})"
 
 
 class CostManager:
@@ -166,8 +211,11 @@ class CostManager:
                 c[key] += amount
         return c
 
-    def get_projectid_itemized_totals(self, start: datetime.date, end: datetime.date) -> dict[str, Counter]:
+    def get_projectid_itemized_totals(
+        self, start: datetime.date, end: datetime.date, breakdown_ec2_other: bool = False
+    ) -> dict[str, Counter]:
         """
+        :param breakdown_ec2_other: If True, break down "EC2 - Other" costs into specific usage types
         :return:
             {
                 "{PROJECT_ID}": {
@@ -184,6 +232,28 @@ class CostManager:
                 projectid, service = group["Keys"]
                 amount = float(group["Metrics"]["UnblendedCost"]["Amount"])
                 c[projectid][service] += amount
+
+        # If breakdown_ec2_other is True, process EC2 - Other costs
+        if breakdown_ec2_other:
+            projects_with_ec2_other = [
+                projectid
+                for projectid, services in c.items()
+                if "EC2 - Other" in services and services["EC2 - Other"] > 0
+            ]
+
+            if projects_with_ec2_other:
+                logger.info(f"Breaking down EC2 - Other costs for {len(projects_with_ec2_other)} projects")
+                ec2_other_breakdown = self._get_ec2_other_breakdown_for_projects(projects_with_ec2_other, start, end)
+
+                # Replace EC2 - Other with breakdown for each project
+                for projectid in projects_with_ec2_other:
+                    if projectid in ec2_other_breakdown and ec2_other_breakdown[projectid]:
+                        # Remove the generic "EC2 - Other" entry
+                        del c[projectid]["EC2 - Other"]
+                        # Add the breakdown entries
+                        for usage_type, cost in ec2_other_breakdown[projectid].items():
+                            c[projectid][usage_type] += cost
+
         return c
 
     def get_account_totals(self, start: datetime.date, end: datetime.date) -> dict:
@@ -378,6 +448,72 @@ class CostManager:
         change_data = self._get_project_change(daily_cumsum, earliest, latest)
         return change_data
 
+    def _get_ec2_other_breakdown_for_projects(
+        self, project_ids: list[str], start: datetime.date, end: datetime.date
+    ) -> dict[str, dict[str, float]]:
+        """Get detailed breakdown of EC2 - Other costs for specific projects using USAGE_TYPE dimension."""
+        # Build filter for the specific projects and EC2 - Other service
+        project_filters = []
+        for project_id in project_ids:
+            # Remove the prefix if present
+            clean_project_id = project_id.replace(f"{GROUPBY_TAG_NAME}$", "")
+            project_filters.append(
+                {
+                    "And": [
+                        {"Tags": {"Key": GROUPBY_TAG_NAME, "Values": [clean_project_id]}},
+                        {"Dimensions": {"Key": "SERVICE", "Values": ["EC2 - Other"]}},
+                    ]
+                }
+            )
+
+        # If multiple projects, combine with OR
+        filters = {"Or": project_filters} if len(project_filters) > 1 else project_filters[0]
+
+        # Use SERVICE and USAGE_TYPE to break down EC2 - Other
+        group_by = [{"Type": "TAG", "Key": GROUPBY_TAG_NAME}, {"Type": "DIMENSION", "Key": "USAGE_TYPE"}]
+
+        try:
+            # Get cost data from AWS
+            all_results = {"ResultsByTime": []}
+            response = CE_CLIENT.get_cost_and_usage(
+                TimePeriod={"Start": start.isoformat(), "End": end.isoformat()},
+                Granularity="DAILY",
+                GroupBy=group_by,
+                Metrics=["UnblendedCost"],
+                Filter=filters,
+            )
+            all_results["ResultsByTime"].extend(response["ResultsByTime"])
+
+            # Handle paged responses
+            while "NextPageToken" in response and response["NextPageToken"]:
+                response = CE_CLIENT.get_cost_and_usage(
+                    TimePeriod={"Start": start.isoformat(), "End": end.isoformat()},
+                    Granularity="DAILY",
+                    GroupBy=group_by,
+                    Metrics=["UnblendedCost"],
+                    Filter=filters,
+                    NextPageToken=response["NextPageToken"],
+                )
+                all_results["ResultsByTime"].extend(response["ResultsByTime"])
+
+            # Process results into project -> usage type -> cost mapping
+            breakdown = defaultdict(lambda: defaultdict(float))
+            for period in all_results["ResultsByTime"]:
+                for group in period["Groups"]:
+                    if len(group["Keys"]) >= MIN_GROUP_KEYS_COUNT:
+                        project_id_raw, usage_type = group["Keys"]
+                        amount = float(group["Metrics"]["UnblendedCost"]["Amount"])
+                        if amount > 0:
+                            # Create a more descriptive name
+                            detailed_name = categorize_ec2_other_usage_type(usage_type)
+                            breakdown[project_id_raw][detailed_name] += amount
+
+            return dict(breakdown)
+
+        except (KeyError, ValueError, TypeError) as e:
+            logger.warning(f"Failed to break down EC2 - Other costs: {e}")
+            return {}
+
 
 class ReportManager:
     """Use CostManager to format results for reporting."""
@@ -426,7 +562,7 @@ class ReportManager:
     def generate_projectid_itemized_report(self) -> list[ProjectServicesCost]:
         """NOTE: Tax is excluded from results"""
         results: dict[str, Counter] = self.cm.get_projectid_itemized_totals(
-            start=self.current_month_start, end=self.most_recent_full_date
+            start=self.current_month_start, end=self.most_recent_full_date, breakdown_ec2_other=BREAKDOWN_EC2_OTHER
         )
 
         # results structure:
